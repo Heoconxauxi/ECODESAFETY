@@ -1,0 +1,71 @@
+# ===============================================
+# ⚙️  File: rules/risk_rules.yaml
+# Bộ quy tắc cảnh báo mức độ an toàn phụ gia (E-code)
+# ===============================================
+
+priority:
+  - explicit_avoid
+  - high_risk_effect
+  - banned_country
+  - low_adi_overuse
+  - category_colorant
+  - category_preservative
+  - default_safe
+
+rules:
+
+  # 1️⃣ Trường hợp phụ gia nguy hiểm được liệt kê trực tiếp
+  explicit_avoid:
+    if:
+      ecode_in: ["E123", "E127", "E128", "E110", "E102"]
+    then:
+      risk: "Avoid"
+      reason: "E-code có nguy cơ cao hoặc bị cấm tại EU do ảnh hưởng sức khỏe"
+
+  # 2️⃣ Nếu phụ gia có tác dụng phụ nguy hiểm
+  high_risk_effect:
+    if:
+      any_effect_in: ["carcinogenic", "mutagenic", "hyperactivity", "allergy", "asthma"]
+    then:
+      risk: "Avoid"
+      reason: "Phụ gia có tác dụng phụ nghiêm trọng (gây dị ứng, ảnh hưởng thần kinh, hoặc ung thư)"
+
+  # 3️⃣ Nếu bị cấm/hạn chế tại quốc gia lớn
+  banned_country:
+    if:
+      banned_in_any_of: ["EU", "NO", "AT", "FR", "US", "CA"]
+    then:
+      risk: "Caution"
+      reason: "Phụ gia bị cấm hoặc hạn chế tại một số quốc gia"
+
+  # 4️⃣ Nếu ADI thấp nhưng lượng tiêu thụ vượt ngưỡng
+  low_adi_overuse:
+    if:
+      adi_mgkg_lt: 5
+      context_daily_intake_mgkg_gt: 5
+    then:
+      risk: "Caution"
+      reason: "Lượng tiêu thụ vượt mức ADI cho phép (có nguy cơ tích lũy độc tính)"
+
+  # 5️⃣ Nhóm phẩm màu tổng hợp (colorant)
+  category_colorant:
+    if:
+      category_in: ["Colorant", "Artificial color"]
+    then:
+      risk: "Caution"
+      reason: "Phẩm màu tổng hợp có thể gây kích ứng và phản ứng dị ứng"
+
+  # 6️⃣ Nhóm chất bảo quản (preservative)
+  category_preservative:
+    if:
+      category_in: ["Preservative"]
+    then:
+      risk: "Caution"
+      reason: "Chất bảo quản nên hạn chế với trẻ nhỏ hoặc người nhạy cảm"
+
+  # 7️⃣ Trường hợp mặc định an toàn
+  default_safe:
+    if: {}
+    then:
+      risk: "Safe"
+      reason: "Không có dấu hiệu nguy cơ đặc biệt theo dữ liệu hiện có"
