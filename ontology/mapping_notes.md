@@ -10,5 +10,5 @@
 | ADI_mgkg           | Thuộc tính của Additive  | -               | Lượng cho phép (mg/kg thể trọng/ngày) |
 | CommonName         | Thuộc tính của Additive  | -               | Tên thường gọi  |
 | Contraindications  | Thuộc tính của Additive  | -               | Chống chỉ định  |
-| Source             | Source                   | -               | Tên thường gọi  |
+| Source             | Source                   | HAS_SOURCE      | Nhưng nguồn liên quan   |
 

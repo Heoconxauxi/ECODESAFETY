@@ -4,20 +4,23 @@
     "Category",
     "Effect",
     "RiskLevel",
-    "Country"
+    "Country",
+    "Source"
   ],
   "relations": [
     "HAS_CATEGORY",
     "HAS_EFFECT",
     "HAS_RISK",
-    "BANNED_IN"
+    "BANNED_IN",
+    "HAS_SOURCE"
   ],
   "constraints": [
     { "label": "Additive", "key": "ECode", "type": "UNIQUE" },
     { "label": "Category", "key": "name", "type": "UNIQUE" },
     { "label": "Effect", "key": "name", "type": "UNIQUE" },
     { "label": "RiskLevel", "key": "level", "type": "UNIQUE" },
-    { "label": "Country", "key": "code", "type": "UNIQUE" }
+    { "label": "Country", "key": "code", "type": "UNIQUE" },
+    { "label": "Source", "key": "name", "type": "UNIQUE" }
   ],
   "risk_levels": ["Safe", "Caution", "Avoid"]
 }
