@@ -53,72 +53,72 @@ def close_neo4j_driver():
 
 # --- 2. Xử lý truy vấn (Query Handling) ---
 
-# def get_facts_from_neo4j(driver: Driver, ecode: str) -> Optional[Dict[str, Any]]:
-#     """
-#     Truy vấn thông tin E-code từ Neo4j: Category, Effects, BannedIn, ADI, RiskLevel
-#     (Đây chính là hàm bạn đã cung cấp, được điều chỉnh để nhận 'driver' làm tham số)
-#     """
-#     if not driver:
-#         print("Lỗi: Neo4j driver chưa được khởi tạo.")
-#         return None
+def get_facts_from_neo4j(driver: Driver, ecode: str) -> Optional[Dict[str, Any]]:
+    """
+    Truy vấn thông tin E-code từ Neo4j: Category, Effects, BannedIn, ADI, RiskLevel
+    (Đây chính là hàm bạn đã cung cấp, được điều chỉnh để nhận 'driver' làm tham số)
+    """
+    if not driver:
+        print("Lỗi: Neo4j driver chưa được khởi tạo.")
+        return None
             
-#     try:
-#         # Sử dụng session từ driver đã cung cấp
-#         with driver.session() as session:
-#             query = """
-#             MATCH (a:Additive {ECode:$ecode})
-#             OPTIONAL MATCH (a)-[:HAS_CATEGORY]->(cat:Category)
-#             OPTIONAL MATCH (a)-[:HAS_RISK]->(r:RiskLevel)
-#             OPTIONAL MATCH (a)-[:HAS_EFFECT]->(e:Effect)
-#             OPTIONAL MATCH (a)-[:BANNED_IN]->(c:Country)
-#             RETURN a.ECode AS ECode,
-#                    a.CommonName AS CommonName,
-#                    a.ADI_mgkg AS ADI_mgkg,
-#                    cat.name AS Category,
-#                    r.level AS RiskLevel,
-#                    collect(DISTINCT e.name) AS Effects,
-#                    collect(DISTINCT c.code) AS BannedIn
-#             """
-#             # Chạy truy vấn và lấy dữ liệu
-#             res = session.run(query, {"ecode": ecode}).data()
+    try:
+        # Sử dụng session từ driver đã cung cấp
+        with driver.session() as session:
+            query = """
+            MATCH (a:Additive {ECode:$ecode})
+            OPTIONAL MATCH (a)-[:HAS_CATEGORY]->(cat:Category)
+            OPTIONAL MATCH (a)-[:HAS_RISK]->(r:RiskLevel)
+            OPTIONAL MATCH (a)-[:HAS_EFFECT]->(e:Effect)
+            OPTIONAL MATCH (a)-[:BANNED_IN]->(c:Country)
+            RETURN a.ECode AS ECode,
+                   a.CommonName AS CommonName,
+                   a.ADI_mgkg AS ADI_mgkg,
+                   cat.name AS Category,
+                   r.level AS RiskLevel,
+                   collect(DISTINCT e.name) AS Effects,
+                   collect(DISTINCT c.code) AS BannedIn
+            """
+            # Chạy truy vấn và lấy dữ liệu
+            res = session.run(query, {"ecode": ecode}).data()
             
-#             if res:
-#                 return res[0] # Trả về bản ghi đầu tiên (và duy nhất)
-#             return None # Không tìm thấy E-code
+            if res:
+                return res[0] # Trả về bản ghi đầu tiên (và duy nhất)
+            return None # Không tìm thấy E-code
             
-#     except ServiceUnavailable as e:
-#         print(f"Lỗi dịch vụ Neo4j khi truy vấn {ecode}: {e}")
-#         return None
-#     except Exception as e:
-#         print(f"Lỗi không xác định khi truy vấn {ecode}: {e}")
-#         return None
+    except ServiceUnavailable as e:
+        print(f"Lỗi dịch vụ Neo4j khi truy vấn {ecode}: {e}")
+        return None
+    except Exception as e:
+        print(f"Lỗi không xác định khi truy vấn {ecode}: {e}")
+        return None
 
 # # --- 3. Block để chạy thử nghiệm (Test) file này ---
 # # Bạn có thể chạy file này trực tiếp bằng: python src/neo4j_connector.py
 
-# if __name__ == "__main__":
-#     print("--- Chạy thử nghiệm neo4j_connector.py ---")
-#     main_driver = None
-#     try:
-#         # 1. Lấy kết nối
-#         main_driver = get_neo4j_driver()
+if __name__ == "__main__":
+    print("--- Chạy thử nghiệm neo4j_connector.py ---")
+    main_driver = None
+    try:
+        # 1. Lấy kết nối
+        main_driver = get_neo4j_driver()
         
-#         # 2. Thử truy vấn một E-code (Hãy thay đổi E-code bạn muốn test)
-#         ecode_test = "E100" 
-#         print(f"Đang truy vấn thông tin cho: {ecode_test}")
+        # 2. Thử truy vấn một E-code (Hãy thay đổi E-code bạn muốn test)
+        ecode_test = "E621" 
+        print(f"Đang truy vấn thông tin cho: {ecode_test}")
         
-#         facts = get_facts_from_neo4j(main_driver, ecode_test)
+        facts = get_facts_from_neo4j(main_driver, ecode_test)
         
-#         if facts:
-#             import json
-#             print("Kết quả truy vấn thành công:")
-#             # In ra kết quả dạng JSON cho dễ đọc
-#             print(json.dumps(facts, indent=2, ensure_ascii=False))
-#         else:
-#             print(f"Không tìm thấy dữ liệu cho {ecode_test}.")
+        if facts:
+            import json
+            print("Kết quả truy vấn thành công:")
+            # In ra kết quả dạng JSON cho dễ đọc
+            print(json.dumps(facts, indent=2, ensure_ascii=False))
+        else:
+            print(f"Không tìm thấy dữ liệu cho {ecode_test}.")
 
-#     except Exception as e:
-#         print(f"Lỗi trong quá trình chạy thử: {e}")
-#     finally:
-#         # 3. Luôn đóng kết nối
-#         close_neo4j_driver()
+    except Exception as e:
+        print(f"Lỗi trong quá trình chạy thử: {e}")
+    finally:
+        # 3. Luôn đóng kết nối
+        close_neo4j_driver()

@@ -31,7 +31,7 @@ except NameError:
 
 
 SCHEMA_PATH = ROOT_DIR / "ontology" / "schema.json"
-CSV_PATH = ROOT_DIR / "data" / "ecodes_master.csv"
+CSV_PATH = ROOT_DIR / "data" / "processed" / "ecodes_master.csv"
 
 # --- Tải schema ---
 try:

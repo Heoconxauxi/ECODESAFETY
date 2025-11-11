@@ -1,0 +1,10 @@
+pyyaml
+easyocr
+pandas
+neo4j
+dotenv
+opencv-python
+fastapi
+uvicorn
+pydantic
+python-multipart

@@ -1,76 +1,76 @@
-E300	Ascorbic acid (vitamin C)	antioxidant
-E301	Sodium ascorbate	antioxidant
-E302	Calcium ascorbate	antioxidant
-E303	Potassium ascorbate	antioxidant
-E304	Fatty acid esters of ascorbic acid (Ascorbyl palmitate)	antioxidant
-E305	Ascorbyl stearate	antioxidant
-E306	"Tocopherols (Vitamin E, natural)"	antioxidant
-E307	Alpha-Tocopherol (synthetic)	antioxidant
-E308	Gamma-Tocopherol (synthetic)	antioxidant
-E309	Delta-Tocopherol (synthetic)	antioxidant
-E310	Propyl gallate	antioxidant
-E311	Octyl gallate	antioxidant
-E312	Dodecyl gallate	antioxidant
-E313	Ethyl gallate	antioxidant
-E314	Guaiac resin	antioxidant
-E315	Erythorbic acid	antioxidant
-E316	Sodium erythorbate	antioxidant
-E317	Erythorbin acid[citation needed]	antioxidant
-E318	Sodium erythorbin[citation needed]	antioxidant
-E319	tert-Butylhydroquinone (TBHQ)	antioxidant
-E320	Butylated hydroxyanisole (BHA)	antioxidant
-E321	Butylated hydroxytoluene (BHT)	antioxidant
-E322	Lecithin	emulsifier
-E323	Anoxomer	antioxidant
-E324	Ethoxyquin	antioxidant
-E325	Sodium lactate	acidity regulator
-E326	Potassium lactate (antioxidant)	acidity regulator
-E327	Calcium lactate	acidity regulator
-E328	Ammonium lactate	acidity regulator
-E329	Magnesium lactate	acidity regulator
-E330	Citric acid	"acid, acidity regulator"
-E331	"Sodium citrates: (i) Monosodium citrate, (ii) Disodium citrate, (iii) Sodium citrate (trisodium citrate)"	acidity regulator
-E332	"Potassium citrates: (i) Monopotassium citrate, (ii) Potassium citrate (tripotassium citrate)"	acidity regulator
-E333	"Calcium citrates: (i) Monocalcium citrate, (ii) Dicalcium citrate, (iii) Calcium citrate (tricalcium citrate)"	"acidity regulator, firming agent, sequestrant"
-E334	Tartaric acid (L(+)-)	(acid)
-E335	"Sodium tartrates: (i) Monosodium tartrate, (ii) Disodium tartrate"	acidity regulator
-E336	"Potassium tartrates: (i) Monopotassium tartrate (cream of tartar), (ii) Dipotassium tartrate"	acidity regulator
-E337	Sodium potassium tartrate	acidity regulator
-E338	Phosphoric acid	acid
-E339	"Sodium phosphates: (i) Monosodium phosphate, (ii) Disodium phosphate, (iii) Trisodium phosphate"	antioxidant
-E340	"Potassium phosphates: (i) Monopotassium phosphate, (ii) Dipotassium phosphate, (iii) Tripotassium phosphate"	antioxidant
-E341	"Calcium phosphates: (i) Monocalcium phosphate, (ii) Dicalcium phosphate, (iii) Tricalcium phosphate"	"anti-caking agent, firming agent"
-E342	"Ammonium phosphates: (i) monoammonium phosphate, (ii) diammonium phosphate"	
-E343	"Magnesium phosphates: (i) monomagnesium phosphate, (ii) Dimagnesium phosphate"	anti-caking agent
-E344	Lecithin citrate	acidity regulator
-E345	Magnesium citrate	acidity regulator
-E349	Ammonium malate	acidity regulator
-E350	"Sodium malates: (i) Sodium malate, (ii) Sodium hydrogen malate"	acidity regulator
-E351	Potassium malate	acidity regulator
-E352	"Calcium malates: (i) Calcium malate, (ii) Calcium hydrogen malate"	acidity regulator
-E353	Metatartaric acid	emulsifier
-E354	Calcium tartrate	emulsifier
-E355	Adipic acid	acidity regulator
-E356	Sodium adipate	acidity regulator
-E357	Potassium adipate	acidity regulator
-E359	Ammonium adipate	acidity regulator
-E363	Succinic acid	acidity regulator
-E365	Monosodium fumarate	acidity regulator
-E366	Potassium fumarate	acidity regulator
-E367	Calcium fumarate	acidity regulator
-E368	Ammonium fumarate	acidity regulator
-E370	"1,4-Heptonolactone"	acidity regulator
-E375	Niacin	acidity regulator
-E380	Triammonium citrate	acidity regulator
-E381	Ammonium ferric citrate	acidity regulator
-E383	Calcium glycerylphosphate	acidity regulator
-E384	Isopropyl citrate	acidity regulator
-E385	"Calcium disodium ethylene diamine tetraacetate, (Calcium disodium EDTA)"	sequestrant
-E386	Disodium ethylene diamine tetraacetate (Disodium EDTA)	sequestrant
-E387	Oxystearin	stabiliser
-E388	Thiodipropionic acid	
-E389	Dilauryl thiodipropionate	
-E390	Distearyl thiodipropionate	
-E391	Phytic acid	
-E392	Carnosic acid	
-E399	Calcium lactobionate	
+E300,Ascorbic acid (vitamin C),antioxidant
+E301,Sodium ascorbate,antioxidant
+E302,Calcium ascorbate,antioxidant
+E303,Potassium ascorbate,antioxidant
+E304,Fatty acid esters of ascorbic acid (Ascorbyl palmitate),antioxidant
+E305,Ascorbyl stearate,antioxidant
+E306,"Tocopherols (Vitamin E, natural)",antioxidant
+E307,Alpha-Tocopherol (synthetic),antioxidant
+E308,Gamma-Tocopherol (synthetic),antioxidant
+E309,Delta-Tocopherol (synthetic),antioxidant
+E310,Propyl gallate,antioxidant
+E311,Octyl gallate,antioxidant
+E312,Dodecyl gallate,antioxidant
+E313,Ethyl gallate,antioxidant
+E314,Guaiac resin,antioxidant
+E315,Erythorbic acid,antioxidant
+E316,Sodium erythorbate,antioxidant
+E317,Erythorbin acid[citation needed],antioxidant
+E318,Sodium erythorbin[citation needed],antioxidant
+E319,tert-Butylhydroquinone (TBHQ),antioxidant
+E320,Butylated hydroxyanisole (BHA),antioxidant
+E321,Butylated hydroxytoluene (BHT),antioxidant
+E322,Lecithin,emulsifier
+E323,Anoxomer,antioxidant
+E324,Ethoxyquin,antioxidant
+E325,Sodium lactate,acidity regulator
+E326,Potassium lactate (antioxidant),acidity regulator
+E327,Calcium lactate,acidity regulator
+E328,Ammonium lactate,acidity regulator
+E329,Magnesium lactate,acidity regulator
+E330,Citric acid,"acid, acidity regulator"
+E331,Sodium citrates,acidity regulator
+E332,Potassium citrates,acidity regulator
+E333,Calcium citrates,"acidity regulator,"
+E334,Tartaric acid (L(+)-),(acid)
+E335,Sodium tartrates,acidity regulator
+E336,Potassium tartrates,acidity regulator
+E337,Sodium potassium tartrate,acidity regulator
+E338,Phosphoric acid,acid
+E339,Sodium phosphates,antioxidant
+E340,Potassium phosphates,antioxidant
+E341,Calcium phosphates,"anti-caking agent, firming agent"
+E342,Ammonium phosphates:,
+E343,Magnesium phosphates,anti-caking agent
+E344,Lecithin citrate,acidity regulator
+E345,Magnesium citrate,acidity regulator
+E349,Ammonium malate,acidity regulator
+E350,Sodium malates,acidity regulator
+E351,Potassium malate,acidity regulator
+E352,Calcium malates,acidity regulator
+E353,Metatartaric acid,emulsifier
+E354,Calcium tartrate,emulsifier
+E355,Adipic acid,acidity regulator
+E356,Sodium adipate,acidity regulator
+E357,Potassium adipate,acidity regulator
+E359,Ammonium adipate,acidity regulator
+E363,Succinic acid,acidity regulator
+E365,Monosodium fumarate,acidity regulator
+E366,Potassium fumarate,acidity regulator
+E367,Calcium fumarate,acidity regulator
+E368,Ammonium fumarate,acidity regulator
+E370,"1,4-Heptonolactone",acidity regulator
+E375,Niacin,acidity regulator
+E380,Triammonium citrate,acidity regulator
+E381,Ammonium ferric citrate,acidity regulator
+E383,Calcium glycerylphosphate,acidity regulator
+E384,Isopropyl citrate,acidity regulator
+E385,"Calcium disodium ethylene diamine tetraacetate, (Calcium disodium EDTA)",sequestrant
+E386,Disodium ethylene diamine tetraacetate (Disodium EDTA),sequestrant
+E387,Oxystearin,stabiliser
+E388,Thiodipropionic acid,
+E389,Dilauryl thiodipropionate,
+E390,Distearyl thiodipropionate,
+E391,Phytic acid,
+E392,Carnosic acid,
+E399,Calcium lactobionate,

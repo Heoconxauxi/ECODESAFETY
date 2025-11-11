@@ -1,519 +1,503 @@
-﻿ECode,CommonName,Category,ADI_mgkg,RiskLevel,Effects,Contraindications,BannedIn,Sources
-E100,,colours,,Unknown,,,,
-E1000,,additional additives,,Unknown,,,,
-E1001,,additional additives,,Unknown,,,,
-E101,,colours,,Unknown,,,,
-E101A,,colours,,Unknown,,,,
-E102,,colours,,Unknown,,,,
-E103,,colours,,Unknown,,,,
-E104,,colours,,Unknown,,,,
-E105,,colours,,Unknown,,,,
-E106,,colours,,Unknown,,,,
-E107,,colours,,Unknown,,,,
-E110,,colours,,Unknown,,,,
-E1100,,additional additives,,Unknown,,,,
-E1101,,additional additives,,Unknown,,,,
-E1102,,additional additives,,Unknown,,,,
-E1103,,additional additives,,Unknown,,,,
-E1104,,additional additives,,Unknown,,,,
-E1105,,additional additives,,Unknown,,,,
-E111,,colours,,Unknown,,,,
-E120,,colours,,Unknown,,,,
-E1200,,additional additives,,Unknown,,,,
-E1201,,additional additives,,Unknown,,,,
-E1202,,additional additives,,Unknown,,,,
-E1203,,additional additives,,Unknown,,,,
-E1204,,additional additives,,Unknown,,,,
-E121,,colours,,Unknown,,,,
-E122,,colours,,Unknown,,,,
-E123,,colours,,Unknown,,,,
-E124,,colours,,Unknown,,,,
-E125,,colours,,Unknown,,,,
-E126,,colours,,Unknown,,,,
-E127,,colours,,Unknown,,,,
-E128,,colours,,Unknown,,,,
-E129,,colours,,Unknown,,,,
-E130,,colours,,Unknown,,,,
-E131,,colours,,Unknown,,,,
-E132,,colours,,Unknown,,,,
-E133,,colours,,Unknown,,,,
-E140,,colours,,Unknown,,,,
-E1400,,additional additives,,Unknown,,,,
-E1401,,additional additives,,Unknown,,,,
-E1402,,additional additives,,Unknown,,,,
-E1403,,additional additives,,Unknown,,,,
-E1404,,additional additives,,Unknown,,,,
-E1405,,additional additives,,Unknown,,,,
-E141,,colours,,Unknown,,,,
-E1410,,additional additives,,Unknown,,,,
-E1411,,additional additives,,Unknown,,,,
-E1412,,additional additives,,Unknown,,,,
-E1413,,additional additives,,Unknown,,,,
-E1414,,additional additives,,Unknown,,,,
-E142,,colours,,Unknown,,,,
-E1420,,additional additives,,Unknown,,,,
-E1421,,additional additives,,Unknown,,,,
-E1422,,additional additives,,Unknown,,,,
-E1423,,additional additives,,Unknown,,,,
-E143,,colours,,Unknown,,,,
-E1430,,additional additives,,Unknown,,,,
-E1440,,additional additives,,Unknown,,,,
-E1441,,additional additives,,Unknown,,,,
-E1442,,additional additives,,Unknown,,,,
-E1443,,additional additives,,Unknown,,,,
-E1450,,additional additives,,Unknown,,,,
-E1451,,additional additives,,Unknown,,,,
-E1452,,additional additives,,Unknown,,,,
-E1501,,additional additives,,Unknown,,,,
-E1502,,additional additives,,Unknown,,,,
-E1503,,additional additives,,Unknown,,,,
-E1504,,additional additives,,Unknown,,,,
-E1505,,additional additives,,Unknown,,,,
-E150A,,colours,,Unknown,,,,
-E150B,,colours,,Unknown,,,,
-E150C,,colours,,Unknown,,,,
-E150D,,colours,,Unknown,,,,
-E151,,colours,,Unknown,,,,
-E1510,,additional additives,,Unknown,,,,
-E1516,,additional additives,,Unknown,,,,
-E1517,,additional additives,,Unknown,,,,
-E1518,,additional additives,,Unknown,,,,
-E1519,,additional additives,,Unknown,,,,
-E152,,colours,,Unknown,,,,
-E1520,,additional additives,,Unknown,,,,
-E1521,,additional additives,,Unknown,,,,
-E1525,,additional additives,,Unknown,,,,
-E153,,colours,,Unknown,,,,
-E154,,colours,,Unknown,,,,
-E155,,colours,,Unknown,,,,
-E160A,,colours,,Unknown,,,,
-E160B,,colours,,Unknown,,,,
-E160C,,colours,,Unknown,,,,
-E160D,,colours,,Unknown,,,,
-E160E,,colours,,Unknown,,,,
-E160F,,colours,,Unknown,,,,
-E161A,,colours,,Unknown,,,,
-E161B,,colours,,Unknown,,,,
-E161C,,colours,,Unknown,,,,
-E161D,,colours,,Unknown,,,,
-E161E,,colours,,Unknown,,,,
-E161F,,colours,,Unknown,,,,
-E161G,,colours,,Unknown,,,,
-E161H,,colours,,Unknown,,,,
-E161I,,colours,,Unknown,,,,
-E161J,,colours,,Unknown,,,,
-E162,,colours,,Unknown,,,,
-E163,,colours,,Unknown,,,,
-E164,,colours,,Unknown,,,,
-E170,,colours,,Unknown,,,,
-E171,,colours,,Unknown,,,,
-E172,,colours,,Unknown,,,,
-E173,,colours,,Unknown,,,,
-E174,,colours,,Unknown,,,,
-E175,,colours,,Unknown,,,,
-E180,,colours,,Unknown,,,,
-E181,,colours,,Unknown,,,,
-E182,,colours,,Unknown,,,,
-E200,,preservatives,,Unknown,,,,
-E201,,preservatives,,Unknown,,,,
-E202,,preservatives,,Unknown,,,,
-E203,,preservatives,,Unknown,,,,
-E209,,preservatives,,Unknown,,,,
-E210,,preservatives,,Unknown,,,,
-E211,,preservatives,,Unknown,,,,
-E212,,preservatives,,Unknown,,,,
-E213,,preservatives,,Unknown,,,,
-E214,,preservatives,,Unknown,,,,
-E215,,preservatives,,Unknown,,,,
-E216,,preservatives,,Unknown,,,,
-E217,,preservatives,,Unknown,,,,
-E218,,preservatives,,Unknown,,,,
-E219,,preservatives,,Unknown,,,,
-E220,,preservatives,,Unknown,,,,
-E221,,preservatives,,Unknown,,,,
-E222,,preservatives,,Unknown,,,,
-E223,,preservatives,,Unknown,,,,
-E224,,preservatives,,Unknown,,,,
-E225,,preservatives,,Unknown,,,,
-E226,,preservatives,,Unknown,,,,
-E227,,preservatives,,Unknown,,,,
-E228,,preservatives,,Unknown,,,,
-E230,,preservatives,,Unknown,,,,
-E231,,preservatives,,Unknown,,,,
-E232,,preservatives,,Unknown,,,,
-E233,,preservatives,,Unknown,,,,
-E234,,preservatives,,Unknown,,,,
-E235,,preservatives,,Unknown,,,,
-E236,,preservatives,,Unknown,,,,
-E237,,preservatives,,Unknown,,,,
-E238,,preservatives,,Unknown,,,,
-E239,,preservatives,,Unknown,,,,
-E240,,preservatives,,Unknown,,,,
-E242,,preservatives,,Unknown,,,,
-E249,,preservatives,,Unknown,,,,
-E250,,preservatives,,Unknown,,,,
-E251,,preservatives,,Unknown,,,,
-E252,,preservatives,,Unknown,,,,
-E260,,preservatives,,Unknown,,,,
-E261,,preservatives,,Unknown,,,,
-E262,,preservatives,,Unknown,,,,
-E263,,preservatives,,Unknown,,,,
-E264,,preservatives,,Unknown,,,,
-E265,,preservatives,,Unknown,,,,
-E266,,preservatives,,Unknown,,,,
-E267,,preservatives,,Unknown,,,,
-E270,,preservatives,,Unknown,,,,
-E280,,preservatives,,Unknown,,,,
-E281,,preservatives,,Unknown,,,,
-E282,,preservatives,,Unknown,,,,
-E283,,preservatives,,Unknown,,,,
-E284,,preservatives,,Unknown,,,,
-E285,,preservatives,,Unknown,,,,
-E290,,preservatives,,Unknown,,,,
-E296,,preservatives,,Unknown,,,,
-E297,,preservatives,,Unknown,,,,
-E300,,"antioxidants, acidity regulators",,Unknown,,,,
-E301,,"antioxidants, acidity regulators",,Unknown,,,,
-E302,,"antioxidants, acidity regulators",,Unknown,,,,
-E303,,"antioxidants, acidity regulators",,Unknown,,,,
-E304,,"antioxidants, acidity regulators",,Unknown,,,,
-E305,,"antioxidants, acidity regulators",,Unknown,,,,
-E306,,"antioxidants, acidity regulators",,Unknown,,,,
-E307,,"antioxidants, acidity regulators",,Unknown,,,,
-E308,,"antioxidants, acidity regulators",,Unknown,,,,
-E309,,"antioxidants, acidity regulators",,Unknown,,,,
-E310,,"antioxidants, acidity regulators",,Unknown,,,,
-E311,,"antioxidants, acidity regulators",,Unknown,,,,
-E312,,"antioxidants, acidity regulators",,Unknown,,,,
-E313,,"antioxidants, acidity regulators",,Unknown,,,,
-E314,,"antioxidants, acidity regulators",,Unknown,,,,
-E315,,"antioxidants, acidity regulators",,Unknown,,,,
-E316,,"antioxidants, acidity regulators",,Unknown,,,,
-E317,,"antioxidants, acidity regulators",,Unknown,,,,
-E318,,"antioxidants, acidity regulators",,Unknown,,,,
-E319,,"antioxidants, acidity regulators",,Unknown,,,,
-E320,,"antioxidants, acidity regulators",,Unknown,,,,
-E321,,"antioxidants, acidity regulators",,Unknown,,,,
-E322,,"antioxidants, acidity regulators",,Unknown,,,,
-E323,,"antioxidants, acidity regulators",,Unknown,,,,
-E324,,"antioxidants, acidity regulators",,Unknown,,,,
-E325,,"antioxidants, acidity regulators",,Unknown,,,,
-E326,,"antioxidants, acidity regulators",,Unknown,,,,
-E327,,"antioxidants, acidity regulators",,Unknown,,,,
-E328,,"antioxidants, acidity regulators",,Unknown,,,,
-E329,,"antioxidants, acidity regulators",,Unknown,,,,
-E330,,"antioxidants, acidity regulators",,Unknown,,,,
-E331,,"antioxidants, acidity regulators",,Unknown,,,,
-E332,,"antioxidants, acidity regulators",,Unknown,,,,
-E333,,"antioxidants, acidity regulators",,Unknown,,,,
-E334,,"antioxidants, acidity regulators",,Unknown,,,,
-E335,,"antioxidants, acidity regulators",,Unknown,,,,
-E336,,"antioxidants, acidity regulators",,Unknown,,,,
-E337,,"antioxidants, acidity regulators",,Unknown,,,,
-E338,,"antioxidants, acidity regulators",,Unknown,,,,
-E339,,"antioxidants, acidity regulators",,Unknown,,,,
-E340,,"antioxidants, acidity regulators",,Unknown,,,,
-E341,,"antioxidants, acidity regulators",,Unknown,,,,
-E342,,"antioxidants, acidity regulators",,Unknown,,,,
-E343,,"antioxidants, acidity regulators",,Unknown,,,,
-E344,,"antioxidants, acidity regulators",,Unknown,,,,
-E345,,"antioxidants, acidity regulators",,Unknown,,,,
-E349,,"antioxidants, acidity regulators",,Unknown,,,,
-E350,,"antioxidants, acidity regulators",,Unknown,,,,
-E351,,"antioxidants, acidity regulators",,Unknown,,,,
-E352,,"antioxidants, acidity regulators",,Unknown,,,,
-E353,,"antioxidants, acidity regulators",,Unknown,,,,
-E354,,"antioxidants, acidity regulators",,Unknown,,,,
-E355,,"antioxidants, acidity regulators",,Unknown,,,,
-E356,,"antioxidants, acidity regulators",,Unknown,,,,
-E357,,"antioxidants, acidity regulators",,Unknown,,,,
-E359,,"antioxidants, acidity regulators",,Unknown,,,,
-E363,,"antioxidants, acidity regulators",,Unknown,,,,
-E365,,"antioxidants, acidity regulators",,Unknown,,,,
-E366,,"antioxidants, acidity regulators",,Unknown,,,,
-E367,,"antioxidants, acidity regulators",,Unknown,,,,
-E368,,"antioxidants, acidity regulators",,Unknown,,,,
-E370,,"antioxidants, acidity regulators",,Unknown,,,,
-E375,,"antioxidants, acidity regulators",,Unknown,,,,
-E380,,"antioxidants, acidity regulators",,Unknown,,,,
-E381,,"antioxidants, acidity regulators",,Unknown,,,,
-E383,,"antioxidants, acidity regulators",,Unknown,,,,
-E384,,"antioxidants, acidity regulators",,Unknown,,,,
-E385,,"antioxidants, acidity regulators",,Unknown,,,,
-E386,,"antioxidants, acidity regulators",,Unknown,,,,
-E387,,"antioxidants, acidity regulators",,Unknown,,,,
-E388,,"antioxidants, acidity regulators",,Unknown,,,,
-E389,,"antioxidants, acidity regulators",,Unknown,,,,
-E390,,"antioxidants, acidity regulators",,Unknown,,,,
-E391,,"antioxidants, acidity regulators",,Unknown,,,,
-E392,,"antioxidants, acidity regulators",,Unknown,,,,
-E399,,"antioxidants, acidity regulators",,Unknown,,,,
-E400,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E401,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E402,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E403,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E404,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E405,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E406,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E407,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E407A,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E408,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E409,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E410,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E411,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E412,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E413,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E414,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E415,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E416,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E417,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E418,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E419,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E420,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E421,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E422,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E424,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E425,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E426,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E427,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E428,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E429,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E430,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E431,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E432,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E433,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E434,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E435,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E436,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E440,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E441,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E442,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E443,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E444,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E445,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E446,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E450,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E451,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E452,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E459,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E460,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E461,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E462,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E463,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E464,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E465,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E466,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E467,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E468,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E469,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E470A,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E470B,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E471,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E472A,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E472B,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E472C,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E472D,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E472E,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E472F,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E472G,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E473,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E474,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E475,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E476,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E477,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E478,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E479B,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E480,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E481,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E482,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E483,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E484,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E485,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E486,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E487,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E488,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E489,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E490,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E491,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E492,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E493,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E494,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E495,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E496,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E497,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E498,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E499,,"thickeners, stabilisers, emulsifiers",,Unknown,,,,
-E500,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E501,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E503,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E504,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E505,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E507,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E508,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E509,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E510,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E511,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E512,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E513,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E514,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E515,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E516,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E517,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E518,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E519,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E520,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E521,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E522,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E523,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E524,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E525,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E526,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E527,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E528,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E529,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E530,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E535,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E536,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E537,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E538,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E539,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E540,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E541,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E542,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E543,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E544,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E545,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E550,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E551,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E552,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E553A,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E553B,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E554,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E555,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E556,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E557,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E558,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E559,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E560,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E561,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E562,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E563,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E565,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E566,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E570,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E572,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E574,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E575,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E576,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E577,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E578,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E579,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E580,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E585,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E586,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E598,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E599,,"acidity regulators, anti-caking agents",,Unknown,,,,
-E620,,flavour enhancers,,Unknown,,,,
-E621,,flavour enhancers,,Unknown,,,,
-E622,,flavour enhancers,,Unknown,,,,
-E623,,flavour enhancers,,Unknown,,,,
-E624,,flavour enhancers,,Unknown,,,,
-E625,,flavour enhancers,,Unknown,,,,
-E626,,flavour enhancers,,Unknown,,,,
-E627,,flavour enhancers,,Unknown,,,,
-E628,,flavour enhancers,,Unknown,,,,
-E629,,flavour enhancers,,Unknown,,,,
-E630,,flavour enhancers,,Unknown,,,,
-E631,,flavour enhancers,,Unknown,,,,
-E632,,flavour enhancers,,Unknown,,,,
-E633,,flavour enhancers,,Unknown,,,,
-E634,,flavour enhancers,,Unknown,,,,
-E635,,flavour enhancers,,Unknown,,,,
-E636,,flavour enhancers,,Unknown,,,,
-E637,,flavour enhancers,,Unknown,,,,
-E640,,flavour enhancers,,Unknown,,,,
-E650,,flavour enhancers,,Unknown,,,,
-E701,,antibiotics,,Unknown,,,,
-E702,,antibiotics,,Unknown,,,,
-E703,,antibiotics,,Unknown,,,,
-E704,,antibiotics,,Unknown,,,,
-E705,,antibiotics,,Unknown,,,,
-E706,,antibiotics,,Unknown,,,,
-E707,,antibiotics,,Unknown,,,,
-E708,,antibiotics,,Unknown,,,,
-E710,,antibiotics,,Unknown,,,,
-E711,,antibiotics,,Unknown,,,,
-E712,,antibiotics,,Unknown,,,,
-E713,,antibiotics,,Unknown,,,,
-E714,,antibiotics,,Unknown,,,,
-E715,,antibiotics,,Unknown,,,,
-E716,,antibiotics,,Unknown,,,,
-E717,,antibiotics,,Unknown,,,,
-E900,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E901,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E902,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E903,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E904,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E905,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E905A,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E905B,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E905C,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E906,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E907,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E908,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E909,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E910,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E911,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E912,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E913,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E914,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E915,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E916,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E917,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E918,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E919,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E920,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E921,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E922,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E923,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E924,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E924B,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E925,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E926,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E927A,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E927B,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E928,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E929,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E930,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E938,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E939,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E940,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E941,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E942,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E943A,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E943B,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E944,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E945,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E946,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E948,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E949,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E950,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E951,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E952,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E953,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E954,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E955,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E956,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E957,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E958,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E959,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E960,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E961,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E962,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E964,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E965,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E966,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E967,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E968,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E969,,"glazing agents, gases and sweeteners",,Unknown,,,,
-E999,,"glazing agents, gases and sweeteners",,Unknown,,,,
+﻿ECode,CommonName,Category,ADI_mgkg,RiskLevel,Effects,Contraindications,BannedIn,Source
+E100,Curcumin (from turmeric),colours,updating,Unknown,updating,updating,none,updating
+E101,"Riboflavin (Vitamin B2), formerly called lactoflavin",additional additives,updating,Unknown,updating,updating,none,updating
+E101a,Riboflavin-5'-Phosphate,additional additives,updating,Unknown,updating,updating,none,updating
+E102,Tartrazine (FD&C Yellow 5),colours,updating,Unknown,updating,updating,none,updating
+E103,Alkannin[11],colours,updating,Unknown,updating,updating,"EU, US, RU",updating
+E104,Quinoline Yellow WS,colours,updating,Unknown,updating,updating,"US, AT, CA, NO",updating
+E105,Fast Yellow AB,colours,updating,Unknown,updating,updating,"EU, US, RU, VN",updating
+E106,Riboflavin-5-Sodium Phosphate,colours,updating,Unknown,updating,updating,none,updating
+E107,Yellow 2G,colours,updating,Unknown,updating,updating,"EU, US, CA, ...",updating
+E110,"Sunset Yellow FCF (Orange Yellow S, FD&C Yellow 6)",colours,updating,Unknown,updating,updating,updating,updating
+E111,Orange GGN,colours,updating,Unknown,updating,updating,"EU, US, Not in Codex Alimentarius",updating
+E120,"Cochineal, Carminic acid, Carmine (Natural Red 4)",colours,updating,Unknown,allergy,updating,none,updating
+E121,Citrus Red 2,additional additives,updating,Unknown,cancer,updating,"EU, VN",updating
+E122,Carmoisine (azorubine),additional additives,updating,Unknown,updating,updating,"US, Canada, Japan, Norway, Sweden, Austria",updating
+E123,Amaranth (FD&C Red 2),additional additives,updating,Unknown,updating,updating,"US, Canada, Nhật Bản, Na Uy, Áo, Thụy Điển",updating
+E124,"Ponceau 4R (Cochineal Red A, Brilliant Scarlet 4R)",additional additives,updating,Unknown,updating,updating,"US, Canada, Na Uy, Phần Lan",updating
+E125,"Ponceau SX, Scarlet GN",additional additives,updating,Unknown,updating,updating,"EU, US, Global (Bị cấm rộng rãi trong thực phẩm)",updating
+E126,Ponceau 6R,additional additives,updating,Unknown,updating,updating,updating,updating
+E127,Erythrosine (FD&C Red 3),colours,updating,Unknown,updating,updating,updating,updating
+E128,Red 2G,colours,updating,Unknown,updating,updating,updating,updating
+E129,Allura Red AC (FD&C Red 40),additional additives,updating,Unknown,updating,updating,updating,updating
+E130,Indanthrene blue RS,additional additives,updating,Unknown,updating,updating,updating,updating
+E131,Patent Blue V,additional additives,updating,Unknown,updating,updating,updating,updating
+E132,"Indigo carmine (indigotine, FD&C Blue 2)",additional additives,updating,Unknown,updating,updating,updating,updating
+E133,Brilliant blue FCF (FD&C Blue 1),additional additives,updating,Unknown,updating,updating,updating,updating
+E140,Chlorophylls and Chlorophyllins: (i) Chlorophylls (ii) Chlorophyllins,colours,updating,Unknown,updating,updating,updating,updating
+E141,Copper complexes of chlorophylls and chlorophyllins: (i) Copper complexes of chlorophylls (ii) Copper complexes of chlorophyllins,colours,updating,Unknown,updating,updating,updating,updating
+E142,Green S,colours,updating,Unknown,updating,updating,updating,updating
+E143,Fast Green FCF (FD&C Green 3),colours,updating,Unknown,updating,updating,updating,updating
+E150a,Plain caramel,colours,updating,Unknown,updating,updating,updating,updating
+E150b,Caustic sulfite caramel,colours,updating,Unknown,updating,updating,updating,updating
+E150c,Ammonia caramel,colours,updating,Unknown,updating,updating,updating,updating
+E150d,Sulfite ammonia caramel,colours,updating,Unknown,updating,updating,updating,updating
+E151,"Black PN, Brilliant Black BN",colours,updating,Unknown,updating,updating,updating,updating
+E152,Carbon black (hydrocarbon),colours,updating,Unknown,updating,updating,updating,updating
+E153,Vegetable carbon,colours,updating,Unknown,updating,updating,updating,updating
+E154,Brown FK (kipper brown),colours,updating,Unknown,updating,updating,updating,updating
+E155,Brown HT (chocolate brown HT),colours,updating,Unknown,updating,updating,updating,updating
+E160a,"Alpha-carotene, Beta-carotene, Gamma-carotene",colours,updating,Unknown,updating,updating,updating,updating
+E160b,"Annatto, bixin, norbixin",additional additives,updating,Unknown,updating,updating,updating,updating
+E160c,Paprika oleoresin: (i) capsanthin (ii) capsorubin,additional additives,updating,Unknown,updating,updating,updating,updating
+E160d,Lycopene,additional additives,updating,Unknown,updating,updating,updating,updating
+E160e,Beta-apo-8'-carotenal (C 30),additional additives,updating,Unknown,updating,updating,updating,updating
+E160f,Ethyl ester of beta-apo-8'-carotenic acid (C 30),additional additives,updating,Unknown,updating,updating,updating,updating
+E161a,Flavoxanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E161b,Lutein,colours,updating,Unknown,updating,updating,updating,updating
+E161c,Cryptoxanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E161d,Rubixanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E161e,Violaxanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E161f,Rhodoxanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E161g,Canthaxanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E161h,Zeaxanthin,colours,updating,Unknown,updating,updating,updating,updating
+E161i,Citranaxanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E161j,Astaxanthin,additional additives,updating,Unknown,updating,updating,updating,updating
+E162,"Beetroot Red, Betanin",additional additives,updating,Unknown,updating,updating,updating,updating
+E163,Anthocyanins,additional additives,updating,Unknown,updating,updating,updating,updating
+E164,Saffron,colours,updating,Unknown,updating,updating,updating,updating
+E170,"Calcium carbonate, Chalk",additional additives,updating,Unknown,updating,updating,updating,updating
+E171,Titanium dioxide,additional additives,updating,Unknown,updating,updating,updating,updating
+E172,Iron oxides and iron hydroxides,additional additives,updating,Unknown,updating,updating,updating,updating
+E173,Aluminium,additional additives,updating,Unknown,updating,updating,updating,updating
+E174,Silver,additional additives,updating,Unknown,updating,updating,updating,updating
+E175,Gold,additional additives,updating,Unknown,updating,updating,updating,updating
+E180,"Pigment Rubine, Lithol Rubine BK",additional additives,updating,Unknown,updating,updating,updating,updating
+E181,Tannin,additional additives,updating,Unknown,updating,updating,updating,updating
+E182,"Orcein, Orchil",additional additives,updating,Unknown,updating,updating,updating,updating
+E200,Sorbic acid,additional additives,updating,Unknown,updating,updating,updating,updating
+E201,Sodium sorbate,additional additives,updating,Unknown,updating,updating,updating,updating
+E202,Potassium sorbate,additional additives,updating,Unknown,updating,updating,updating,updating
+E203,Calcium sorbate,additional additives,updating,Unknown,updating,updating,updating,updating
+E209,Heptyl p-hydroxybenzoate,colours,updating,Unknown,updating,updating,updating,updating
+E210,Benzoic acid,colours,updating,Unknown,updating,updating,updating,updating
+E211,Sodium benzoate,colours,updating,Unknown,updating,updating,updating,updating
+E212,Potassium benzoate,colours,updating,Unknown,updating,updating,updating,updating
+E213,Calcium benzoate,colours,updating,Unknown,updating,updating,updating,updating
+E214,Ethylparaben (ethyl para-hydroxybenzoate),additional additives,updating,Unknown,updating,updating,updating,updating
+E215,Sodium ethyl para-hydroxybenzoate,additional additives,updating,Unknown,updating,updating,updating,updating
+E216,Propylparaben (propyl para-hydroxybenzoate),additional additives,updating,Unknown,updating,updating,updating,updating
+E217,Sodium propyl para-hydroxybenzoate,additional additives,updating,Unknown,updating,updating,updating,updating
+E218,Methylparaben (methyl para-hydroxybenzoate),additional additives,updating,Unknown,updating,updating,updating,updating
+E219,Sodium methyl para-hydroxybenzoate,colours,updating,Unknown,updating,updating,updating,updating
+E220,Sulfur dioxide,additional additives,updating,Unknown,updating,updating,updating,updating
+E221,Sodium sulfite,additional additives,updating,Unknown,updating,updating,updating,updating
+E222,Sodium bisulfite (sodium hydrogen sulfite),additional additives,updating,Unknown,updating,updating,updating,updating
+E223,Sodium metabisulfite,colours,updating,Unknown,updating,updating,updating,updating
+E224,Potassium metabisulfite,colours,updating,Unknown,updating,updating,updating,updating
+E225,Potassium sulfite,colours,updating,Unknown,updating,updating,updating,updating
+E226,Calcium sulfite,colours,updating,Unknown,updating,updating,updating,updating
+E227,Calcium hydrogen sulfite (preservative),colours,updating,Unknown,updating,updating,updating,updating
+E228,Potassium hydrogen sulfite,colours,updating,Unknown,updating,updating,updating,updating
+E230,"Biphenyl, diphenyl",colours,updating,Unknown,updating,updating,updating,updating
+E231,Orthophenyl phenol,colours,updating,Unknown,updating,updating,updating,updating
+E232,Sodium orthophenyl phenol,colours,updating,Unknown,updating,updating,updating,updating
+E233,Thiabendazole,colours,updating,Unknown,updating,updating,updating,updating
+E234,Nisin,colours,updating,Unknown,updating,updating,updating,updating
+E235,"Natamycin, Pimaracin",colours,updating,Unknown,updating,updating,updating,updating
+E236,Formic acid,colours,updating,Unknown,updating,updating,updating,updating
+E237,Sodium formate,colours,updating,Unknown,updating,updating,updating,updating
+E238,Calcium formate,colours,updating,Unknown,updating,updating,updating,updating
+E239,Hexamine (hexamethylene tetramine),colours,updating,Unknown,updating,updating,updating,updating
+E240,Formaldehyde,colours,updating,Unknown,updating,updating,updating,updating
+E242,Dimethyl dicarbonate,colours,updating,Unknown,updating,updating,updating,updating
+E249,Potassium nitrite,colours,updating,Unknown,updating,updating,updating,updating
+E250,Sodium nitrite,colours,updating,Unknown,updating,updating,updating,updating
+E251,Sodium nitrate (Chile saltpetre),colours,updating,Unknown,updating,updating,updating,updating
+E252,Potassium nitrate (Saltpetre),colours,updating,Unknown,updating,updating,updating,updating
+E260,Acetic acid (preservative),colours,updating,Unknown,updating,updating,updating,updating
+E261,Potassium acetate (preservative),colours,updating,Unknown,updating,updating,updating,updating
+E262,"Sodium acetates: (i) Sodium acetate, (ii) Sodium diacetate (sodium hydrogen acetate)",colours,updating,Unknown,updating,updating,updating,updating
+E263,Calcium acetate (preservative),colours,updating,Unknown,updating,updating,updating,updating
+E264,Ammonium acetate,colours,updating,Unknown,updating,updating,updating,updating
+E265,Dehydroacetic acid,colours,updating,Unknown,updating,updating,updating,updating
+E266,Sodium dehydroacetate,colours,updating,Unknown,updating,updating,updating,updating
+E267,Buffered vinegar,colours,updating,Unknown,updating,updating,updating,updating
+E270,Lactic acid (preservative),colours,updating,Unknown,updating,updating,updating,updating
+E280,Propionic acid,preservatives,updating,Unknown,updating,updating,updating,updating
+E281,Sodium propionate,preservatives,updating,Unknown,updating,updating,updating,updating
+E282,Calcium propionate,preservatives,updating,Unknown,updating,updating,updating,updating
+E283,Potassium propionate,preservatives,updating,Unknown,updating,updating,updating,updating
+E284,Boric acid,preservatives,updating,Unknown,updating,updating,updating,updating
+E285,Sodium tetraborate (borax),preservatives,updating,Unknown,updating,updating,updating,updating
+E290,Carbon dioxide,preservatives,updating,Unknown,updating,updating,updating,updating
+E296,Malic acid (acid),preservatives,updating,Unknown,updating,updating,updating,updating
+E297,Fumaric acid,preservatives,updating,Unknown,updating,updating,updating,updating
+E300,Ascorbic acid (vitamin C),preservatives,updating,Unknown,updating,updating,updating,updating
+E301,Sodium ascorbate,preservatives,updating,Unknown,updating,updating,updating,updating
+E302,Calcium ascorbate,preservatives,updating,Unknown,updating,updating,updating,updating
+E303,Potassium ascorbate,preservatives,updating,Unknown,updating,updating,updating,updating
+E304,Fatty acid esters of ascorbic acid (Ascorbyl palmitate),preservatives,updating,Unknown,updating,updating,updating,updating
+E305,Ascorbyl stearate,preservatives,updating,Unknown,updating,updating,updating,updating
+E306,"Tocopherols (Vitamin E, natural)",preservatives,updating,Unknown,updating,updating,updating,updating
+E307,Alpha-Tocopherol (synthetic),preservatives,updating,Unknown,updating,updating,updating,updating
+E308,Gamma-Tocopherol (synthetic),preservatives,updating,Unknown,updating,updating,updating,updating
+E309,Delta-Tocopherol (synthetic),preservatives,updating,Unknown,updating,updating,updating,updating
+E310,Propyl gallate,preservatives,updating,Unknown,updating,updating,updating,updating
+E311,Octyl gallate,preservatives,updating,Unknown,updating,updating,updating,updating
+E312,Dodecyl gallate,preservatives,updating,Unknown,updating,updating,updating,updating
+E313,Ethyl gallate,preservatives,updating,Unknown,updating,updating,updating,updating
+E314,Guaiac resin,preservatives,updating,Unknown,updating,updating,updating,updating
+E315,Erythorbic acid,preservatives,updating,Unknown,updating,updating,updating,updating
+E316,Sodium erythorbate,preservatives,updating,Unknown,updating,updating,updating,updating
+E317,Erythorbin acid[citation needed],preservatives,updating,Unknown,updating,updating,updating,updating
+E318,Sodium erythorbin[citation needed],preservatives,updating,Unknown,updating,updating,updating,updating
+E319,tert-Butylhydroquinone (TBHQ),preservatives,updating,Unknown,updating,updating,updating,updating
+E320,Butylated hydroxyanisole (BHA),preservatives,updating,Unknown,updating,updating,updating,updating
+E321,Butylated hydroxytoluene (BHT),preservatives,updating,Unknown,updating,updating,updating,updating
+E322,Lecithin,preservatives,updating,Unknown,updating,updating,updating,updating
+E323,Anoxomer,preservatives,updating,Unknown,updating,updating,updating,updating
+E324,Ethoxyquin,preservatives,updating,Unknown,updating,updating,updating,updating
+E325,Sodium lactate,preservatives,updating,Unknown,updating,updating,updating,updating
+E326,Potassium lactate (antioxidant),preservatives,updating,Unknown,updating,updating,updating,updating
+E327,Calcium lactate,preservatives,updating,Unknown,updating,updating,updating,updating
+E328,Ammonium lactate,preservatives,updating,Unknown,updating,updating,updating,updating
+E329,Magnesium lactate,preservatives,updating,Unknown,updating,updating,updating,updating
+E330,Citric acid,preservatives,updating,Unknown,updating,updating,updating,updating
+E331,Sodium citrates,preservatives,updating,Unknown,updating,updating,updating,updating
+E332,Potassium citrates,preservatives,updating,Unknown,updating,updating,updating,updating
+E333,Calcium citrates,preservatives,updating,Unknown,updating,updating,updating,updating
+E334,Tartaric acid (L(+)-),preservatives,updating,Unknown,updating,updating,updating,updating
+E335,Sodium tartrates,preservatives,updating,Unknown,updating,updating,updating,updating
+E336,Potassium tartrates,preservatives,updating,Unknown,updating,updating,updating,updating
+E337,Sodium potassium tartrate,preservatives,updating,Unknown,updating,updating,updating,updating
+E338,Phosphoric acid,preservatives,updating,Unknown,updating,updating,updating,updating
+E339,Sodium phosphates,preservatives,updating,Unknown,updating,updating,updating,updating
+E340,Potassium phosphates,preservatives,updating,Unknown,updating,updating,updating,updating
+E341,Calcium phosphates,preservatives,updating,Unknown,updating,updating,updating,updating
+E342,Ammonium phosphates:,preservatives,updating,Unknown,updating,updating,updating,updating
+E343,Magnesium phosphates,preservatives,updating,Unknown,updating,updating,updating,updating
+E344,Lecithin citrate,preservatives,updating,Unknown,updating,updating,updating,updating
+E345,Magnesium citrate,preservatives,updating,Unknown,updating,updating,updating,updating
+E349,Ammonium malate,preservatives,updating,Unknown,updating,updating,updating,updating
+E350,Sodium malates,preservatives,updating,Unknown,updating,updating,updating,updating
+E351,Potassium malate,preservatives,updating,Unknown,updating,updating,updating,updating
+E352,Calcium malates,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E353,Metatartaric acid,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E354,Calcium tartrate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E355,Adipic acid,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E356,Sodium adipate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E357,Potassium adipate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E359,Ammonium adipate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E363,Succinic acid,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E365,Monosodium fumarate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E366,Potassium fumarate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E367,Calcium fumarate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E368,Ammonium fumarate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E370,"1,4-Heptonolactone","antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E375,Niacin,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E380,Triammonium citrate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E381,Ammonium ferric citrate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E383,Calcium glycerylphosphate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E384,Isopropyl citrate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E385,"Calcium disodium ethylene diamine tetraacetate, (Calcium disodium EDTA)","antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E386,Disodium ethylene diamine tetraacetate (Disodium EDTA),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E387,Oxystearin,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E388,Thiodipropionic acid,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E389,Dilauryl thiodipropionate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E390,Distearyl thiodipropionate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E391,Phytic acid,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E392,Carnosic acid,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E399,Calcium lactobionate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E400,Alginic acid (thickener) (stabiliser) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E401,Sodium alginate (thickener) (stabiliser) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E402,Potassium alginate (thickener) (stabiliser) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E403,Ammonium alginate (thickener) (stabiliser),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E404,Calcium alginate (thickener) (stabiliser) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E405,"Propane-1,2-diol alginate (Propylene glycol alginate) (thickener) (stabiliser)","antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E406,Agar (thickener) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E407,Carrageenan (thickener) (stabiliser) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E407a,Processed eucheuma seaweed (thickener) (stabiliser) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E408,Bakers yeast glycan,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E409,Arabinogalactan,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E410,Locust bean gum (Carob gum) (thickener) (stabiliser) (gelling agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E411,Oat gum (thickener),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E412,Guar gum (thickener),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E413,Tragacanth (thickener) (stabiliser),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E414,Acacia gum (gum arabic) (thickener) (stabiliser),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E415,Xanthan gum (thickener),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E416,Karaya gum (thickener) (stabiliser),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E417,Tara gum (thickener),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E418,Gellan gum (thickener) (stabiliser),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E419,Gum ghatti (thickener) (stabiliser),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E420,Sorbitol (i) Sorbitol (ii) Sorbitol syrup (emulsifier) (sweetener),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E421,Mannitol (anti-caking agent),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E422,Glycerol (emulsifier),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E424,Curdlan,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E425,Konjac (i) Konjac gum (ii) Konjac glucomannane,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E426,Soybean hemicellulose,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E427,Cassia gum,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E428,Gelatin,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E429,Peptones,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E430,Polyoxyethene (8) stearate (emulsifier),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E431,Polyoxyethene (40) stearate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E432,Polyoxyethene (20) sorbitan monolaurate (polysorbate 20),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E433,Polyoxyethene (20) sorbitan monooleate (polysorbate 80),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E434,Polyoxyethene (20) sorbitan monopalmitate (polysorbate 40),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E435,Polyoxyethene (20) sorbitan monostearate (polysorbate 60),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E436,Polyoxyethene (20) sorbitan tristearate (polysorbate 65),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E440,Pectins (i) pectin (ii) amidated pectin,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E441,Gelatine (emulsifier),"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E442,Ammonium phosphatides,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E443,Brominated vegetable oil,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E444,Sucrose acetate isobutyrate,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E445,Glycerol esters of wood rosins,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E446,Succistearin,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E450,Diphosphates:,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E451,Triphosphates:,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E452,Polyphosphates:,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E459,Beta-cyclodextrin,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E460,Cellulose (i) Microcrystalline cellulose (ii) Powdered cellulose,"antioxidants, acidity regulators",updating,Unknown,updating,updating,updating,updating
+E461,Methyl cellulose,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E462,Ethyl cellulose,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E463,Hydroxypropyl cellulose,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E464,Hypromellose (hydroxypropyl methylcellulose),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E465,Ethyl methyl cellulose,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E466,"Carboxymethyl cellulose, Sodium carboxymethyl cellulose","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E467,Ethyl hydroxyethyl cellulose,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E468,Crosslinked sodium carboxymethyl cellulose (Croscarmellose),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E469,Enzymically hydrolysed carboxymethylcellulose,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E470a,"Sodium, potassium and calcium salts of fatty acids (emulsifier)","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E470b,Magnesium salts of fatty acids (emulsifier),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E471,"Mono- and diglycerides of fatty acids (glyceryl monostearate, glyceryl distearate)","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E472a,Acetic acid esters of mono- and diglycerides of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E472b,Lactic acid esters of mono- and diglycerides of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E472c,Citric acid esters of mono- and diglycerides of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E472d,Tartaric acid esters of mono- and diglycerides of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E472e,Mono- and diacetyl tartaric acid esters of mono- and diglycerides of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E472f,Mixed acetic and tartaric acid esters of mono- and diglycerides of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E472g,Succinylated monoglycerides,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E473,Sucrose esters of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E474,Sucroglycerides,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E475,Polyglycerol esters of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E476,Polyglycerol polyricinoleate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E477,"Propane-1,2-diol esters of fatty acids, propylene glycol esters of fatty acids","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E478,Lactylated fatty acid esters of glycerol and propane-1,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E479b,Thermally oxidized soya bean oil interacted with mono- and diglycerides of fatty acids,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E480,Dioctyl sodium sulfosuccinate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E481,Sodium stearoyl-2-lactylate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E482,Calcium stearoyl-2-lactylate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E483,Stearyl tartrate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E484,Stearyl citrate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E485,Sodium stearoyl fumarate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E486,Calcium stearoyl fumarate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E487,Sodium laurylsulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E488,Ethoxylated Mono- and Di-Glycerides,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E489,Methyl glucoside-coconut oil ester,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E490,"Propane-1,2-diol","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E491,Sorbitan monostearate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E492,Sorbitan tristearate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E493,Sorbitan monolaurate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E494,Sorbitan monooleate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E495,Sorbitan monopalmitate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E496,Sorbitan trioleate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E497,Polyoxypropylene-polyoxyethylene polymers,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E498,Partial polyglycerol esters of polycondensed fatty acids of castor oil,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E499,Stigmasterol-rich plant sterols,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E500,Sodium carbonates: (i) Sodium carbonate (ii) Sodium bicarbonate (Sodium hydrogen carbonate) (iii) Sodium sesquicarbonate (acidity regulator),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E501,Potassium carbonates: (i) Potassium carbonate (ii) Potassium bicarbonate (Potassium hydrogen carbonate),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E503,Ammonium carbonates: (i) Ammonium carbonate (ii) Ammonium bicarbonate (Ammonium hydrogen carbonate),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E504,Magnesium carbonates: (i) Magnesium carbonate (ii) Magnesium bicarbonate Magnesium hydrogen carbonate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E505,Ferrous carbonate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E507,Hydrochloric acid,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E508,Potassium chloride (gelling agent),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E509,Calcium chloride (sequestrant),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E510,"Ammonium chloride, ammonia solution (acidity regulator)","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E511,Magnesium chloride,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E512,Stannous chloride,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E513,Sulfuric acid,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E514,Sodium sulfates (i) Sodium sulfate (ii) sodium bisulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E515,Potassium sulfates (i) potassium sulfate (ii) potassium bisulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E516,Calcium sulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E517,Ammonium sulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E518,"Magnesium sulfate (Epsom salts), (acidity regulator)","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E519,Copper(II) sulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E520,Aluminium sulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E521,Aluminium sodium sulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E522,Aluminium potassium sulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E523,Aluminium ammonium sulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E524,Sodium hydroxide,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E525,Potassium hydroxide,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E526,Calcium hydroxide (acidity regulator),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E527,Ammonium hydroxide,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E528,Magnesium hydroxide,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E529,Calcium oxide (acidity regulator),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E530,Magnesium oxide (acidity regulator),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E535,Sodium ferrocyanide (acidity regulator),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E536,Potassium ferrocyanide,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E537,Ferrous hexacyanomanganate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E538,Calcium ferrocyanide,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E539,Sodium thiosulfate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E540,Dicalcium diphosphate[citation needed] (acidity regulator),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E541,Sodium aluminium phosphate (i) Acidic (ii) Basic,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E542,"Bone phosphate (Essentiale Calcium Phosphate, Tribasic)","thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E543,Calcium sodium polyphosphate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E544,Calcium polyphosphate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E545,Ammonium polyphosphate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E550,Sodium Silicates (i) Sodium silicate (ii) Sodium metasilicate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E551,Silicon dioxide (Silica),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E552,Calcium silicate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E553a,(i) Magnesium silicate (ii) Magnesium trisilicate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E553b,Talc,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E554,Sodium aluminosilicate (sodium aluminium silicate),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E555,Potassium aluminium silicate (potassium aluminosilicate),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E556,Calcium aluminosilicate (calcium aluminium silicate),"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E557,Zinc silicate,"thickeners, stabilisers, emulsifiers",updating,Unknown,updating,updating,updating,updating
+E558,Bentonite,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E559,Aluminium silicate (Kaolin),"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E560,Potassium silicate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E561,Vermiculite,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E562,Sepiolite,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E563,Sepiolitic clay,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E565,Lignosulfonates,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E566,Natrolite-phonolite,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E570,Fatty acids,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E572,"Magnesium stearate, calcium stearate (emulsifier)","acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E574,Gluconic acid,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E575,Glucono delta-lactone (acidity regulator),"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E576,Sodium gluconate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E577,Potassium gluconate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E578,Calcium gluconate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E579,Ferrous gluconate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E580,Magnesium gluconate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E585,Ferrous lactate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E586,4-Hexylresorcinol,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E598,Synthetic calcium aluminates,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E599,Perlite,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E620,Glutamic acid,"acidity regulators, anti-caking agents",30,Unknown,updating,updating,none,updating
+E621,Monosodium glutamate (MSG),"acidity regulators, anti-caking agents",30,Unknown,updating,updating,none,updating
+E622,Monopotassium glutamate,"acidity regulators, anti-caking agents",30,Unknown,updating,updating,none,updating
+E623,Calcium diglutamate,"acidity regulators, anti-caking agents",30,Unknown,updating,updating,none,updating
+E624,Monoammonium glutamate,"acidity regulators, anti-caking agents",30,Unknown,updating,updating,none,updating
+E625,Magnesium diglutamate,"acidity regulators, anti-caking agents",30,Unknown,updating,updating,none,updating
+E626,Guanylic acid,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E627,"Disodium guanylate, sodium guanylate","acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E628,Dipotassium guanylate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E629,Calcium guanylate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E630,Inosinic acid,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E631,Disodium inosinate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E632,Dipotassium inosinate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E633,Calcium inosinate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E634,Calcium 5'-ribonucleotides,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E635,Disodium 5'-ribonucleotides,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E636,Maltol,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E637,Ethyl maltol,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E640,Glycine and its sodium salt,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E650,Zinc acetate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,none,updating
+E900,Dimethyl polysiloxane (anti-foaming agent),"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E901,"Beeswax, white and yellow","acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E902,Candelilla wax,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E903,Carnauba wax,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E904,Shellac,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E905,Paraffins,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E905a,Mineral oil,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E905b,Petrolatum,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E905c,Petroleum wax (i)Microcrystalline wax (ii) Paraffin wax,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E906,Gum benzoic,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E907,Crystalline wax,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E908,Rice bran wax,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E909,Spermaceti wax,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E910,Wax esters,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E911,Methyl esters of fatty acids,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E912,"Montanic acid esters, Montan acid esters","acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E913,"Lanolin, sheep wool grease","acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E914,"Oxidized polyethylene wax, oxidized polyethylene","acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E915,Esters of colophony,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E916,Calcium iodate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E917,Potassium iodate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E918,Nitrogen oxides,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E919,Nitrosyl chloride,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E920,L-cysteine,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E921,L-cystine,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E922,Potassium persulfate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E923,Ammonium persulfate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E924,Potassium bromate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E924b,Calcium bromate,"acidity regulators, anti-caking agents",updating,Unknown,updating,updating,updating,updating
+E925,Chlorine,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E926,Chlorine dioxide (preservative),flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E927a,Azodicarbonamide,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E927b,Carbamide (urea),flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E928,Benzoyl peroxide (improving agent),flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E929,Acetone peroxide,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E930,Calcium peroxide (improving agent),flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E938,Argon,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E939,Helium,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E940,Dichlorodifluoromethane,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E941,Nitrogen (packaging gas),flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E942,Nitrous oxide,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E943a,Butane,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E943b,Isobutane,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E944,Propane,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E945,Chloropentafluoroethane,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E946,Octafluorocyclobutane,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E948,Oxygen,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E949,Hydrogen,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E950,Acesulfame potassium,flavour enhancers,updating,Unknown,updating,updating,updating,updating
+E951,Aspartame,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E952,"Cyclamic acid and its sodium and calcium salts, also known as Cyclamate","glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E953,"Isomalt, Isomaltitol","glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E954,"Saccharin and its sodium, potassium and calcium salts","glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E955,Sucralose (Trichlorogalactosucrose),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E956,Alitame,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E957,Thaumatin (sweetener),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E958,Glycyrrhizin (sweetener),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E959,Neohesperidine dihydrochalcone (sweetener),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E960,Steviol glycosides,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E961,Neotame,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E962,Aspartame-acesulfame salt (sweetener),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E964,Polyglycitol syrup,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E965,Maltitol (i) Maltitol (ii) Maltitol syrup (sweetener) (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E966,Lactitol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E967,Xylitol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E968,Erythritol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E969,Advantame,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E999,Quillaia extract,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1000,Cholic acid,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1001,Choline salts,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1100,Amylase,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1101,"Proteases ((i)Protease, (ii)Papain, (iii)Bromelain, (iv)Ficin)","glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1102,Glucose oxidase,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1103,Invertase,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1104,Lipases,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1105,Lysozyme,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1200,Polydextrose,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1201,Polyvinylpyrrolidone,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1202,Polyvinylpolypyrrolidone (carrier),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1203,Polyvinyl alcohol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1204,Pullulan,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1400,"Dextrin (Dextrins, roasted starch white and yellow) (stabiliser)","glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1401,Modified starch ((Acid-treated starch) stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1402,Alkaline modified starch (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1403,Bleached starch (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1404,Oxidized starch (emulsifier),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1405,Enzyme treated starch,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1410,Monostarch phosphate (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1411,Distarch glycerol (thickening agent),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1412,Distarch phosphate esterified with sodium trimetasphosphate; esterified with phosphorus oxychloride (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1413,Phosphated distarch phosphate (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1414,Acetylated distarch phosphate (emulsifier),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1420,Starch acetate esterified with acetic anhydride (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1421,Starch acetate esterified with vinyl acetate (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1422,Acetylated distarch adipate (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1423,Acetylated distarch glycerol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1430,Distarch glycerine (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1440,Hydroxy propyl starch (emulsifier),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1441,Hydroxy propyl distarch glycerine (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1442,Hydroxy propyl distarch phosphate (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1443,Hydroxy propyl distarch glycerol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1450,Starch sodium octenyl succinate (emulsifier) (stabiliser),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1451,Acetylated oxidised starch (emulsifier),"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1452,Starch aluminium octenyl succinate,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1501,Benzylated hydrocarbons,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1502,"Butane-1, 3-diol","glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1503,Castor oil,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1504,Ethyl acetate,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1505,Triethyl citrate,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1510,Ethanol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1516,Glyceryl monoacetate,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1517,Glyceryl diacetate or diacetin,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1518,Glyceryl triacetate or triacetin,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1519,Benzyl alcohol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1520,Propylene glycol,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1521,Polyethylene glycol 8000,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
+E1525,Hydroxyethyl cellulose,"glazing agents, gases and sweeteners",updating,Unknown,updating,updating,updating,updating
