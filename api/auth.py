@@ -4,7 +4,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 import jwt, time
 
-from src.neo4j_connector import get_neo4j_driver, close_neo4j_driver
+from src.neo4j_connector import get_neo4j_driver
 
 router = APIRouter()
 
@@ -19,25 +19,26 @@ class GoogleLoginRequest(BaseModel):
 
 @router.post("/auth/google-login")
 def google_login(payload: GoogleLoginRequest):
+    driver = None
     try:
-        # 1. THÊM LOG ĐỂ KIỂM TRA TOKEN CÓ ĐƯỢC NHẬN KHÔNG
+        # 1. LOG TOKEN
         print("Received ID Token:", payload.id_token)
 
-        # VERIFY ID TOKEN with clock skew tolerance
+        # 2. VERIFY ID TOKEN
         idinfo = id_token.verify_oauth2_token(
             payload.id_token,
             requests.Request(),
             GOOGLE_CLIENT_ID,
             clock_skew_in_seconds=30  # Cho phép chênh lệch 30 giây
         )
-        # 2. THÊM LOG NẾU XÁC THỰC THÀNH CÔNG
+        
         print("Token Verified Successfully:", idinfo.get("email"))
 
         google_id = idinfo["sub"]
         email = idinfo.get("email")
         name = idinfo.get("name")
 
-        # SAVE USER IN NEO4J
+        # 3. SAVE USER IN NEO4J
         driver = get_neo4j_driver()
         with driver.session() as session:
             session.run(
@@ -48,10 +49,7 @@ def google_login(payload: GoogleLoginRequest):
                 """,
                 {"gid": google_id, "email": email, "name": name},
             )
-        
-        # ❌ KHÔNG đóng driver vì đang dùng Singleton pattern
 
-        # CREATE JWT
         jwt_payload = {
             "sub": google_id,
             "email": email,
@@ -70,6 +68,9 @@ def google_login(payload: GoogleLoginRequest):
         }
 
     except Exception as e:
-        # 3. LỖI THỰC TẾ ĐƯỢC IN RA
         print(f"LỖI XÁC THỰC GOOGLE ID TOKEN CHI TIẾT: {e}")
         raise HTTPException(status_code=401, detail="Invalid ID Token")
+    
+    finally:
+        if driver:
+            driver.close()

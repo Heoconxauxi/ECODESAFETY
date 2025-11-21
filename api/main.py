@@ -6,7 +6,7 @@ import tempfile, os
 import jwt
 
 from src.analyze_ecode import analyze_ecode
-from src.neo4j_connector import get_neo4j_driver, close_neo4j_driver
+from src.neo4j_connector import get_neo4j_driver
 from api.auth import router as auth_router
 from api.schemas import (
     AnalysisResult,
@@ -108,41 +108,45 @@ def save_history_for_user(
     if user is None:
         return
 
-    driver = get_neo4j_driver()
-    with driver.session() as session:
-        for res in analysis_results:
-            if not res.get("found"):
-                continue
+    driver = None
+    try:
+        driver = get_neo4j_driver()
+        with driver.session() as session:
+            for res in analysis_results:
+                if not res.get("found"):
+                    continue
 
-            ins = res.get("ins")
-            if not ins:
-                continue
+                ins = res.get("ins")
+                if not ins:
+                    continue
 
-            session.run(
-                """
-                MERGE (u:User {google_id: $gid})
-                SET u.email = $email,
-                    u.name = $name
+                session.run(
+                    """
+                    MERGE (u:User {google_id: $gid})
+                    SET u.email = $email,
+                        u.name = $name
 
-                MERGE (a:Additive {ins: $ins})
+                    MERGE (a:Additive {ins: $ins})
 
-                MERGE (u)-[r:ANALYZED]->(a)
-                SET r.at = datetime(),
-                    r.source_text = $source_text,
-                    r.true_level = $true_level,
-                    r.rule_risk = $rule_risk
-                """,
-                {
-                    "gid": user.google_id,
-                    "email": user.email,
-                    "name": user.name,
-                    "ins": ins,
-                    "source_text": source_text,
-                    "true_level": res.get("level"),
-                    "rule_risk": res.get("rule_risk"),
-                },
-            )
-    # ❌ XÓA: driver.close()
+                    MERGE (u)-[r:ANALYZED]->(a)
+                    SET r.at = datetime(),
+                        r.source_text = $source_text,
+                        r.true_level = $true_level,
+                        r.rule_risk = $rule_risk
+                    """,
+                    {
+                        "gid": user.google_id,
+                        "email": user.email,
+                        "name": user.name,
+                        "ins": ins,
+                        "source_text": source_text,
+                        "true_level": res.get("level"),
+                        "rule_risk": res.get("rule_risk"),
+                    },
+                )
+    finally:
+        if driver:
+            driver.close()
 
 
 # ============================================
@@ -253,19 +257,28 @@ async def search_ecodes(
     limit: int = 50,
     offset: int = 0,
 ):
-    driver = get_neo4j_driver()
+    driver = None
     try:
+        driver = get_neo4j_driver()
         with driver.session() as session:
+            # ✅ Query phù hợp với schema: Additive-[:HAS_FUNCTION]->Function
             query = """
             MATCH (a:Additive)
             OPTIONAL MATCH (a)-[:HAS_FUNCTION]->(f:Function)
-            WITH a, collect(DISTINCT f.name) AS functions
+            OPTIONAL MATCH (a)-[:HAS_RISK]->(r:RiskLevel)
+            OPTIONAL MATCH (a)-[:HAS_STATUS]->(s:Status)
+            OPTIONAL MATCH (a)-[:HAS_SOURCE]->(src:Source)
+            WITH a, 
+                 collect(DISTINCT f.name) AS functions,
+                 r.level AS risk_level,
+                 s.name AS status_vn,
+                 collect(DISTINCT src.name) AS sources
             WHERE $q IS NULL
                OR $q = ""
                OR a.ins CONTAINS $q
                OR toLower(a.name) CONTAINS toLower($q)
                OR toLower(a.name_vn) CONTAINS toLower($q)
-            WITH a, functions
+            WITH a, functions, risk_level, status_vn, sources
             ORDER BY a.ins
             SKIP $offset
             LIMIT $limit
@@ -275,9 +288,9 @@ async def search_ecodes(
                    functions AS functions,
                    a.adi AS adi,
                    a.info AS info,
-                   a.status_vn AS status_vn,
-                   a.level AS level,
-                   a.source AS source
+                   status_vn AS status_vn,
+                   risk_level AS level,
+                   sources[0] AS source
         """
 
             records = session.run(query, {"q": q, "limit": limit, "offset": offset})
@@ -317,7 +330,6 @@ async def search_ecodes(
             total=total,
             items=items,
         )
-
     finally:
         if driver:
             driver.close()
@@ -381,7 +393,6 @@ async def get_my_history(
             user_id=user.google_id,
             items=items,
         )
-
     finally:
         if driver:
             driver.close()
