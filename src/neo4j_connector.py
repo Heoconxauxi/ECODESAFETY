@@ -115,7 +115,7 @@ if __name__ == "__main__":
         driver = get_neo4j_driver()
         
         # 2. Thử truy vấn một INS code
-        test_codes = ["E100", "E621", "E330"]
+        test_codes = ["100(i)", "621", "330"]
         
         for ins_code in test_codes:
             print(f"\n{'='*50}")

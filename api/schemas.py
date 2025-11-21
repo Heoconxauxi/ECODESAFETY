@@ -3,6 +3,10 @@ from typing import List, Optional
 from datetime import datetime
 
 
+# ============================================================
+# ECODES DETAIL
+# ============================================================
+
 class EcodeDetail(BaseModel):
     """
     Thông tin chi tiết một phụ gia trong kết quả phân tích.
@@ -17,10 +21,10 @@ class EcodeDetail(BaseModel):
     info: Optional[str] = None
     status_vn: Optional[int] = Field(None, example=0)
 
-    # Nhãn thật trong data (true label: 1 / 2 / 4)
+    # Nhãn thật
     level: Optional[int] = Field(None, example=2)
 
-    # Kết quả từ Rule Engine
+    # Kết quả rule engine
     rule_risk: Optional[int] = Field(None, example=4)
     rule_reason: Optional[str] = None
     rule_name: Optional[str] = None
@@ -36,25 +40,23 @@ class AnalysisResult(BaseModel):
     Kết quả tổng hợp khi phân tích thành phần sản phẩm.
     """
     status: str = Field(..., example="SUCCESS")
-    input_type: str = Field(..., example="TEXT_INPUT") 
-    source_text: Optional[str] = Field(
-        None, example="Thành phần: E100, E120"
-    )
+    input_type: str = Field(..., example="TEXT_INPUT")
+    source_text: Optional[str] = Field(None, example="Thành phần: E100, E120")
     ecodes_found: List[EcodeDetail] = Field(default_factory=list)
 
 
 class AnalyzeTextInput(BaseModel):
-    """Đầu vào khi phân tích bằng text."""
     input_text: str = Field(..., example="Thành phần: E100, E120")
 
 
 class AnalyzeImageInput(BaseModel):
-    """(Nếu sau này cần dùng meta ảnh)."""
     filename: str
     content_type: str
 
 
-# ---------- SEARCH API ----------
+# ============================================================
+# SEARCH API
+# ============================================================
 
 class EcodeSearchItem(BaseModel):
     ins: str
@@ -76,16 +78,31 @@ class SearchResult(BaseModel):
     items: List[EcodeSearchItem] = Field(default_factory=list)
 
 
-# ---------- HISTORY API ----------
+# ============================================================
+# HISTORY API (NEW VERSION)
+# ============================================================
+
+class HistoryAdditiveItem(BaseModel):
+    """
+    Additive trả về trong mục History.
+    Đây là dữ liệu JOIN lại từ Neo4j khi xem lịch sử.
+    """
+    ins: str
+    name: Optional[str]
+    name_vn: Optional[str]
+    functions: List[str] = Field(default_factory=list)
+    level: Optional[int] = None
+    status_vn: Optional[str] = None
+
 
 class HistoryItem(BaseModel):
-    ins: str
-    name: Optional[str] = None
-    name_vn: Optional[str] = None
+    """
+    Một lần phân tích => chứa danh sách mã ecode + additives tương ứng.
+    """
+    ecodes: List[str]
     analyzed_at: datetime
-    source_text: Optional[str] = None
-    true_level: Optional[int] = None
-    rule_risk: Optional[int] = None
+    source_text: Optional[str]
+    additives: List[HistoryAdditiveItem] = Field(default_factory=list)
 
 
 class UserHistoryResponse(BaseModel):

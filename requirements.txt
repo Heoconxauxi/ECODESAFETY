@@ -11,3 +11,6 @@ python-multipart
 google-auth
 pyjwt
 requests
+paddlepaddle 
+paddleocr
+pytesseract

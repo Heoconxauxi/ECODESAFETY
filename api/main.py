@@ -6,7 +6,7 @@ import tempfile, os
 import jwt
 
 from src.analyze_ecode import analyze_ecode
-from src.neo4j_connector import get_neo4j_driver
+from src.neo4j_connector import get_neo4j_driver, get_facts_from_neo4j
 from api.auth import router as auth_router
 from api.schemas import (
     AnalysisResult,
@@ -16,7 +16,17 @@ from api.schemas import (
     SearchResult,
     UserHistoryResponse,
     HistoryItem,
+    HistoryAdditiveItem,
 )
+
+import re
+
+def normalize_query(q: str) -> str:
+    if not q:
+        return q
+    # Bỏ prefix E hoặc INS
+    cleaned = re.sub(r"^(E|INS)\s*-?", "", q.strip(), flags=re.IGNORECASE)
+    return cleaned.lower()
 
 # ============================================
 # CONFIG APP
@@ -108,42 +118,38 @@ def save_history_for_user(
     if user is None:
         return
 
+    # Extract only the list of INS codes
+    ecodes = [res.get("ins") for res in analysis_results if res.get("ins")]
+    if not ecodes:
+        return
+
     driver = None
     try:
         driver = get_neo4j_driver()
         with driver.session() as session:
-            for res in analysis_results:
-                if not res.get("found"):
-                    continue
 
-                ins = res.get("ins")
-                if not ins:
-                    continue
+            session.run(
+                """
+                MATCH (u:User {google_id: $gid})
+                SET u.email = $email,
+                    u.name = $name
 
-                session.run(
-                    """
-                    MERGE (u:User {google_id: $gid})
-                    SET u.email = $email,
-                        u.name = $name
+                CREATE (h:History {
+                    at: datetime(),
+                    ecodes: $ecodes,
+                    source_text: $source_text
+                })
 
-                    MERGE (a:Additive {ins: $ins})
-
-                    MERGE (u)-[r:ANALYZED]->(a)
-                    SET r.at = datetime(),
-                        r.source_text = $source_text,
-                        r.true_level = $true_level,
-                        r.rule_risk = $rule_risk
-                    """,
-                    {
-                        "gid": user.google_id,
-                        "email": user.email,
-                        "name": user.name,
-                        "ins": ins,
-                        "source_text": source_text,
-                        "true_level": res.get("level"),
-                        "rule_risk": res.get("rule_risk"),
-                    },
-                )
+                MERGE (u)-[:ANALYZED]->(h)
+                """,
+                {
+                    "gid": user.google_id,
+                    "email": user.email,
+                    "name": user.name,
+                    "ecodes": ecodes,
+                    "source_text": source_text,
+                },
+            )
     finally:
         if driver:
             driver.close()
@@ -259,6 +265,8 @@ async def search_ecodes(
 ):
     driver = None
     try:
+        q = normalize_query(q)
+
         driver = get_neo4j_driver()
         with driver.session() as session:
             # ✅ Query phù hợp với schema: Additive-[:HAS_FUNCTION]->Function
@@ -345,47 +353,59 @@ async def get_my_history(
     limit: int = 50,
     offset: int = 0,
 ):
-
     if user is None:
         raise HTTPException(status_code=401, detail="User not logged in")
 
-    driver = None
+    driver = get_neo4j_driver()
     try:
-        driver = get_neo4j_driver()
-        
         with driver.session() as session:
-            records = session.run(
+
+            # 1) Lấy các bản ghi History
+            history_records = session.run(
                 """
-                MATCH (u:User {google_id: $gid})-[r:ANALYZED]->(a:Additive)
-                RETURN a.ins AS ins,
-                       a.name AS name,
-                       a.name_vn AS name_vn,
-                       r.at AS at,
-                       r.source_text AS source_text,
-                       r.true_level AS true_level,
-                       r.rule_risk AS rule_risk
-                ORDER BY r.at DESC
+                MATCH (u:User {google_id: $gid})-[:ANALYZED]->(h:History)
+                RETURN h.ecodes AS ecodes,
+                       h.at AS at,
+                       h.source_text AS source_text
+                ORDER BY h.at DESC
                 SKIP $offset
                 LIMIT $limit
                 """,
-                {"gid": user.google_id, "limit": limit, "offset": offset},
+                {"gid": user.google_id, "offset": offset, "limit": limit},
             )
 
             items = []
-            for r in records:
-                at = r["at"]
+
+            # 2) Lặp qua từng History → Query lại Additive bằng get_facts_from_neo4j
+            for h in history_records:
+                ecodes = h["ecodes"]
+                at = h["at"]
                 if hasattr(at, "to_native"):
                     at = at.to_native()
 
+                additive_list = []
+
+                # --- lấy từng additive bằng get_facts() ---
+                for code in ecodes:
+                    facts = get_facts_from_neo4j(driver, code)
+                    if facts:
+                        additive_list.append(
+                            HistoryAdditiveItem(
+                                ins=facts["ins"],
+                                name=facts["name"],
+                                name_vn=facts["name_vn"],
+                                functions=facts["function"],
+                                level=facts["level"],
+                                status_vn=facts["status_vn"],
+                            )
+                        )
+
                 items.append(
                     HistoryItem(
-                        ins=r["ins"],
-                        name=r["name"],
-                        name_vn=r["name_vn"],
+                        ecodes=ecodes,
                         analyzed_at=at,
-                        source_text=r["source_text"],
-                        true_level=r["true_level"],
-                        rule_risk=r["rule_risk"],
+                        additives=additive_list,
+                        source_text=h["source_text"],
                     )
                 )
 
@@ -393,6 +413,6 @@ async def get_my_history(
             user_id=user.google_id,
             items=items,
         )
+
     finally:
-        if driver:
-            driver.close()
+        driver.close()

@@ -13,14 +13,12 @@ except ImportError:
     print("Đảm bảo file neo4j_connector.py nằm cùng thư mục hoặc trong PYTHONPATH")
     sys.exit(1)
 
-
 # Xác định thư mục
 try:
     SCRIPT_DIR = Path(__file__).resolve().parent
     ROOT_DIR = SCRIPT_DIR.parent
 except:
     ROOT_DIR = Path.cwd().parent
-
 
 SCHEMA_PATH = ROOT_DIR / "ontology" / "schema.json"
 CSV_PATH = ROOT_DIR / "data" / "processed" / "ecodes_master.csv"
@@ -44,51 +42,45 @@ except Exception as e:
     sys.exit(1)
 
 
-# --- Hàm chạy Cypher ---
 def run_query(driver: Driver, query, params=None):
-    """
-    Chạy Cypher query với driver và parameters.
-    """
     with driver.session() as session:
         result = session.run(query, params or {})
         return result
 
 
-# --- Tạo constraints ---
 def create_constraints(driver: Driver):
-    """
-    Tạo unique constraints cho các node theo schema.
-    """
     print("Đang tạo constraints...")
-    
+
     for c in schema.get("constraints", []):
         label = c.get("label")
         key = c.get("key")
-        
+
         constraint_name = f"{label.lower()}_{key}_uniq"
-        
+
         query = f"""
         CREATE CONSTRAINT {constraint_name} IF NOT EXISTS
         FOR (n:{label}) REQUIRE n.{key} IS UNIQUE
         """
-        
+
         try:
             run_query(driver, query)
             print(f"Created: {constraint_name}")
         except Exception as e:
             print(f"Warning for {constraint_name}: {e}")
-    
+
     print("Constraints created.\n")
 
 
-# --- Import data ---
 def import_data(driver: Driver):
     """
-    Import dữ liệu từ CSV vào Neo4j theo ontology đã định nghĩa.
+    Import ecodes_master.csv với schema mới:
+      ins, name, name_vn, adi, info, function, status_vn, level, source
     """
-    # Đọc CSV
     try:
-        df = pd.read_csv(CSV_PATH, encoding="utf-8-sig").fillna("")
+        df = pd.read_csv(CSV_PATH, encoding="utf-8-sig")
+        # Strip khoảng trắng trong tên cột (fix lỗi 'adi ')
+        df.columns = [c.strip() for c in df.columns]
+        df = df.fillna("")
         print(f"Đã đọc {len(df)} dòng từ CSV.")
         print(f"Columns: {list(df.columns)}\n")
     except Exception as e:
@@ -96,34 +88,33 @@ def import_data(driver: Driver):
         return
 
     print("🚀 Bắt đầu import dữ liệu...\n")
-    
+
     success_count = 0
     error_count = 0
 
     for idx, row in df.iterrows():
         try:
-            ins = str(row["ins"]).strip()
+            ins = str(row.get("ins", "")).strip().lower()
             if not ins:
                 continue
 
-            name = str(row["name"]).strip()
-            name_vn = str(row["name_vn"]).strip()
-            adi = str(row["adi"]).strip()
-            info = str(row["info"]).strip()
+            name = str(row.get("name", "")).strip()
+            name_vn = str(row.get("name_vn", "")).strip()
+            adi = str(row.get("adi", "")).strip()
+            info = str(row.get("info", "")).strip()
 
-            # Tách function (support: "," "." mix)
-            raw_functions = str(row["function"])
+            # function: có thể phân tách bằng ',' hoặc '.'
+            raw_functions = str(row.get("function", ""))
             functions = [
                 f.strip()
                 for f in re.split(r"[.,]", raw_functions)
                 if f.strip()
             ]
 
-            status_vn = str(row["status_vn"]).strip()
-            level = str(row["level"]).strip()
-            source = str(row["source"]).strip()
+            status_vn = str(row.get("status_vn", "")).strip()
+            level = str(row.get("level", "")).strip()
+            source = str(row.get("source", "")).strip()
 
-            # Cypher query để import một additive
             query = """
             MERGE (a:Additive {ins: $ins})
             SET a.name = $name,
@@ -142,7 +133,7 @@ def import_data(driver: Driver):
             MERGE (st:Status {name: $status_vn})
             MERGE (a)-[:HAS_STATUS]->(st)
 
-            // --- RISK LEVEL ---
+            // --- RISK LEVEL (TRUE LABEL) ---
             WITH a WHERE $level <> ""
             MERGE (r:RiskLevel {level: $level})
             MERGE (a)-[:HAS_RISK]->(r)
@@ -165,13 +156,12 @@ def import_data(driver: Driver):
                     "functions": functions,
                     "status_vn": status_vn,
                     "level": level,
-                    "source": source
-                }
+                    "source": source,
+                },
             )
-            
+
             success_count += 1
-            
-            # Progress indicator
+
             if (idx + 1) % 10 == 0:
                 print(f"   Processed {idx + 1}/{len(df)} rows...")
 
@@ -181,17 +171,13 @@ def import_data(driver: Driver):
 
     print(f"\n✅ Import hoàn tất!")
     print(f"   - Success: {success_count}")
-    print(f"   - Errors: {error_count}")
-    print(f"   - Total: {len(df)}\n")
+    print(f"   - Errors : {error_count}")
+    print(f"   - Total  : {len(df)}\n")
 
 
-# --- Verify import ---
 def verify_import(driver: Driver):
-    """
-    Kiểm tra kết quả import.
-    """
     print("🔍 Đang verify dữ liệu...\n")
-    
+
     queries = {
         "Additives": "MATCH (a:Additive) RETURN count(a) as count",
         "Functions": "MATCH (f:Function) RETURN count(f) as count",
@@ -203,47 +189,37 @@ def verify_import(driver: Driver):
         "HAS_RISK": "MATCH ()-[r:HAS_RISK]->() RETURN count(r) as count",
         "HAS_SOURCE": "MATCH ()-[r:HAS_SOURCE]->() RETURN count(r) as count",
     }
-    
+
     with driver.session() as session:
         for label, query in queries.items():
             result = session.run(query).single()
             count = result["count"]
             print(f"   {label:20s}: {count:5d}")
-    
+
     print("\n✅ Verification complete.\n")
 
 
-# --- MAIN ---
 if __name__ == "__main__":
     print("=" * 60)
     print(" IMPORT DATASET TO NEO4J ".center(60, "="))
     print("=" * 60 + "\n")
-    
+
     driver = None
     try:
-        # Kết nối Neo4j
         driver = get_neo4j_driver()
-        
-        # Tạo constraints
         create_constraints(driver)
-        
-        # Import dữ liệu
         import_data(driver)
-        
-        # Verify kết quả
         verify_import(driver)
-        
+
         print("=" * 60)
         print(" COMPLETED ".center(60, "="))
         print("=" * 60)
-        
     except Exception as e:
         print(f"\nLỗi nghiêm trọng: {e}")
         import traceback
+
         traceback.print_exc()
-        
     finally:
-        # ✅ Đóng driver đúng cách
         if driver:
             driver.close()
             print("\nĐã đóng kết nối Neo4j.")

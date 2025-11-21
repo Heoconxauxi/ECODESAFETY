@@ -2,517 +2,878 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>EcodeSafety Web UI</title>
+  <title>EcodeSafety Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f3f4f6;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f1f5f9;
       color: #111827;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
     }
-    header {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      padding: 16px 24px;
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px;
+      background: #1e293b;
+      color: #e5e7eb;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sidebar h2 {
+      margin: 0 0 20px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .menu-btn {
+      padding: 11px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      color: #e5e7eb;
+      font-size: 14px;
       display: flex;
       align-items: center;
+      gap: 8px;
+      transition: background 0.18s ease, transform 0.12s ease;
+    }
+    .menu-btn span.icon {
+      font-size: 16px;
+    }
+    .menu-btn.active {
+      background: #2563eb;
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.45);
+      transform: translateY(-1px);
+    }
+    .menu-btn:hover {
+      background: #334155;
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 30px;
+    }
+
+    header {
+      display: flex;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
     }
     header h1 {
       margin: 0;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 600;
     }
-    header span {
-      font-size: 13px;
-      opacity: 0.9;
+
+    .user-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
     }
-    .container {
-      max-width: 1100px;
-      margin: 20px auto 40px;
-      padding: 0 16px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 20px;
-    }
-    @media (max-width: 960px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 18px 18px 16px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-      margin-bottom: 20px;
-    }
-    .card h2 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 18px;
-    }
-    .card small {
+
+    /* GOOGLE LOGIN BUTTON WRAPPER */
+    #google-login-btn {
       display: block;
-      color: #6b7280;
-      margin-bottom: 12px;
-      font-size: 12px;
     }
-    label {
-      display: block;
-      margin-bottom: 6px;
+
+    /* USER INFO (sau khi login) */
+    #user-info {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 999px;
+      transition: background 0.18s;
+    }
+    #user-info:hover {
+      background: #e5e7eb;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: #2563eb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #f9fafb;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+    .user-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .user-text .name {
       font-size: 13px;
       font-weight: 500;
     }
-    textarea, input[type="text"] {
+    .user-text .email {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* USER DROPDOWN MENU */
+    .user-menu {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+      padding: 6px 0;
+      min-width: 160px;
+      display: none;
+      z-index: 10;
+    }
+    .user-menu-item {
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #111827;
+    }
+    .user-menu-item:hover {
+      background: #f3f4f6;
+    }
+    .user-menu-item.danger {
+      color: #b91c1c;
+    }
+
+    /* CARDS */
+    .card {
+      background: #ffffff;
+      padding: 18px 18px 16px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .card small {
+      display: block;
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+
+    textarea, input[type="text"], input[type="file"] {
       width: 100%;
-      padding: 9px 10px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
+      padding: 10px 11px;
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
       font-size: 14px;
-      resize: vertical;
-      min-height: 40px;
       outline: none;
+      transition: border 0.15s, box-shadow 0.15s;
+      background: #f9fafb;
     }
-    textarea:focus, input[type="text"]:focus {
+    textarea:focus, input[type="text"]:focus, input[type="file"]:focus {
       border-color: #2563eb;
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.25);
+      background: #ffffff;
     }
-    input[type="file"] {
-      padding: 4px 0;
-      font-size: 14px;
+    textarea {
+      resize: vertical;
+      min-height: 80px;
     }
+
     button {
-      padding: 8px 16px;
+      padding: 9px 16px;
       border-radius: 999px;
       border: none;
       background: #2563eb;
       color: white;
+      cursor: pointer;
+      margin-right: 8px;
       font-size: 14px;
       font-weight: 500;
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
     }
     button.secondary {
       background: #e5e7eb;
       color: #111827;
-    }
-    button.danger {
-      background: #dc2626;
+      box-shadow: none;
     }
     button:disabled {
       opacity: 0.5;
+      box-shadow: none;
       cursor: default;
     }
-    button:hover:not(:disabled) {
-      filter: brightness(0.95);
+    button:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.4);
     }
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
+
     .result {
       margin-top: 12px;
-      padding: 10px 12px;
+      padding: 10px;
       background: #020617;
       color: #e5e7eb;
-      border-radius: 8px;
+      border-radius: 10px;
+      display: none;
+      white-space: pre-wrap;
+      max-height: 260px;
+      overflow-y: auto;
+      font-size: 12px;
       font-family: "JetBrains Mono", "Fira Code", monospace;
-      font-size: 12px;
-      max-height: 300px;
-      overflow: auto;
-      white-space: pre;
     }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 500;
+
+    /* TABS */
+    .tab-page { display: none; }
+    .tab-page.active { display: block; }
+
+    /* ADDITIVE CARD (Ingredients & Search) */
+    .additive-list {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .additive-card {
+      background: #f9fafb;
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+      transition: transform 0.08s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+    .additive-card:hover {
+      transform: translateY(-1px);
+      border-color: #bfdbfe;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+    .add-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: #111827;
+    }
+    .add-line {
+      font-size: 13px;
+      color: #374151;
+      margin-top: 2px;
+    }
+    .add-tags {
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
       gap: 4px;
     }
-    .badge.green {
+    .tag-chip {
+      padding: 2px 8px;
+      font-size: 11px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    /* BADGES (C1 style) */
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+    .badge-pill.green {
       background: #dcfce7;
       color: #166534;
     }
-    .badge.red {
+    .badge-pill.yellow {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+    .badge-pill.red {
       background: #fee2e2;
       color: #b91c1c;
     }
-    .badge.gray {
-      background: #e5e7eb;
-      color: #374151;
+
+    /* HISTORY BLOCK */
+    .history-block {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.12s, transform 0.08s;
     }
-    .user-info {
+    .history-block:hover {
+      background: #111827;
+      transform: translateY(-1px);
+    }
+    .history-header-line {
       display: flex;
-      align-items: center;
+      justify-content: space-between;
       gap: 8px;
       font-size: 13px;
     }
-    .user-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: #1e40af;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
+    .history-ecodes {
       font-weight: 600;
+      color: #93c5fd;
     }
-    .pill {
-      padding: 2px 8px;
-      border-radius: 999px;
+    .history-time {
       font-size: 11px;
-      background: rgba(15, 23, 42, 0.1);
+      opacity: 0.8;
+      white-space: nowrap;
     }
-    .help {
-      font-size: 12px;
-      color: #6b7280;
+    .history-source-text {
       margin-top: 4px;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    .history-detail {
+      display: none;
+      background: #020617;
+      margin-top: 8px;
+      padding: 8px 9px;
+      border-radius: 10px;
+    }
+    .history-add-card {
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 6px 0;
+      font-size: 12px;
+    }
+    .history-add-card:last-child {
+      border-bottom: none;
     }
   </style>
 </head>
+
 <body>
-<header>
-  <div>
-    <h1>EcodeSafety Web UI</h1>
-    <span>Test analyze E-code (Text / Image) + Search + History</span>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h2>EcodeSafety</h2>
+  <div class="menu-btn active" onclick="switchTab('ingredient', this)">
+    <span class="icon">🥗</span> <span>Ingredient</span>
   </div>
-  <div class="user-info">
-    <div id="user-avatar" class="user-avatar" style="display:none;"></div>
-    <div>
-      <div id="user-name">Chưa đăng nhập</div>
-      <div id="user-email" style="font-size:11px;opacity:0.8;"></div>
-    </div>
+  <div class="menu-btn" onclick="switchTab('search', this)">
+    <span class="icon">🔍</span> <span>Search</span>
   </div>
-</header>
-
-<div class="container">
-  <div class="card">
-    <h2>1️⃣ Đăng nhập bằng Google</h2>
-    <small>Đăng nhập để lưu lịch sử phân tích theo tài khoản của bạn.</small>
-    <div id="googleBtn"></div>
-    <div class="help">
-      Sau khi đăng nhập thành công, hệ thống sẽ dùng <code>access_token</code> để gọi các API khác.
-    </div>
-  </div>
-
-  <div class="grid">
-    <!-- LEFT: ANALYZE -->
-    <div>
-      <div class="card">
-        <h2>2️⃣ Phân tích từ TEXT</h2>
-        <small>Nhập thành phần sản phẩm (VD: "Thành phần: E100, E120"). Hệ thống sẽ trích E-code, tra Neo4j, áp rule.</small>
-
-        <label for="inputText">Thành phần sản phẩm</label>
-        <textarea id="inputText" rows="4" placeholder="Ví dụ: Thành phần: E100, E120"></textarea>
-
-        <div class="btn-row">
-          <button id="btnAnalyzeText" onclick="analyzeText()">
-            🔍 Phân tích TEXT
-          </button>
-          <button class="secondary" onclick="clearResult('resultText')">
-            🧹 Xoá kết quả
-          </button>
-        </div>
-
-        <div id="resultText" class="result" style="display:none;"></div>
-      </div>
-
-      <div class="card">
-        <h2>3️⃣ Phân tích từ ẢNH</h2>
-        <small>Upload ảnh nhãn sản phẩm. Server sẽ OCR → trích E-code → phân tích.</small>
-
-        <label for="imageFile">Chọn ảnh nhãn sản phẩm</label>
-        <input type="file" id="imageFile" accept="image/*" />
-
-        <div class="btn-row">
-          <button id="btnAnalyzeImage" onclick="analyzeImage()">
-            🖼 Phân tích ẢNH
-          </button>
-          <button class="secondary" onclick="clearResult('resultImage')">
-            🧹 Xoá kết quả
-          </button>
-        </div>
-
-        <div id="resultImage" class="result" style="display:none;"></div>
-      </div>
-    </div>
-
-    <!-- RIGHT: SEARCH + HISTORY -->
-    <div>
-      <div class="card">
-        <h2>4️⃣ Search phụ gia (E-code)</h2>
-        <small>Search theo mã (E100), tên tiếng Anh, tên tiếng Việt.</small>
-
-        <label for="searchBox">Từ khoá</label>
-        <input id="searchBox" type="text" placeholder="Ví dụ: E100, Curcumin, Tinh nghệ...">
-
-        <div class="btn-row">
-          <button id="btnSearch" onclick="searchAdditives()">
-            🔎 Search
-          </button>
-          <button class="secondary" onclick="clearResult('resultSearch')">
-            🧹 Xoá kết quả
-          </button>
-        </div>
-
-        <div id="resultSearch" class="result" style="display:none;"></div>
-      </div>
-
-      <div class="card">
-        <h2>5️⃣ Lịch sử phân tích của bạn</h2>
-        <small>Yêu cầu phải đăng nhập Google trước. Dữ liệu lấy từ Neo4j <code>(User)-[:ANALYZED]->(Additive)</code>.</small>
-
-        <div class="btn-row">
-          <button id="btnHistory" onclick="loadHistory()">
-            📜 Xem lịch sử
-          </button>
-          <button class="secondary" onclick="clearResult('historyResult')">
-            🧹 Xoá kết quả
-          </button>
-        </div>
-
-        <div id="historyResult" class="result" style="display:none;"></div>
-      </div>
-    </div>
+  <div class="menu-btn" onclick="switchTab('history', this)">
+    <span class="icon">📜</span> <span>History</span>
   </div>
 </div>
 
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- HEADER -->
+  <header>
+    <h1>EcodeSafety Dashboard</h1>
+
+    <div class="user-box">
+      <!-- GOOGLE LOGIN BUTTON (Right) -->
+      <div id="google-login-btn"></div>
+
+      <!-- USER INFO + DROPDOWN -->
+      <div id="user-info">
+        <div id="user-avatar" class="user-avatar"></div>
+        <div class="user-text">
+          <span id="user-name" class="name"></span>
+          <span id="user-email" class="email"></span>
+        </div>
+      </div>
+
+      <div id="user-menu" class="user-menu">
+        <div class="user-menu-item">
+          👤 Tài khoản
+        </div>
+        <div class="user-menu-item danger" onclick="logout()">
+          🚪 Đăng xuất
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ TAB: INGREDIENT ============ -->
+  <div id="tab-ingredient" class="tab-page active">
+    <div class="card">
+      <h2>Phân tích TEXT</h2>
+      <small>Nhập thành phần sản phẩm, hệ thống sẽ trích E-code, tra Neo4j, áp rule.</small>
+      <textarea id="inputText" rows="4" placeholder="VD: Thành phần: E100, E621..."></textarea>
+      <div style="margin-top:8px;">
+        <button id="btnAnalyzeText" onclick="analyzeText()">🔍 Phân tích TEXT</button>
+        <button class="secondary" onclick="clearContainer('ingredientResult')">🧹 Xoá kết quả</button>
+      </div>
+      <div id="ingredientResult" class="additive-list"></div>
+      <div id="resultText" class="result"></div> <!-- debug JSON optional -->
+    </div>
+
+    <div class="card">
+      <h2>Phân tích Ảnh</h2>
+      <small>Upload ảnh nhãn sản phẩm. Server sẽ OCR → trích E-code → phân tích.</small>
+      <input type="file" id="imageFile" accept="image/*">
+      <div style="margin-top:8px;">
+        <button id="btnAnalyzeImage" onclick="analyzeImage()">🖼 Phân tích Ảnh</button>
+        <button class="secondary" onclick="clearContainer('imageResult')">🧹 Xoá kết quả</button>
+      </div>
+      <div id="imageResult" class="additive-list"></div>
+      <div id="resultImage" class="result"></div> <!-- debug JSON optional -->
+    </div>
+  </div>
+
+  <!-- ============ TAB: SEARCH ============ -->
+  <div id="tab-search" class="tab-page">
+    <div class="card">
+      <h2>Search E-code</h2>
+      <small>Tìm theo mã INS, tên tiếng Anh hoặc tiếng Việt.</small>
+      <input type="text" id="searchBox" placeholder="Nhập E100, Curcumin, Tinh nghệ...">
+      <div style="margin-top:8px;">
+        <button id="btnSearch" onclick="searchAdditives()">🔎 Search</button>
+        <button class="secondary" onclick="clearContainer('searchResult')">🧹 Xoá kết quả</button>
+      </div>
+      <div id="searchResult" class="additive-list"></div>
+      <div id="resultSearch" class="result"></div> <!-- debug JSON optional -->
+    </div>
+  </div>
+
+  <!-- ============ TAB: HISTORY ============ -->
+  <div id="tab-history" class="tab-page">
+    <div class="card">
+      <h2>Lịch sử phân tích</h2>
+      <small>Mỗi block tương ứng 1 lần phân tích. Bấm vào để xem chi tiết các phụ gia.</small>
+      <div style="margin-top:8px;">
+        <button id="btnHistory" onclick="loadHistory()">📜 Tải lịch sử</button>
+        <button class="secondary" onclick="clearContainer('historyResult')">🧹 Xoá kết quả</button>
+      </div>
+      <div id="historyResult" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+</div>
+
 <script>
-  const API_BASE = "https://flf3p194-8000.asse.devtunnels.ms";
-  let ACCESS_TOKEN = null;
+const API_BASE = "https://flf3p194-8000.asse.devtunnels.ms"; 
+let ACCESS_TOKEN = null;
+let userMenuVisible = false;
 
-  // =============== GOOGLE LOGIN ===============
-  window.onload = function () {
-    google.accounts.id.initialize({
-      client_id: "249383931866-a7m46i32lsoagdvs5u0pdp0sgd86ha9m.apps.googleusercontent.com",
-      callback: handleGoogleResponse
-    });
+/* ---------------- TAB SWITCH ---------------- */
+function switchTab(id, btn) {
+  document.querySelectorAll(".menu-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
 
-    google.accounts.id.renderButton(
-      document.getElementById("googleBtn"),
-      {
-        type: "standard",
-        theme: "outline",
-        size: "large",
-        text: "continue_with",
-        shape: "rectangular"
-      }
-    );
-  };
+  document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active"));
+  document.getElementById("tab-" + id).classList.add("active");
+}
 
-  async function handleGoogleResponse(response) {
-    try {
-      const id_token = response.credential;
+/* ---------------- LOGIN PERSIST ---------------- */
+window.onload = function () {
+  const tk = localStorage.getItem("ACCESS_TOKEN");
 
-      const res = await fetch(API_BASE + "/auth/google-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id_token })
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        alert("Login thất bại: " + text);
-        return;
-      }
-
-      const data = await res.json();
-      ACCESS_TOKEN = data.access_token;
-
-      const user = data.user || {};
-      document.getElementById("user-name").innerText = user.name || "(Không tên)";
-      document.getElementById("user-email").innerText = user.email || "";
-      const avatar = document.getElementById("user-avatar");
-      avatar.style.display = "inline-flex";
-      avatar.innerText = (user.name || "?").charAt(0).toUpperCase();
-    } catch (err) {
-      console.error(err);
-      alert("Có lỗi khi xử lý login Google");
-    }
+  if (tk) {
+    ACCESS_TOKEN = tk;
+    const name = localStorage.getItem("USER_NAME") || "User";
+    const email = localStorage.getItem("USER_EMAIL") || "";
+    document.getElementById("google-login-btn").style.display = "none";
+    document.getElementById("user-info").style.display = "flex";
+    setUserUI(name, email);
   }
 
-  // =============== COMMON HELPERS ===============
-  function clearResult(id) {
-    const el = document.getElementById(id);
-    el.innerText = "";
+  google.accounts.id.initialize({
+    client_id: "249383931866-a7m46i32lsoagdvs5u0pdp0sgd86ha9m.apps.googleusercontent.com",
+    callback: handleGoogleLogin
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById("google-login-btn"),
+    { theme: "outline", size: "medium", text: "signin_with" }
+  );
+
+  // Toggle user menu
+  document.getElementById("user-info").addEventListener("click", function (e) {
+    e.stopPropagation();
+    userMenuVisible = !userMenuVisible;
+    document.getElementById("user-menu").style.display = userMenuVisible ? "block" : "none";
+  });
+
+  // Click outside to close
+  document.addEventListener("click", function () {
+    if (userMenuVisible) {
+      userMenuVisible = false;
+      document.getElementById("user-menu").style.display = "none";
+    }
+  });
+};
+
+function setUserUI(name, email) {
+  const avatar = document.getElementById("user-avatar");
+  avatar.style.display = "flex";
+  avatar.innerText = (name || "?").charAt(0).toUpperCase();
+
+  document.getElementById("user-name").innerText = name || "Người dùng";
+  document.getElementById("user-email").innerText = email || "";
+}
+
+/* ---------------- GOOGLE LOGIN ---------------- */
+async function handleGoogleLogin(res) {
+  const response = await fetch(API_BASE + "/auth/google-login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ id_token: res.credential })
+  });
+
+  const data = await response.json();
+  ACCESS_TOKEN = data.access_token;
+
+  localStorage.setItem("ACCESS_TOKEN", ACCESS_TOKEN);
+  localStorage.setItem("USER_NAME", data.user.name);
+  localStorage.setItem("USER_EMAIL", data.user.email);
+
+  document.getElementById("google-login-btn").style.display = "none";
+  document.getElementById("user-info").style.display = "flex";
+  setUserUI(data.user.name, data.user.email);
+}
+
+function logout() {
+  localStorage.clear();
+  ACCESS_TOKEN = null;
+  location.reload();
+}
+
+/* ---------------- HELPERS ---------------- */
+function showJson(id, data) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = "block";
+  el.innerText = JSON.stringify(data, null, 2);
+}
+function clearContainer(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = "";
+  if (el.classList.contains("result")) {
     el.style.display = "none";
   }
+}
 
-  function showResult(id, data) {
-    const el = document.getElementById(id);
-    el.innerText = JSON.stringify(data, null, 2);
-    el.style.display = "block";
+function getRiskBadge(level) {
+  if (level === 1 || level === "1") {
+    return '<span class="badge-pill green">🟢 Very Safe (vs)</span>';
+  }
+  if (level === 2 || level === "2") {
+    return '<span class="badge-pill yellow">🟡 Safe w/ Limits (sl)</span>';
+  }
+  if (level === 4 || level === "4") {
+    return '<span class="badge-pill red">🔴 Banned / Toxic (bt)</span>';
+  }
+  return '<span class="badge-pill gray">N/A</span>';
+}
+
+function getRuleBadge(rule) {
+  if (rule === 1 || rule === "1") {
+    return '<span class="badge-pill green">🟢 Safe</span>';
+  }
+  if (rule === 2 || rule === "2") {
+    return '<span class="badge-pill yellow">🟡 Warning</span>';
+  }
+  if (rule === 4 || rule === "4") {
+    return '<span class="badge-pill red">🔴 Avoid</span>';
+  }
+  return '<span class="badge-pill gray">N/A</span>';
+}
+
+/* Render additive card for AnalysisResult (ecodes_found) */
+function renderAdditivesForIngredient(containerId, ecodesFound) {
+  const box = document.getElementById(containerId);
+  if (!box) return;
+  box.innerHTML = "";
+
+  if (!ecodesFound || ecodesFound.length === 0) {
+    box.innerHTML = '<div style="font-size:13px;color:#6b7280;">Không tìm thấy phụ gia nào.</div>';
+    return;
   }
 
-  function setLoading(idBtn, loading) {
-    const btn = document.getElementById(idBtn);
-    if (!btn) return;
-    btn.disabled = loading;
-    if (loading) {
-      btn.dataset.text = btn.innerText;
-      btn.innerText = "⏳ Đang xử lý...";
-    } else {
-      if (btn.dataset.text) {
-        btn.innerText = btn.dataset.text;
-      }
-    }
-  }
+  ecodesFound.forEach(e => {
+    const functions = e.function || [];
+    const sources = (e.sources || []); // nếu sau này API có
+    const riskBadge = getRiskBadge(e.level);
+    const ruleBadge = getRuleBadge(e.rule_risk);
 
-  // =============== ANALYZE TEXT ===============
-  async function analyzeText() {
-    const text = document.getElementById("inputText").value.trim();
-    if (!text) {
-      alert("Bạn chưa nhập thành phần!");
-      return;
-    }
-    setLoading("btnAnalyzeText", true);
-    clearResult("resultText");
+    const statusText = e.status_vn || "Được phép tại Việt Nam";
 
-    try {
-      const headers = { "Content-Type": "application/json" };
-      if (ACCESS_TOKEN) {
-        headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
-      }
-
-      const res = await fetch(API_BASE + "/ecode/analyze", {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ input_text: text })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        showResult("resultText", { error: data.detail || data });
-      } else {
-        showResult("resultText", data);
-      }
-    } catch (err) {
-      console.error(err);
-      showResult("resultText", { error: String(err) });
-    } finally {
-      setLoading("btnAnalyzeText", false);
-    }
-  }
-
-  // =============== ANALYZE IMAGE ===============
-  async function analyzeImage() {
-    const fileInput = document.getElementById("imageFile");
-    const file = fileInput.files[0];
-    if (!file) {
-      alert("Hãy chọn một ảnh trước.");
-      return;
-    }
-    setLoading("btnAnalyzeImage", true);
-    clearResult("resultImage");
-
-    try {
-      const form = new FormData();
-      form.append("image_file", file);
-
-      const headers = {};
-      if (ACCESS_TOKEN) {
-        headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
-      }
-
-      const res = await fetch(API_BASE + "/ecode/analyze_image", {
-        method: "POST",
-        headers,
-        body: form
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        showResult("resultImage", { error: data.detail || data });
-      } else {
-        showResult("resultImage", data);
-      }
-    } catch (err) {
-      console.error(err);
-      showResult("resultImage", { error: String(err) });
-    } finally {
-      setLoading("btnAnalyzeImage", false);
-    }
-  }
-
-  // =============== SEARCH ECODES ===============
-  async function searchAdditives() {
-    const q = document.getElementById("searchBox").value.trim();
-    setLoading("btnSearch", true);
-    clearResult("resultSearch");
-
-    try {
-      const url = new URL(API_BASE + "/ecodes/search");
-      if (q) url.searchParams.set("q", q);
-      url.searchParams.set("limit", "50");
-      url.searchParams.set("offset", "0");
-
-      const res = await fetch(url.toString());
-      const data = await res.json();
-
-      if (!res.ok) {
-        showResult("resultSearch", { error: data.detail || data });
-      } else {
-        showResult("resultSearch", data);
-      }
-    } catch (err) {
-      console.error(err);
-      showResult("resultSearch", { error: String(err) });
-    } finally {
-      setLoading("btnSearch", false);
-    }
-  }
-
-  // =============== USER HISTORY ===============
-  async function loadHistory() {
-    if (!ACCESS_TOKEN) {
-      alert("Bạn cần đăng nhập Google trước để xem lịch sử.");
-      return;
-    }
-    setLoading("btnHistory", true);
-    clearResult("historyResult");
-
-    try {
-      const res = await fetch(API_BASE + "/users/me/history?limit=50&offset=0", {
-        headers: {
-          "Authorization": "Bearer " + ACCESS_TOKEN
+    const card = document.createElement("div");
+    card.className = "additive-card";
+    card.innerHTML = `
+      <div class="add-title">${e.ins || "N/A"} – ${e.name || ""}</div>
+      <div class="add-line"><b>VN:</b> ${e.name_vn || "—"}</div>
+      <div class="add-line"><b>ADI:</b> ${e.adi || "—"}</div>
+      <div class="add-line"><b>Info:</b> ${e.info || "—"}</div>
+      <div class="add-line">
+        <b>Functions:</b> ${
+          functions.length ? functions.join(", ") : "—"
         }
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        showResult("historyResult", { error: data.detail || data });
-      } else {
-        showResult("historyResult", data);
+      </div>
+      <div class="add-line"><b>Status:</b> ${statusText}</div>
+      <div class="add-line">
+        <b>Risk:</b> ${riskBadge}
+        <b>Rule:</b> ${ruleBadge}
+      </div>
+      ${
+        e.rule_name || e.rule_reason
+        ? `<div class="add-line"><b>Rule detail:</b> ${e.rule_name || ""} ${
+            e.rule_reason ? " – " + e.rule_reason : ""
+          }</div>`
+        : ""
       }
-    } catch (err) {
-      console.error(err);
-      showResult("historyResult", { error: String(err) });
-    } finally {
-      setLoading("btnHistory", false);
-    }
+    `;
+    box.appendChild(card);
+  });
+}
+
+/* Render additive card for SearchResult (items) */
+function renderAdditivesForSearch(containerId, items) {
+  const box = document.getElementById(containerId);
+  if (!box) return;
+  box.innerHTML = "";
+
+  if (!items || items.length === 0) {
+    box.innerHTML = '<div style="font-size:13px;color:#6b7280;">Không tìm thấy phụ gia nào.</div>';
+    return;
   }
+
+  items.forEach(e => {
+    const functions = e.function || [];
+    const riskBadge = getRiskBadge(e.level);
+    const statusText = e.status_vn || "Được phép tại Việt Nam";
+    const sources = e.source ? [e.source] : [];
+
+    const card = document.createElement("div");
+    card.className = "additive-card";
+    card.innerHTML = `
+      <div class="add-title">${e.ins || "N/A"} – ${e.name || ""}</div>
+      <div class="add-line"><b>VN:</b> ${e.name_vn || "—"}</div>
+      <div class="add-line"><b>ADI:</b> ${e.adi || "—"}</div>
+      <div class="add-line"><b>Info:</b> ${e.info || "—"}</div>
+      <div class="add-line">
+        <b>Functions:</b> ${
+          functions.length ? functions.join(", ") : "—"
+        }
+      </div>
+      <div class="add-line"><b>Status:</b> ${statusText}</div>
+      <div class="add-line"><b>Risk:</b> ${riskBadge}</div>
+      ${
+        sources.length
+          ? `<div class="add-line"><b>Sources:</b> ${sources.join(", ")}</div>`
+          : ""
+      }
+    `;
+    box.appendChild(card);
+  });
+}
+
+/* ---------------- ANALYZE TEXT ---------------- */
+async function analyzeText() {
+  const text = document.getElementById("inputText").value.trim();
+  if (!text) return alert("Chưa nhập nội dung!");
+
+  const btn = document.getElementById("btnAnalyzeText");
+  btn.disabled = true;
+  btn.innerText = "⏳ Đang phân tích...";
+
+  try {
+    const headers = {"Content-Type": "application/json"};
+    if (ACCESS_TOKEN) headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
+
+    const res = await fetch(API_BASE + "/ecode/analyze", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({input_text: text})
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      showJson("resultText", data);
+      return;
+    }
+
+    renderAdditivesForIngredient("ingredientResult", data.ecodes_found);
+    // Debug JSON nếu cần
+    // showJson("resultText", data);
+
+  } catch (err) {
+    showJson("resultText", { error: String(err) });
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "🔍 Phân tích TEXT";
+  }
+}
+
+/* ---------------- ANALYZE IMAGE ---------------- */
+async function analyzeImage() {
+  const file = document.getElementById("imageFile").files[0];
+  if (!file) return alert("Chưa chọn ảnh!");
+
+  const btn = document.getElementById("btnAnalyzeImage");
+  btn.disabled = true;
+  btn.innerText = "⏳ Đang phân tích...";
+
+  try {
+    const form = new FormData();
+    form.append("image_file", file);
+
+    const headers = {};
+    if (ACCESS_TOKEN) headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
+
+    const res = await fetch(API_BASE + "/ecode/analyze_image", {
+      method: "POST",
+      headers,
+      body: form
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      showJson("resultImage", data);
+      return;
+    }
+
+    renderAdditivesForIngredient("imageResult", data.ecodes_found);
+    // Debug JSON nếu cần
+    // showJson("resultImage", data);
+
+  } catch (err) {
+    showJson("resultImage", { error: String(err) });
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "🖼 Phân tích Ảnh";
+  }
+}
+
+/* ---------------- SEARCH ---------------- */
+async function searchAdditives() {
+  const q = document.getElementById("searchBox").value.trim();
+  const btn = document.getElementById("btnSearch");
+  btn.disabled = true;
+  btn.innerText = "⏳ Đang search...";
+
+  try {
+    const url = API_BASE + "/ecodes/search?q=" + encodeURIComponent(q || "");
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!res.ok) {
+      showJson("resultSearch", data);
+      return;
+    }
+
+    renderAdditivesForSearch("searchResult", data.items || []);
+    // Debug JSON nếu cần
+    // showJson("resultSearch", data);
+
+  } catch (err) {
+    showJson("resultSearch", { error: String(err) });
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "🔎 Search";
+  }
+}
+
+/* ---------------- HISTORY ---------------- */
+async function loadHistory() {
+  if (!ACCESS_TOKEN) return alert("Cần đăng nhập!");
+
+  const btn = document.getElementById("btnHistory");
+  btn.disabled = true;
+  btn.innerText = "⏳ Đang tải...";
+
+  try {
+    const res = await fetch(API_BASE + "/users/me/history", {
+      headers: {"Authorization": "Bearer " + ACCESS_TOKEN}
+    });
+
+    const data = await res.json();
+    const container = document.getElementById("historyResult");
+    container.innerHTML = "";
+
+    if (!res.ok) {
+      container.innerHTML = `<div style="color:#b91c1c;font-size:13px;">Lỗi: ${data.detail || "Không thể tải lịch sử"}</div>`;
+      return;
+    }
+
+    if (!data.items || data.items.length === 0) {
+      container.innerHTML = '<div style="font-size:13px;color:#6b7280;">Chưa có lịch sử phân tích.</div>';
+      return;
+    }
+
+    data.items.forEach((item, i) => {
+      const block = document.createElement("div");
+      block.className = "history-block";
+      block.innerHTML = `
+        <div class="history-header-line">
+          <div class="history-ecodes">📌 ${item.ecodes.join(", ")}</div>
+          <div class="history-time">${new Date(item.analyzed_at).toLocaleString()}</div>
+        </div>
+        <div class="history-source-text">${item.source_text || ""}</div>
+      `;
+
+      const detail = document.createElement("div");
+      detail.className = "history-detail";
+
+      if (item.additives && item.additives.length > 0) {
+        detail.innerHTML = item.additives.map(a => `
+          <div class="history-add-card">
+            <div><b>${a.ins}</b> – ${a.name || ""}</div>
+            <div>VN: ${a.name_vn || "—"}</div>
+            <div>Functions: ${(a.functions || []).join(", ") || "—"}</div>
+            <div>Risk: ${getRiskBadge(a.level)}</div>
+            <div>Status: ${a.status_vn || "Được phép tại Việt Nam"}</div>
+          </div>
+        `).join("");
+      } else {
+        detail.innerHTML = '<div style="font-size:12px;color:#9ca3af;">Không có thông tin phụ gia chi tiết.</div>';
+      }
+
+      block.appendChild(detail);
+      block.onclick = () => {
+        const isVisible = detail.style.display === "block";
+        detail.style.display = isVisible ? "none" : "block";
+      };
+
+      container.appendChild(block);
+    });
+
+  } catch (err) {
+    const container = document.getElementById("historyResult");
+    container.innerHTML = `<div style="color:#b91c1c;font-size:13px;">Lỗi: ${String(err)}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "📜 Tải lịch sử";
+  }
+}
+
 </script>
 
 </body>
