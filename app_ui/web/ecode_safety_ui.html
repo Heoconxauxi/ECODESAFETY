@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>EcodeSafety Web UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    header {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    header span {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 20px auto 40px;
+      padding: 0 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 960px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px 18px 16px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+    .card small {
+      display: block;
+      color: #6b7280;
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 9px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 40px;
+      outline: none;
+    }
+    textarea:focus, input[type="text"]:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    }
+    input[type="file"] {
+      padding: 4px 0;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    button.danger {
+      background: #dc2626;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+    button:hover:not(:disabled) {
+      filter: brightness(0.95);
+    }
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .result {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: #020617;
+      color: #e5e7eb;
+      border-radius: 8px;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow: auto;
+      white-space: pre;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      gap: 4px;
+    }
+    .badge.green {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .badge.red {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .badge.gray {
+      background: #e5e7eb;
+      color: #374151;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #1e40af;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.1);
+    }
+    .help {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>EcodeSafety Web UI</h1>
+    <span>Test analyze E-code (Text / Image) + Search + History</span>
+  </div>
+  <div class="user-info">
+    <div id="user-avatar" class="user-avatar" style="display:none;"></div>
+    <div>
+      <div id="user-name">Chưa đăng nhập</div>
+      <div id="user-email" style="font-size:11px;opacity:0.8;"></div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>1️⃣ Đăng nhập bằng Google</h2>
+    <small>Đăng nhập để lưu lịch sử phân tích theo tài khoản của bạn.</small>
+    <div id="googleBtn"></div>
+    <div class="help">
+      Sau khi đăng nhập thành công, hệ thống sẽ dùng <code>access_token</code> để gọi các API khác.
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT: ANALYZE -->
+    <div>
+      <div class="card">
+        <h2>2️⃣ Phân tích từ TEXT</h2>
+        <small>Nhập thành phần sản phẩm (VD: "Thành phần: E100, E120"). Hệ thống sẽ trích E-code, tra Neo4j, áp rule.</small>
+
+        <label for="inputText">Thành phần sản phẩm</label>
+        <textarea id="inputText" rows="4" placeholder="Ví dụ: Thành phần: E100, E120"></textarea>
+
+        <div class="btn-row">
+          <button id="btnAnalyzeText" onclick="analyzeText()">
+            🔍 Phân tích TEXT
+          </button>
+          <button class="secondary" onclick="clearResult('resultText')">
+            🧹 Xoá kết quả
+          </button>
+        </div>
+
+        <div id="resultText" class="result" style="display:none;"></div>
+      </div>
+
+      <div class="card">
+        <h2>3️⃣ Phân tích từ ẢNH</h2>
+        <small>Upload ảnh nhãn sản phẩm. Server sẽ OCR → trích E-code → phân tích.</small>
+
+        <label for="imageFile">Chọn ảnh nhãn sản phẩm</label>
+        <input type="file" id="imageFile" accept="image/*" />
+
+        <div class="btn-row">
+          <button id="btnAnalyzeImage" onclick="analyzeImage()">
+            🖼 Phân tích ẢNH
+          </button>
+          <button class="secondary" onclick="clearResult('resultImage')">
+            🧹 Xoá kết quả
+          </button>
+        </div>
+
+        <div id="resultImage" class="result" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: SEARCH + HISTORY -->
+    <div>
+      <div class="card">
+        <h2>4️⃣ Search phụ gia (E-code)</h2>
+        <small>Search theo mã (E100), tên tiếng Anh, tên tiếng Việt.</small>
+
+        <label for="searchBox">Từ khoá</label>
+        <input id="searchBox" type="text" placeholder="Ví dụ: E100, Curcumin, Tinh nghệ...">
+
+        <div class="btn-row">
+          <button id="btnSearch" onclick="searchAdditives()">
+            🔎 Search
+          </button>
+          <button class="secondary" onclick="clearResult('resultSearch')">
+            🧹 Xoá kết quả
+          </button>
+        </div>
+
+        <div id="resultSearch" class="result" style="display:none;"></div>
+      </div>
+
+      <div class="card">
+        <h2>5️⃣ Lịch sử phân tích của bạn</h2>
+        <small>Yêu cầu phải đăng nhập Google trước. Dữ liệu lấy từ Neo4j <code>(User)-[:ANALYZED]->(Additive)</code>.</small>
+
+        <div class="btn-row">
+          <button id="btnHistory" onclick="loadHistory()">
+            📜 Xem lịch sử
+          </button>
+          <button class="secondary" onclick="clearResult('historyResult')">
+            🧹 Xoá kết quả
+          </button>
+        </div>
+
+        <div id="historyResult" class="result" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_BASE = "https://flf3p194-8000.asse.devtunnels.ms";
+  let ACCESS_TOKEN = null;
+
+  // =============== GOOGLE LOGIN ===============
+  window.onload = function () {
+    google.accounts.id.initialize({
+      client_id: "249383931866-a7m46i32lsoagdvs5u0pdp0sgd86ha9m.apps.googleusercontent.com",
+      callback: handleGoogleResponse
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("googleBtn"),
+      {
+        type: "standard",
+        theme: "outline",
+        size: "large",
+        text: "continue_with",
+        shape: "rectangular"
+      }
+    );
+  };
+
+  async function handleGoogleResponse(response) {
+    try {
+      const id_token = response.credential;
+
+      const res = await fetch(API_BASE + "/auth/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_token })
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        alert("Login thất bại: " + text);
+        return;
+      }
+
+      const data = await res.json();
+      ACCESS_TOKEN = data.access_token;
+
+      const user = data.user || {};
+      document.getElementById("user-name").innerText = user.name || "(Không tên)";
+      document.getElementById("user-email").innerText = user.email || "";
+      const avatar = document.getElementById("user-avatar");
+      avatar.style.display = "inline-flex";
+      avatar.innerText = (user.name || "?").charAt(0).toUpperCase();
+    } catch (err) {
+      console.error(err);
+      alert("Có lỗi khi xử lý login Google");
+    }
+  }
+
+  // =============== COMMON HELPERS ===============
+  function clearResult(id) {
+    const el = document.getElementById(id);
+    el.innerText = "";
+    el.style.display = "none";
+  }
+
+  function showResult(id, data) {
+    const el = document.getElementById(id);
+    el.innerText = JSON.stringify(data, null, 2);
+    el.style.display = "block";
+  }
+
+  function setLoading(idBtn, loading) {
+    const btn = document.getElementById(idBtn);
+    if (!btn) return;
+    btn.disabled = loading;
+    if (loading) {
+      btn.dataset.text = btn.innerText;
+      btn.innerText = "⏳ Đang xử lý...";
+    } else {
+      if (btn.dataset.text) {
+        btn.innerText = btn.dataset.text;
+      }
+    }
+  }
+
+  // =============== ANALYZE TEXT ===============
+  async function analyzeText() {
+    const text = document.getElementById("inputText").value.trim();
+    if (!text) {
+      alert("Bạn chưa nhập thành phần!");
+      return;
+    }
+    setLoading("btnAnalyzeText", true);
+    clearResult("resultText");
+
+    try {
+      const headers = { "Content-Type": "application/json" };
+      if (ACCESS_TOKEN) {
+        headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
+      }
+
+      const res = await fetch(API_BASE + "/ecode/analyze", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ input_text: text })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        showResult("resultText", { error: data.detail || data });
+      } else {
+        showResult("resultText", data);
+      }
+    } catch (err) {
+      console.error(err);
+      showResult("resultText", { error: String(err) });
+    } finally {
+      setLoading("btnAnalyzeText", false);
+    }
+  }
+
+  // =============== ANALYZE IMAGE ===============
+  async function analyzeImage() {
+    const fileInput = document.getElementById("imageFile");
+    const file = fileInput.files[0];
+    if (!file) {
+      alert("Hãy chọn một ảnh trước.");
+      return;
+    }
+    setLoading("btnAnalyzeImage", true);
+    clearResult("resultImage");
+
+    try {
+      const form = new FormData();
+      form.append("image_file", file);
+
+      const headers = {};
+      if (ACCESS_TOKEN) {
+        headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
+      }
+
+      const res = await fetch(API_BASE + "/ecode/analyze_image", {
+        method: "POST",
+        headers,
+        body: form
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        showResult("resultImage", { error: data.detail || data });
+      } else {
+        showResult("resultImage", data);
+      }
+    } catch (err) {
+      console.error(err);
+      showResult("resultImage", { error: String(err) });
+    } finally {
+      setLoading("btnAnalyzeImage", false);
+    }
+  }
+
+  // =============== SEARCH ECODES ===============
+  async function searchAdditives() {
+    const q = document.getElementById("searchBox").value.trim();
+    setLoading("btnSearch", true);
+    clearResult("resultSearch");
+
+    try {
+      const url = new URL(API_BASE + "/ecodes/search");
+      if (q) url.searchParams.set("q", q);
+      url.searchParams.set("limit", "50");
+      url.searchParams.set("offset", "0");
+
+      const res = await fetch(url.toString());
+      const data = await res.json();
+
+      if (!res.ok) {
+        showResult("resultSearch", { error: data.detail || data });
+      } else {
+        showResult("resultSearch", data);
+      }
+    } catch (err) {
+      console.error(err);
+      showResult("resultSearch", { error: String(err) });
+    } finally {
+      setLoading("btnSearch", false);
+    }
+  }
+
+  // =============== USER HISTORY ===============
+  async function loadHistory() {
+    if (!ACCESS_TOKEN) {
+      alert("Bạn cần đăng nhập Google trước để xem lịch sử.");
+      return;
+    }
+    setLoading("btnHistory", true);
+    clearResult("historyResult");
+
+    try {
+      const res = await fetch(API_BASE + "/users/me/history?limit=50&offset=0", {
+        headers: {
+          "Authorization": "Bearer " + ACCESS_TOKEN
+        }
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        showResult("historyResult", { error: data.detail || data });
+      } else {
+        showResult("historyResult", data);
+      }
+    } catch (err) {
+      console.error(err);
+      showResult("historyResult", { error: String(err) });
+    } finally {
+      setLoading("btnHistory", false);
+    }
+  }
+</script>
+
+</body>
+</html>

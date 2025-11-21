@@ -1,26 +1,23 @@
 {
   "classes": [
     "Additive",
-    "Category",
-    "Effect",
+    "Function",
+    "Status",
     "RiskLevel",
-    "Country",
     "Source"
   ],
   "relations": [
-    "HAS_CATEGORY",
-    "HAS_EFFECT",
+    "HAS_FUNCTION",
+    "HAS_STATUS",
     "HAS_RISK",
-    "BANNED_IN",
     "HAS_SOURCE"
   ],
   "constraints": [
-    { "label": "Additive", "key": "ECode", "type": "UNIQUE" },
-    { "label": "Category", "key": "name", "type": "UNIQUE" },
-    { "label": "Effect", "key": "name", "type": "UNIQUE" },
+    { "label": "Additive", "key": "ins", "type": "UNIQUE" },
+    { "label": "Function", "key": "name", "type": "UNIQUE" },
+    { "label": "Status", "key": "name", "type": "UNIQUE" },
     { "label": "RiskLevel", "key": "level", "type": "UNIQUE" },
-    { "label": "Country", "key": "code", "type": "UNIQUE" },
     { "label": "Source", "key": "name", "type": "UNIQUE" }
   ],
-  "risk_levels": ["Safe", "Caution", "Avoid"]
+  "risk_levels": ["1", "2", "3"]
 }

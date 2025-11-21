@@ -1,33 +1,24 @@
-"""
-Script: load_data.py (đặt trong thư mục src/)
-Tự động tạo cấu trúc Ontology và nạp dữ liệu CSV vào Neo4j.
-Sử dụng file kết nối 'neo4j_connector.py'
-"""
-
 import pandas as pd
 import json
+import re
 from pathlib import Path
 from neo4j import Driver
 import sys
 
-# --- 1. IMPORT TỪ FILE SIBLING (ngang hàng) ---
-# Vì file này nằm trong 'src/', nó có thể import trực tiếp
+# --- IMPORT FILE neo4j_connector ---
 try:
     from neo4j_connector import get_neo4j_driver, close_neo4j_driver
 except ImportError:
-    print("Lỗi: Không thể import 'neo4j_connector'.")
-    print("Đảm bảo file này và 'neo4j_connector.py' cùng nằm trong thư mục 'src/'.")
+    print("Không thể import neo4j_connector.py")
     sys.exit()
 
-# --- 2. Cấu hình PATH ---
-# Xác định thư mục gốc (EcodeSafety/)
+
+# Xác định thư mục
 try:
-    SCRIPT_DIR = Path(__file__).resolve().parent # -> .../EcodeSafety/src
-    ROOT_DIR = SCRIPT_DIR.parent               # -> .../EcodeSafety/
-except NameError:
-    # Fallback nếu chạy trong môi trường tương tác (notebook)
-    ROOT_DIR = Path.cwd().parent 
-    print(f"Cảnh báo: Không thể dùng __file__, giả định ROOT_DIR là {ROOT_DIR}")
+    SCRIPT_DIR = Path(__file__).resolve().parent
+    ROOT_DIR = SCRIPT_DIR.parent
+except:
+    ROOT_DIR = Path.cwd().parent
 
 
 SCHEMA_PATH = ROOT_DIR / "ontology" / "schema.json"
@@ -37,107 +28,127 @@ CSV_PATH = ROOT_DIR / "data" / "processed" / "ecodes_master.csv"
 try:
     schema_text = SCHEMA_PATH.read_text(encoding="utf-8")
     schema = json.loads(schema_text)
-    print(f"✅ Tải schema từ {SCHEMA_PATH} thành công.")
+    print(f"Tải schema từ {SCHEMA_PATH}")
 except Exception as e:
-    print(f"❌ Lỗi: Không thể đọc file schema tại {SCHEMA_PATH}. Lỗi: {e}")
+    print(f"Không thể đọc schema.json: {e}")
     sys.exit()
 
-# --- Hàm thực thi Cypher (nhận driver làm tham số) ---
+
+# --- Hàm chạy Cypher ---
 def run_query(driver: Driver, query, params=None):
     with driver.session() as session:
         session.run(query, params or {})
 
-# --- 3. Tạo Constraints (nhận driver làm tham số) ---
+
+# --- Tạo constraints ---
 def create_constraints(driver: Driver):
-    print("🔄 Bắt đầu tạo constraints...")
+    print("Tạo constraints...")
     for c in schema["constraints"]:
         q = f"""
         CREATE CONSTRAINT {c['label'].lower()}_{c['key']}_uniq IF NOT EXISTS
         FOR (n:{c['label']}) REQUIRE n.{c['key']} IS UNIQUE
         """
         run_query(driver, q)
-    print("✅ Constraints đã được tạo (hoặc đã tồn tại).")
+    print("✅ DONE.")
 
-# --- 4. Nạp dữ liệu (nhận driver làm tham số) ---
+
+# --- Import data ---
 def import_data(driver: Driver):
     try:
         df = pd.read_csv(CSV_PATH, encoding="utf-8-sig").fillna("")
-        print(f"📦 Đã đọc {len(df)} dòng từ {CSV_PATH}.")
-    except FileNotFoundError:
-        print(f"❌ Lỗi: Không tìm thấy file CSV tại {CSV_PATH}.")
-        return
+        print(f"📦 Đã đọc {len(df)} dòng.")
     except Exception as e:
-        print(f"❌ Lỗi khi đọc file CSV: {e}")
+        print(f"Lỗi khi đọc CSV: {e}")
         return
 
-    print("🔄 Bắt đầu nạp dữ liệu vào Neo4j (việc này có thể mất vài phút)...")
-    
+    print("Bắt đầu import dữ liệu...")
+
     for _, row in df.iterrows():
         try:
-            ecode = row["ECode"].strip()
-            if not ecode:
+            ins = str(row["ins"]).strip()
+            if not ins:
                 continue
 
-            # Đọc tất cả các cột
-            common = row["CommonName"].strip()
-            cat = row["Category"].strip()
-            adi = row["ADI_mgkg"].strip()
-            risk = row["RiskLevel"].strip().capitalize()
-            contra = row["Contraindications"].strip()
-            source = row["Source"].strip()
-            effects = [e.strip() for e in str(row["Effects"]).split(",") if e.strip()]
-            countries = [c.strip().upper() for c in str(row["BannedIn"]).split(",") if c.strip()]
+            name = row["name"].strip()
+            name_vn = row["name_vn"].strip()
+            adi = row["adi"].strip()
+            info = row["info"].strip()
 
-            # Query tối ưu (chỉ tạo node/quan hệ nếu có dữ liệu)
+            # Tách function (support: "," "." mix)
+            raw_functions = str(row["function"])
+            functions = [
+                f.strip()
+                for f in re.split(r"[.,]", raw_functions)
+                if f.strip()
+            ]
+
+            status_vn = row["status_vn"].strip()
+            level = row["level"].strip().lower()
+            source = row["source"].strip()
+
             query = """
-            MERGE (a:Additive {ECode: $ecode})
-            SET a.CommonName = $common, a.ADI_mgkg = $adi, a.Contraindications = $contra
-            WITH a WHERE $cat <> ""
-            MERGE (cat:Category {name: $cat})
-            MERGE (a)-[:HAS_CATEGORY]->(cat)
-            WITH a WHERE $risk <> ""
-            MERGE (r:RiskLevel {level: $risk})
+            MERGE (a:Additive {ins: $ins})
+            SET a.name = $name,
+                a.name_vn = $name_vn,
+                a.adi = $adi,
+                a.info = $info
+
+            // --- FUNCTIONS ---
+            WITH a, $functions AS funs
+            UNWIND funs AS fname
+                MERGE (f:Function {name: fname})
+                MERGE (a)-[:HAS_FUNCTION]->(f)
+
+            // --- STATUS ---
+            WITH a WHERE $status_vn <> ""
+            MERGE (st:Status {name: $status_vn})
+            MERGE (a)-[:HAS_STATUS]->(st)
+
+            // --- RISK LEVEL ---
+            WITH a WHERE $level <> ""
+            MERGE (r:RiskLevel {level: $level})
             MERGE (a)-[:HAS_RISK]->(r)
+
+            // --- SOURCE ---
             WITH a WHERE $source <> ""
             MERGE (s:Source {name: $source})
             MERGE (a)-[:HAS_SOURCE]->(s)
-            WITH a
-            UNWIND $effects AS eff
-                MERGE (e:Effect {name: eff})
-                MERGE (a)-[:HAS_EFFECT]->(e)
-            WITH a
-            UNWIND $countries AS co
-                MERGE (c:Country {code: co})
-                MERGE (a)-[:BBANNED_IN]->(c)
             """
-            
-            run_query(driver, query, {
-                "ecode": ecode, "common": common, "cat": cat,
-                "adi": adi, "risk": risk, "contra": contra,
-                "source": source, "effects": effects, "countries": countries
-            })
+
+            run_query(
+                driver,
+                query,
+                {
+                    "ins": ins,
+                    "name": name,
+                    "name_vn": name_vn,
+                    "adi": adi,
+                    "info": info,
+                    "functions": functions,
+                    "status_vn": status_vn,
+                    "level": level,
+                    "source": source
+                }
+            )
+
         except Exception as e:
-            print(f"⚠️ Lỗi khi xử lý dòng {ecode}: {e}")
+            print(f"⚠️ Lỗi khi xử lý INS {ins}: {e}")
 
-    print("✅ Nạp dữ liệu hoàn tất.")
+    print("🎉 Import dữ liệu hoàn tất.")
 
 
+# --- MAIN ---
 if __name__ == "__main__":
     main_driver = None
     try:
-        # 1. LẤY KẾT NỐI (từ file neo4j_connector)
         main_driver = get_neo4j_driver()
-        print("========================================")
-        
-        # 2. Chạy logic
+        print("==============================")
         create_constraints(main_driver)
         import_data(main_driver)
-        
-        print("========================================")
-        print("🎯 Ontology và dữ liệu đã được nạp thành công.")
-
+        print("==============================")
+        print("Hoàn thành import dataset.")
     except Exception as e:
-        print(f"❌ Lỗi nghiêm trọng xảy ra: {e}")
+        print(f"Lỗi nghiêm trọng: {e}")
     finally:
-        # 3. LUÔN LUÔN ĐÓNG KẾT NỐI
-        close_neo4j_driver()
+        if main_driver:
+            close_neo4j_driver()

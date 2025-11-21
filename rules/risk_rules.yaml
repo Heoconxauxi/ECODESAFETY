@@ -1,71 +1,72 @@
-# ===============================================
-# ⚙️  File: rules/risk_rules.yaml
-# Bộ quy tắc cảnh báo mức độ an toàn phụ gia (E-code)
-# ===============================================
+# ==============================================================================
+#  risk_rules.yaml — dành cho dataset INS mới
+#  Chỉ dùng các field:
+#    status_vn (0/1), adi, info, function
+#
+#  True Label:
+#    1 = Very Safe (VS)
+#    2 = Safe w/ Limits (SL)
+#    4 = Banned/Toxic (BT)
+# ==============================================================================
 
 priority:
-  - explicit_avoid
-  - high_risk_effect
-  - banned_country
-  - low_adi_overuse
-  - category_colorant
-  - category_preservative
-  - default_safe
+  - explicit_banned_by_status
+  - toxic_keywords
+  - extremely_low_adi
+  - low_adi_requires_limit
+  - default_vs
 
 rules:
 
-  # 1️⃣ Trường hợp phụ gia nguy hiểm được liệt kê trực tiếp
-  explicit_avoid:
-    if:
-      ecode_in: ["E123", "E127", "E128", "E110", "E102"]
-    then:
-      risk: "Avoid"
-      reason: "E-code có nguy cơ cao hoặc bị cấm tại EU do ảnh hưởng sức khỏe"
+  # ===========================================================
+  #  MỨC 4 — BT (Banned / Toxic)
+  # ===========================================================
 
-  # 2️⃣ Nếu phụ gia có tác dụng phụ nguy hiểm
-  high_risk_effect:
+  explicit_banned_by_status:
     if:
-      any_effect_in: ["carcinogenic", "mutagenic", "hyperactivity", "allergy", "asthma"]
+      status_vn_eq: 1
     then:
-      risk: "Avoid"
-      reason: "Phụ gia có tác dụng phụ nghiêm trọng (gây dị ứng, ảnh hưởng thần kinh, hoặc ung thư)"
+      risk: 4
+      reason: "status_vn = 1 → phụ gia bị cảnh báo mạnh hoặc hạn chế nghiêm ngặt → Mức 4 (BT)"
 
-  # 3️⃣ Nếu bị cấm/hạn chế tại quốc gia lớn
-  banned_country:
+  toxic_keywords:
     if:
-      banned_in_any_of: ["EU", "NO", "AT", "FR", "US", "CA"]
+      info_contains_any:
+        - "ung thư"
+        - "carcinogenic"
+        - "độc"
+        - "toxic"
+        - "đột biến"
+        - "genotoxic"
+        - "neurotoxic"
     then:
-      risk: "Caution"
-      reason: "Phụ gia bị cấm hoặc hạn chế tại một số quốc gia"
+      risk: 4
+      reason: "Thông tin mô tả chứa từ khóa độc tính nghiêm trọng → Mức 4 (BT)"
 
-  # 4️⃣ Nếu ADI thấp nhưng lượng tiêu thụ vượt ngưỡng
-  low_adi_overuse:
+  extremely_low_adi:
     if:
-      adi_mgkg_lt: 5
-      context_daily_intake_mgkg_gt: 5
+      adi_lt: 0.1
     then:
-      risk: "Caution"
-      reason: "Lượng tiêu thụ vượt mức ADI cho phép (có nguy cơ tích lũy độc tính)"
+      risk: 4
+      reason: "ADI quá thấp (<0.1 mg/kg/ngày) → nguy cơ độc tính → Mức 4 (BT)"
 
-  # 5️⃣ Nhóm phẩm màu tổng hợp (colorant)
-  category_colorant:
+  # ===========================================================
+  #  MỨC 2 — SL (Safe w/ Limits)
+  # ===========================================================
+
+  low_adi_requires_limit:
     if:
-      category_in: ["Colorant", "Artificial color"]
+      adi_lt: 5
     then:
-      risk: "Caution"
-      reason: "Phẩm màu tổng hợp có thể gây kích ứng và phản ứng dị ứng"
+      risk: 2
+      reason: "ADI thấp (<5 mg/kg/ngày) → cần giới hạn → Mức 2 (SL)"
 
-  # 6️⃣ Nhóm chất bảo quản (preservative)
-  category_preservative:
-    if:
-      category_in: ["Preservative"]
-    then:
-      risk: "Caution"
-      reason: "Chất bảo quản nên hạn chế với trẻ nhỏ hoặc người nhạy cảm"
+  # ===========================================================
+  #  MỨC 1 — VS (Very Safe)
+  # ===========================================================
 
-  # 7️⃣ Trường hợp mặc định an toàn
-  default_safe:
+  default_vs:
     if: {}
     then:
-      risk: "Safe"
-      reason: "Không có dấu hiệu nguy cơ đặc biệt theo dữ liệu hiện có"
+      risk: 1
+      reason: "Không vi phạm quy tắc nào trong YAML → Mức 1 (VS)"
