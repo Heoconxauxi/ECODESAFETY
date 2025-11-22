@@ -17,7 +17,7 @@ class GoogleLoginRequest(BaseModel):
     id_token: str
 
 
-@router.post("/auth/google-login")
+@router.post("/google-login")
 def google_login(payload: GoogleLoginRequest):
     driver = None
     try:
