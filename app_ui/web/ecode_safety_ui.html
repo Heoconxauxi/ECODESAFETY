@@ -5,93 +5,132 @@
   <title>EcodeSafety Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
     * { box-sizing: border-box; }
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #020617;
+      --bg-soft: #111827;
+      --accent: #2563eb;
+      --accent-soft: #1d4ed8;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+    }
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f1f5f9;
-      color: #111827;
+      background: radial-gradient(circle at top, #1d4ed8 0, #020617 45%);
+      color: var(--text-main);
       display: flex;
       height: 100vh;
       overflow: hidden;
     }
-
-    /* SIDEBAR */
     .sidebar {
-      width: 240px;
-      background: #1e293b;
+      width: 250px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(18px);
       color: #e5e7eb;
-      padding: 20px;
+      padding: 20px 18px;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      border-right: 1px solid rgba(148, 163, 184, 0.2);
     }
     .sidebar h2 {
-      margin: 0 0 20px;
+      margin: 0 0 18px;
       font-size: 20px;
       font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar h2 span.logo-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0b1120;
+    }
+    .menu-group-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin: 8px 0 4px;
     }
     .menu-btn {
-      padding: 11px 12px;
-      border-radius: 999px;
-      margin-bottom: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 6px;
       cursor: pointer;
       color: #e5e7eb;
       font-size: 14px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
-      transition: background 0.18s ease, transform 0.12s ease;
+      transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.12s ease;
     }
-    .menu-btn span.icon {
-      font-size: 16px;
+    .menu-main { display: flex; align-items: center; gap: 8px; }
+    .menu-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+      color: #cbd5f5;
     }
     .menu-btn.active {
-      background: #2563eb;
-      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.45);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      box-shadow: 0 10px 26px rgba(37, 99, 235, 0.5);
       transform: translateY(-1px);
     }
-    .menu-btn:hover {
-      background: #334155;
-    }
+    .menu-btn:hover { background: #0b1120; }
 
-    /* MAIN CONTENT */
     .main {
       flex: 1;
       overflow-y: auto;
-      padding: 20px 30px;
+      padding: 18px 26px 24px;
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.32) 0, #020617 45%);
     }
-
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+      margin-bottom: 14px;
     }
     header h1 {
       margin: 0;
       font-size: 22px;
       font-weight: 600;
-    }
-
-    .user-box {
       display: flex;
       align-items: center;
-      gap: 12px;
-      position: relative;
+      gap: 10px;
     }
-
-    /* GOOGLE LOGIN BUTTON WRAPPER */
-    #google-login-btn {
+    header h1 span.badge-beta {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(96, 165, 250, 0.2);
+      color: #bfdbfe;
+      border: 1px solid rgba(96, 165, 250, 0.5);
+    }
+    header small {
       display: block;
+      color: var(--text-muted);
+      font-size: 11px;
     }
 
-    /* USER INFO (sau khi login) */
+    .user-box { display: flex; align-items: center; gap: 12px; position: relative; }
+    #google-login-btn { display: block; }
     #user-info {
       display: none;
       align-items: center;
@@ -99,51 +138,41 @@
       cursor: pointer;
       padding: 4px 8px;
       border-radius: 999px;
-      transition: background 0.18s;
+      transition: background 0.18s, transform 0.1s;
+      background: rgba(15, 23, 42, 0.7);
     }
     #user-info:hover {
-      background: #e5e7eb;
+      background: rgba(15, 23, 42, 1);
+      transform: translateY(-1px);
     }
-
     .user-avatar {
       width: 32px;
       height: 32px;
-      background: #2563eb;
+      background: linear-gradient(135deg, #22c55e, #06b6d4);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      color: #f9fafb;
+      color: #020617;
       text-transform: uppercase;
       font-size: 14px;
     }
-    .user-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-    }
-    .user-text .name {
-      font-size: 13px;
-      font-weight: 500;
-    }
-    .user-text .email {
-      font-size: 11px;
-      color: #6b7280;
-    }
-
-    /* USER DROPDOWN MENU */
+    .user-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .user-text .name { font-size: 13px; font-weight: 500; }
+    .user-text .email { font-size: 11px; color: #9ca3af; }
     .user-menu {
       position: absolute;
       top: 40px;
       right: 0;
-      background: #ffffff;
+      background: #020617;
       border-radius: 12px;
-      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.8);
       padding: 6px 0;
       min-width: 160px;
       display: none;
       z-index: 10;
+      border: 1px solid rgba(51, 65, 85, 0.7);
     }
     .user-menu-item {
       padding: 8px 12px;
@@ -152,32 +181,31 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      color: #111827;
+      color: #e5e7eb;
     }
-    .user-menu-item:hover {
-      background: #f3f4f6;
-    }
-    .user-menu-item.danger {
-      color: #b91c1c;
-    }
+    .user-menu-item:hover { background: #111827; }
+    .user-menu-item.danger { color: #fecaca; }
 
-    /* CARDS */
     .card {
-      background: #ffffff;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), #020617);
       padding: 18px 18px 16px;
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      margin-bottom: 20px;
+      border-radius: 18px;
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.85);
+      margin-bottom: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
     }
     .card h2 {
       margin: 0 0 4px;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .card small {
       display: block;
       font-size: 12px;
-      color: #6b7280;
+      color: var(--text-muted);
       margin-bottom: 10px;
     }
 
@@ -186,27 +214,25 @@
       padding: 10px 11px;
       margin-top: 8px;
       border-radius: 12px;
-      border: 1px solid #cbd5e1;
+      border: 1px solid #1e293b;
       font-size: 14px;
       outline: none;
-      transition: border 0.15s, box-shadow 0.15s;
-      background: #f9fafb;
+      transition: border 0.15s, box-shadow 0.15s, background 0.15s;
+      background: rgba(15, 23, 42, 0.8);
+      color: #f9fafb;
     }
     textarea:focus, input[type="text"]:focus, input[type="file"]:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px rgba(37,99,235,0.25);
-      background: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.35);
+      background: #020617;
     }
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
+    textarea { resize: vertical; min-height: 80px; }
 
     button {
       padding: 9px 16px;
       border-radius: 999px;
       border: none;
-      background: #2563eb;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
       cursor: pointer;
       margin-right: 8px;
@@ -216,21 +242,22 @@
       align-items: center;
       gap: 6px;
       transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.45);
     }
     button.secondary {
-      background: #e5e7eb;
-      color: #111827;
+      background: #111827;
+      color: #e5e7eb;
       box-shadow: none;
+      border: 1px solid rgba(55, 65, 81, 0.8);
     }
     button:disabled {
-      opacity: 0.5;
+      opacity: 0.55;
       box-shadow: none;
       cursor: default;
     }
     button:not(:disabled):hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.65);
     }
 
     .result {
@@ -245,13 +272,12 @@
       overflow-y: auto;
       font-size: 12px;
       font-family: "JetBrains Mono", "Fira Code", monospace;
+      border: 1px solid #1e293b;
     }
 
-    /* TABS */
     .tab-page { display: none; }
     .tab-page.active { display: block; }
 
-    /* ADDITIVE CARD (Ingredients & Search) */
     .additive-list {
       margin-top: 10px;
       display: flex;
@@ -259,27 +285,44 @@
       gap: 10px;
     }
     .additive-card {
-      background: #f9fafb;
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.26), rgba(15, 23, 42, 0.95));
       border-radius: 14px;
       padding: 10px 12px;
-      border: 1px solid #e5e7eb;
-      transition: transform 0.08s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      transition: transform 0.08s ease, box-shadow 0.12s ease, border-color 0.12s ease, background 0.12s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .additive-card::after {
+      content: "Chi tiết ›";
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 11px;
+      color: #bfdbfe;
+      opacity: 0.75;
     }
     .additive-card:hover {
-      transform: translateY(-1px);
-      border-color: #bfdbfe;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+      transform: translateY(-1px) scale(1.005);
+      border-color: #60a5fa;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.75);
+      background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.4), #020617);
     }
     .add-title {
       font-size: 15px;
       font-weight: 600;
       margin-bottom: 2px;
-      color: #111827;
+      color: #e5e7eb;
     }
     .add-line {
       font-size: 13px;
-      color: #374151;
+      color: #cbd5f5;
       margin-top: 2px;
+    }
+    .add-line.muted {
+      font-size: 12px;
+      color: #9ca3af;
     }
     .add-tags {
       margin-top: 4px;
@@ -291,11 +334,11 @@
       padding: 2px 8px;
       font-size: 11px;
       border-radius: 999px;
-      background: #e5e7eb;
-      color: #111827;
+      background: rgba(148, 163, 184, 0.25);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.5);
     }
 
-    /* BADGES (C1 style) */
     .badge-pill {
       display: inline-flex;
       align-items: center;
@@ -307,32 +350,41 @@
       margin-right: 4px;
     }
     .badge-pill.green {
-      background: #dcfce7;
-      color: #166534;
+      background: rgba(22, 163, 74, 0.18);
+      color: #bbf7d0;
+      border: 1px solid rgba(22, 163, 74, 0.7);
     }
     .badge-pill.yellow {
-      background: #fef9c3;
-      color: #854d0e;
+      background: rgba(202, 138, 4, 0.18);
+      color: #fef3c7;
+      border: 1px solid rgba(202, 138, 4, 0.7);
     }
     .badge-pill.red {
-      background: #fee2e2;
-      color: #b91c1c;
+      background: rgba(185, 28, 28, 0.18);
+      color: #fecaca;
+      border: 1px solid rgba(185, 28, 28, 0.7);
+    }
+    .badge-pill.gray {
+      background: rgba(148, 163, 184, 0.24);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.7);
     }
 
-    /* HISTORY BLOCK */
     .history-block {
-      background: #0f172a;
+      background: #020617;
       color: #e5e7eb;
       padding: 10px 12px;
       border-radius: 12px;
       margin-bottom: 10px;
       cursor: pointer;
       font-size: 13px;
-      transition: background 0.12s, transform 0.08s;
+      transition: background 0.12s, transform 0.08s, border 0.12s;
+      border: 1px solid rgba(55, 65, 81, 0.85);
     }
     .history-block:hover {
-      background: #111827;
+      background: #020617;
       transform: translateY(-1px);
+      border-color: #60a5fa;
     }
     .history-header-line {
       display: flex;
@@ -342,17 +394,19 @@
     }
     .history-ecodes {
       font-weight: 600;
-      color: #93c5fd;
+      color: #bfdbfe;
     }
     .history-time {
       font-size: 11px;
-      opacity: 0.8;
+      opacity: 0.9;
       white-space: nowrap;
+      color: #e5e7eb;
     }
     .history-source-text {
       margin-top: 4px;
       font-size: 12px;
       opacity: 0.9;
+      color: #9ca3af;
     }
     .history-detail {
       display: none;
@@ -360,46 +414,55 @@
       margin-top: 8px;
       padding: 8px 9px;
       border-radius: 10px;
+      border: 1px dashed rgba(75, 85, 99, 0.9);
     }
     .history-add-card {
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
       padding: 6px 0;
       font-size: 12px;
+      cursor: pointer;
     }
-    .history-add-card:last-child {
-      border-bottom: none;
-    }
+    .history-add-card:last-child { border-bottom: none; }
+    .history-add-card:hover { background: #020617; }
   </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-  <h2>EcodeSafety</h2>
-  <div class="menu-btn active" onclick="switchTab('ingredient', this)">
-    <span class="icon">🥗</span> <span>Ingredient</span>
+  <h2>
+    <span class="logo-badge">E</span>
+    <span>EcodeSafety</span>
+  </h2>
+
+  <div class="menu-group-label">Chức năng</div>
+
+  <div class="menu-btn active" data-tab="ingredient" onclick="setActiveTab('ingredient')">
+    <div class="menu-main"><span>Ingredient</span></div>
+    <span class="menu-pill">Analyze</span>
   </div>
-  <div class="menu-btn" onclick="switchTab('search', this)">
-    <span class="icon">🔍</span> <span>Search</span>
+  <div class="menu-btn" data-tab="search" onclick="setActiveTab('search')">
+    <div class="menu-main"><span>Search</span></div>
+    <span class="menu-pill">Lookup</span>
   </div>
-  <div class="menu-btn" onclick="switchTab('history', this)">
-    <span class="icon">📜</span> <span>History</span>
+  <div class="menu-btn" data-tab="history" onclick="setActiveTab('history')">
+    <div class="menu-main"><span>History</span></div>
+    <span class="menu-pill">Recent</span>
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="main">
-
-  <!-- HEADER -->
   <header>
-    <h1>EcodeSafety Dashboard</h1>
+    <div>
+      <h1>
+        EcodeSafety Dashboard
+        <span class="badge-beta">KLTN • Neo4j • AI</span>
+      </h1>
+      <small>Nhập thành phần / chụp ảnh → hệ thống chuẩn hóa & đối chiếu phụ gia theo INS/E-code.</small>
+    </div>
 
     <div class="user-box">
-      <!-- GOOGLE LOGIN BUTTON (Right) -->
       <div id="google-login-btn"></div>
-
-      <!-- USER INFO + DROPDOWN -->
       <div id="user-info">
         <div id="user-avatar" class="user-avatar"></div>
         <div class="user-text">
@@ -407,30 +470,26 @@
           <span id="user-email" class="email"></span>
         </div>
       </div>
-
       <div id="user-menu" class="user-menu">
-        <div class="user-menu-item">
-          👤 Tài khoản
-        </div>
-        <div class="user-menu-item danger" onclick="logout()">
-          🚪 Đăng xuất
-        </div>
+        <div class="user-menu-item">Tài khoản</div>
+        <div class="user-menu-item danger" onclick="logout()">Đăng xuất</div>
       </div>
     </div>
   </header>
 
-  <!-- ============ TAB: INGREDIENT ============ -->
   <div id="tab-ingredient" class="tab-page active">
     <div class="card">
       <h2>Phân tích TEXT</h2>
-      <small>Nhập thành phần sản phẩm, hệ thống sẽ trích E-code, tra Neo4j, áp rule.</small>
+      <small>Nhập thành phần sản phẩm, hệ thống sẽ trích E-code, tra Neo4j & áp rule.</small>
       <textarea id="inputText" rows="4" placeholder="VD: Thành phần: E100, E621..."></textarea>
       <div style="margin-top:8px;">
-        <button id="btnAnalyzeText" onclick="analyzeText()">🔍 Phân tích TEXT</button>
-        <button class="secondary" onclick="clearContainer('ingredientResult')">🧹 Xoá kết quả</button>
+        <button id="btnAnalyzeText" onclick="analyzeText()">Phân tích TEXT</button>
+        <button class="secondary" onclick="clearContainer('ingredientResult');clearResultAndCache('ingredientResult');clearContainer('resultText');clearContainer('sourceTextBlock')">Xoá kết quả</button>
       </div>
       <div id="ingredientResult" class="additive-list"></div>
-      <div id="resultText" class="result"></div> <!-- debug JSON optional -->
+      <div id="resultText" class="result"></div>
+      <!-- thêm block hiển thị source_text cho TEXT -->
+      <div id="sourceTextBlock" class="result" style="margin-top:8px;display:none;"></div>
     </div>
 
     <div class="card">
@@ -438,37 +497,37 @@
       <small>Upload ảnh nhãn sản phẩm. Server sẽ OCR → trích E-code → phân tích.</small>
       <input type="file" id="imageFile" accept="image/*">
       <div style="margin-top:8px;">
-        <button id="btnAnalyzeImage" onclick="analyzeImage()">🖼 Phân tích Ảnh</button>
-        <button class="secondary" onclick="clearContainer('imageResult')">🧹 Xoá kết quả</button>
+        <button id="btnAnalyzeImage" onclick="analyzeImage()">Phân tích Ảnh</button>
+        <button class="secondary" onclick="clearContainer('imageResult');clearResultAndCache('imageResult');clearContainer('resultImage');clearContainer('sourceImageBlock')">Xoá kết quả</button>
       </div>
       <div id="imageResult" class="additive-list"></div>
-      <div id="resultImage" class="result"></div> <!-- debug JSON optional -->
+      <div id="resultImage" class="result"></div>
+      <!-- thêm block hiển thị source_text cho IMAGE -->
+      <div id="sourceImageBlock" class="result" style="margin-top:8px;display:none;"></div>
     </div>
   </div>
 
-  <!-- ============ TAB: SEARCH ============ -->
   <div id="tab-search" class="tab-page">
     <div class="card">
       <h2>Search E-code</h2>
-      <small>Tìm theo mã INS, tên tiếng Anh hoặc tiếng Việt.</small>
+      <small>Tìm theo mã INS, tên tiếng Anh hoặc tiếng Việt. Nhấn vào kết quả để xem chi tiết.</small>
       <input type="text" id="searchBox" placeholder="Nhập E100, Curcumin, Tinh nghệ...">
       <div style="margin-top:8px;">
-        <button id="btnSearch" onclick="searchAdditives()">🔎 Search</button>
-        <button class="secondary" onclick="clearContainer('searchResult')">🧹 Xoá kết quả</button>
+        <button id="btnSearch" onclick="searchAdditives()">Search</button>
+        <button class="secondary" onclick="clearContainer('searchResult');clearResultAndCache('searchResult');clearContainer('resultSearch')">Xoá kết quả</button>
       </div>
       <div id="searchResult" class="additive-list"></div>
-      <div id="resultSearch" class="result"></div> <!-- debug JSON optional -->
+      <div id="resultSearch" class="result"></div>
     </div>
   </div>
 
-  <!-- ============ TAB: HISTORY ============ -->
   <div id="tab-history" class="tab-page">
     <div class="card">
       <h2>Lịch sử phân tích</h2>
-      <small>Mỗi block tương ứng 1 lần phân tích. Bấm vào để xem chi tiết các phụ gia.</small>
+      <small>Mỗi block tương ứng 1 lần phân tích. Nhấn để xem phụ gia, nhấn phụ gia để mở chi tiết.</small>
       <div style="margin-top:8px;">
-        <button id="btnHistory" onclick="loadHistory()">📜 Tải lịch sử</button>
-        <button class="secondary" onclick="clearContainer('historyResult')">🧹 Xoá kết quả</button>
+        <button id="btnHistory" onclick="loadHistory()">Tải lịch sử</button>
+        <button class="secondary" onclick="clearContainer('historyResult')">Xoá kết quả</button>
       </div>
       <div id="historyResult" style="margin-top:12px;"></div>
     </div>
@@ -477,23 +536,65 @@
 </div>
 
 <script>
-const API_BASE = "https://flf3p194-8000.asse.devtunnels.ms"; 
+const API_BASE = "https://flf3p194-8000.asse.devtunnels.ms";
 let ACCESS_TOKEN = null;
 let userMenuVisible = false;
 
-/* ---------------- TAB SWITCH ---------------- */
-function switchTab(id, btn) {
-  document.querySelectorAll(".menu-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
+const CACHE_TAB_KEY = "CACHE_LAST_TAB";
+const CACHE_CONTAINER_KEY = "CACHE_LAST_CONTAINER";
+const CACHE_DATA_KEY = "CACHE_LAST_DATA";
 
-  document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active"));
-  document.getElementById("tab-" + id).classList.add("active");
+function saveCache(tab, containerId, list) {
+  try {
+    localStorage.setItem(CACHE_TAB_KEY, tab);
+    localStorage.setItem(CACHE_CONTAINER_KEY, containerId);
+    localStorage.setItem(CACHE_DATA_KEY, JSON.stringify(list || []));
+  } catch (e) {}
 }
 
-/* ---------------- LOGIN PERSIST ---------------- */
+function clearCacheIfContainer(containerId) {
+  try {
+    const last = localStorage.getItem(CACHE_CONTAINER_KEY);
+    if (last === containerId) {
+      localStorage.removeItem(CACHE_TAB_KEY);
+      localStorage.removeItem(CACHE_CONTAINER_KEY);
+      localStorage.removeItem(CACHE_DATA_KEY);
+    }
+  } catch (e) {}
+}
+
+function clearResultAndCache(containerId) {
+  clearCacheIfContainer(containerId);
+}
+
+function openDetailWithData(additive, currentTab, containerId) {
+  if (!additive) return;
+  try {
+    localStorage.setItem("ADD_DETAIL", JSON.stringify(additive));
+    if (currentTab) localStorage.setItem(CACHE_TAB_KEY, currentTab);
+    if (containerId) localStorage.setItem(CACHE_CONTAINER_KEY, containerId);
+  } catch (e) {}
+
+  const params = new URLSearchParams();
+  if (additive.ins) params.set("ins", additive.ins);
+  const qs = params.toString();
+  window.location.href = "additive_detail.html" + (qs ? "?" + qs : "");
+}
+
+function setActiveTab(id) {
+  document.querySelectorAll(".menu-btn").forEach(btn => {
+    const tab = btn.getAttribute("data-tab");
+    if (tab === id) btn.classList.add("active");
+    else btn.classList.remove("active");
+  });
+
+  document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active"));
+  const page = document.getElementById("tab-" + id);
+  if (page) page.classList.add("active");
+}
+
 window.onload = function () {
   const tk = localStorage.getItem("ACCESS_TOKEN");
-
   if (tk) {
     ACCESS_TOKEN = tk;
     const name = localStorage.getItem("USER_NAME") || "User";
@@ -513,20 +614,35 @@ window.onload = function () {
     { theme: "outline", size: "medium", text: "signin_with" }
   );
 
-  // Toggle user menu
   document.getElementById("user-info").addEventListener("click", function (e) {
     e.stopPropagation();
     userMenuVisible = !userMenuVisible;
     document.getElementById("user-menu").style.display = userMenuVisible ? "block" : "none";
   });
 
-  // Click outside to close
   document.addEventListener("click", function () {
     if (userMenuVisible) {
       userMenuVisible = false;
       document.getElementById("user-menu").style.display = "none";
     }
   });
+
+  // Restore cache
+  try {
+    const savedTab = localStorage.getItem(CACHE_TAB_KEY) || "ingredient";
+    setActiveTab(savedTab);
+
+    const containerId = localStorage.getItem(CACHE_CONTAINER_KEY);
+    const dataStr = localStorage.getItem(CACHE_DATA_KEY);
+    if (containerId && dataStr) {
+      const list = JSON.parse(dataStr);
+      if (savedTab === "ingredient") {
+        renderAdditivesForIngredient(containerId, list);
+      } else if (savedTab === "search") {
+        renderAdditivesForSearch(containerId, list);
+      }
+    }
+  } catch (e) {}
 };
 
 function setUserUI(name, email) {
@@ -538,7 +654,6 @@ function setUserUI(name, email) {
   document.getElementById("user-email").innerText = email || "";
 }
 
-/* ---------------- GOOGLE LOGIN ---------------- */
 async function handleGoogleLogin(res) {
   const response = await fetch(API_BASE + "/auth/google-login", {
     method: "POST",
@@ -564,7 +679,6 @@ function logout() {
   location.reload();
 }
 
-/* ---------------- HELPERS ---------------- */
 function showJson(id, data) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -582,47 +696,44 @@ function clearContainer(id) {
 
 function getRiskBadge(level) {
   if (level === 1 || level === "1") {
-    return '<span class="badge-pill green">🟢 Very Safe (vs)</span>';
+    return '<span class="badge-pill green">VS - Very Safe</span>';
   }
   if (level === 2 || level === "2") {
-    return '<span class="badge-pill yellow">🟡 Safe w/ Limits (sl)</span>';
+    return '<span class="badge-pill yellow">SL - Safe w/ Limits</span>';
   }
   if (level === 4 || level === "4") {
-    return '<span class="badge-pill red">🔴 Banned / Toxic (bt)</span>';
+    return '<span class="badge-pill red">BT - Banned / Toxic</span>';
   }
   return '<span class="badge-pill gray">N/A</span>';
 }
 
 function getRuleBadge(rule) {
   if (rule === 1 || rule === "1") {
-    return '<span class="badge-pill green">🟢 Safe</span>';
+    return '<span class="badge-pill green">Rule: Safe</span>';
   }
   if (rule === 2 || rule === "2") {
-    return '<span class="badge-pill yellow">🟡 Warning</span>';
+    return '<span class="badge-pill yellow">Rule: Warning</span>';
   }
   if (rule === 4 || rule === "4") {
-    return '<span class="badge-pill red">🔴 Avoid</span>';
+    return '<span class="badge-pill red">Rule: Avoid</span>';
   }
-  return '<span class="badge-pill gray">N/A</span>';
+  return '<span class="badge-pill gray">Rule: N/A</span>';
 }
 
-/* Render additive card for AnalysisResult (ecodes_found) */
 function renderAdditivesForIngredient(containerId, ecodesFound) {
   const box = document.getElementById(containerId);
   if (!box) return;
   box.innerHTML = "";
 
   if (!ecodesFound || ecodesFound.length === 0) {
-    box.innerHTML = '<div style="font-size:13px;color:#6b7280;">Không tìm thấy phụ gia nào.</div>';
+    box.innerHTML = '<div style="font-size:13px;color:#9ca3af;">Không tìm thấy phụ gia nào.</div>';
     return;
   }
 
   ecodesFound.forEach(e => {
-    const functions = e.function || [];
-    const sources = (e.sources || []); // nếu sau này API có
+    const functions = e.functions || e.function || [];
     const riskBadge = getRiskBadge(e.level);
     const ruleBadge = getRuleBadge(e.rule_risk);
-
     const statusText = e.status_vn || "Được phép tại Việt Nam";
 
     const card = document.createElement("div");
@@ -631,45 +742,39 @@ function renderAdditivesForIngredient(containerId, ecodesFound) {
       <div class="add-title">${e.ins || "N/A"} – ${e.name || ""}</div>
       <div class="add-line"><b>VN:</b> ${e.name_vn || "—"}</div>
       <div class="add-line"><b>ADI:</b> ${e.adi || "—"}</div>
-      <div class="add-line"><b>Info:</b> ${e.info || "—"}</div>
-      <div class="add-line">
-        <b>Functions:</b> ${
-          functions.length ? functions.join(", ") : "—"
-        }
-      </div>
       <div class="add-line"><b>Status:</b> ${statusText}</div>
       <div class="add-line">
         <b>Risk:</b> ${riskBadge}
         <b>Rule:</b> ${ruleBadge}
       </div>
-      ${
-        e.rule_name || e.rule_reason
-        ? `<div class="add-line"><b>Rule detail:</b> ${e.rule_name || ""} ${
-            e.rule_reason ? " – " + e.rule_reason : ""
-          }</div>`
-        : ""
-      }
+      <div class="add-line muted">Nhấn để xem chi tiết & mô tả AI…</div>
+      <div class="add-tags">
+        ${
+          (functions && functions.length)
+            ? functions.map(f => `<span class="tag-chip">${f}</span>`).join("")
+            : '<span class="tag-chip">No function tag</span>'
+        }
+      </div>
     `;
+    card.onclick = () => openDetailWithData(e, "ingredient", containerId);
     box.appendChild(card);
   });
 }
 
-/* Render additive card for SearchResult (items) */
 function renderAdditivesForSearch(containerId, items) {
   const box = document.getElementById(containerId);
   if (!box) return;
   box.innerHTML = "";
 
   if (!items || items.length === 0) {
-    box.innerHTML = '<div style="font-size:13px;color:#6b7280;">Không tìm thấy phụ gia nào.</div>';
+    box.innerHTML = '<div style="font-size:13px;color:#9ca3af;">Không tìm thấy phụ gia nào.</div>';
     return;
   }
 
   items.forEach(e => {
-    const functions = e.function || [];
+    const functions = e.functions || e.function || [];
     const riskBadge = getRiskBadge(e.level);
     const statusText = e.status_vn || "Được phép tại Việt Nam";
-    const sources = e.source ? [e.source] : [];
 
     const card = document.createElement("div");
     card.className = "additive-card";
@@ -677,32 +782,29 @@ function renderAdditivesForSearch(containerId, items) {
       <div class="add-title">${e.ins || "N/A"} – ${e.name || ""}</div>
       <div class="add-line"><b>VN:</b> ${e.name_vn || "—"}</div>
       <div class="add-line"><b>ADI:</b> ${e.adi || "—"}</div>
-      <div class="add-line"><b>Info:</b> ${e.info || "—"}</div>
-      <div class="add-line">
-        <b>Functions:</b> ${
-          functions.length ? functions.join(", ") : "—"
-        }
-      </div>
       <div class="add-line"><b>Status:</b> ${statusText}</div>
       <div class="add-line"><b>Risk:</b> ${riskBadge}</div>
-      ${
-        sources.length
-          ? `<div class="add-line"><b>Sources:</b> ${sources.join(", ")}</div>`
-          : ""
-      }
+      <div class="add-line muted">Nhấn để xem chi tiết & mô tả AI…</div>
+      <div class="add-tags">
+        ${
+          (functions && functions.length)
+            ? functions.map(f => `<span class="tag-chip">${f}</span>`).join("")
+            : '<span class="tag-chip">No function tag</span>'
+        }
+      </div>
     `;
+    card.onclick = () => openDetailWithData(e, "search", containerId);
     box.appendChild(card);
   });
 }
 
-/* ---------------- ANALYZE TEXT ---------------- */
 async function analyzeText() {
   const text = document.getElementById("inputText").value.trim();
   if (!text) return alert("Chưa nhập nội dung!");
 
   const btn = document.getElementById("btnAnalyzeText");
   btn.disabled = true;
-  btn.innerText = "⏳ Đang phân tích...";
+  btn.innerText = "Đang phân tích...";
 
   try {
     const headers = {"Content-Type": "application/json"};
@@ -717,29 +819,43 @@ async function analyzeText() {
     const data = await res.json();
     if (!res.ok) {
       showJson("resultText", data);
+      const b = document.getElementById("sourceTextBlock");
+      b.style.display = "none";
+      b.innerText = "";
       return;
     }
 
-    renderAdditivesForIngredient("ingredientResult", data.ecodes_found);
-    // Debug JSON nếu cần
-    // showJson("resultText", data);
+    const list = data.ecodes_found || [];
+    saveCache("ingredient", "ingredientResult", list);
+    renderAdditivesForIngredient("ingredientResult", list);
+
+    const b = document.getElementById("sourceTextBlock");
+    if (data.source_text) {
+      b.style.display = "block";
+      b.innerText = "SOURCE TEXT (TEXT INPUT):\n" + data.source_text;
+    } else {
+      b.style.display = "none";
+      b.innerText = "";
+    }
 
   } catch (err) {
     showJson("resultText", { error: String(err) });
+    const b = document.getElementById("sourceTextBlock");
+    b.style.display = "none";
+    b.innerText = "";
   } finally {
     btn.disabled = false;
-    btn.innerText = "🔍 Phân tích TEXT";
+    btn.innerText = "Phân tích TEXT";
   }
 }
 
-/* ---------------- ANALYZE IMAGE ---------------- */
 async function analyzeImage() {
   const file = document.getElementById("imageFile").files[0];
   if (!file) return alert("Chưa chọn ảnh!");
 
   const btn = document.getElementById("btnAnalyzeImage");
   btn.disabled = true;
-  btn.innerText = "⏳ Đang phân tích...";
+  btn.innerText = "Đang phân tích...";
 
   try {
     const form = new FormData();
@@ -757,27 +873,41 @@ async function analyzeImage() {
     const data = await res.json();
     if (!res.ok) {
       showJson("resultImage", data);
+      const b = document.getElementById("sourceImageBlock");
+      b.style.display = "none";
+      b.innerText = "";
       return;
     }
 
-    renderAdditivesForIngredient("imageResult", data.ecodes_found);
-    // Debug JSON nếu cần
-    // showJson("resultImage", data);
+    const list = data.ecodes_found || [];
+    saveCache("ingredient", "imageResult", list);
+    renderAdditivesForIngredient("imageResult", list);
+
+    const b = document.getElementById("sourceImageBlock");
+    if (data.source_text) {
+      b.style.display = "block";
+      b.innerText = "SOURCE TEXT (OCR IMAGE):\n" + data.source_text;
+    } else {
+      b.style.display = "none";
+      b.innerText = "";
+    }
 
   } catch (err) {
     showJson("resultImage", { error: String(err) });
+    const b = document.getElementById("sourceImageBlock");
+    b.style.display = "none";
+    b.innerText = "";
   } finally {
     btn.disabled = false;
-    btn.innerText = "🖼 Phân tích Ảnh";
+    btn.innerText = "Phân tích Ảnh";
   }
 }
 
-/* ---------------- SEARCH ---------------- */
 async function searchAdditives() {
   const q = document.getElementById("searchBox").value.trim();
   const btn = document.getElementById("btnSearch");
   btn.disabled = true;
-  btn.innerText = "⏳ Đang search...";
+  btn.innerText = "Đang search...";
 
   try {
     const url = API_BASE + "/ecodes/search?q=" + encodeURIComponent(q || "");
@@ -789,25 +919,24 @@ async function searchAdditives() {
       return;
     }
 
-    renderAdditivesForSearch("searchResult", data.items || []);
-    // Debug JSON nếu cần
-    // showJson("resultSearch", data);
+    const list = data.items || [];
+    saveCache("search", "searchResult", list);
+    renderAdditivesForSearch("searchResult", list);
 
   } catch (err) {
     showJson("resultSearch", { error: String(err) });
   } finally {
     btn.disabled = false;
-    btn.innerText = "🔎 Search";
+    btn.innerText = "Search";
   }
 }
 
-/* ---------------- HISTORY ---------------- */
 async function loadHistory() {
   if (!ACCESS_TOKEN) return alert("Cần đăng nhập!");
 
   const btn = document.getElementById("btnHistory");
   btn.disabled = true;
-  btn.innerText = "⏳ Đang tải...";
+  btn.innerText = "Đang tải...";
 
   try {
     const res = await fetch(API_BASE + "/users/me/history", {
@@ -819,21 +948,21 @@ async function loadHistory() {
     container.innerHTML = "";
 
     if (!res.ok) {
-      container.innerHTML = `<div style="color:#b91c1c;font-size:13px;">Lỗi: ${data.detail || "Không thể tải lịch sử"}</div>`;
+      container.innerHTML = `<div style="color:#fecaca;font-size:13px;">Lỗi: ${data.detail || "Không thể tải lịch sử"}</div>`;
       return;
     }
 
     if (!data.items || data.items.length === 0) {
-      container.innerHTML = '<div style="font-size:13px;color:#6b7280;">Chưa có lịch sử phân tích.</div>';
+      container.innerHTML = '<div style="font-size:13px;color:#9ca3af;">Chưa có lịch sử phân tích.</div>';
       return;
     }
 
-    data.items.forEach((item, i) => {
+    data.items.forEach((item) => {
       const block = document.createElement("div");
       block.className = "history-block";
       block.innerHTML = `
         <div class="history-header-line">
-          <div class="history-ecodes">📌 ${item.ecodes.join(", ")}</div>
+          <div class="history-ecodes">${item.ecodes.join(", ")}</div>
           <div class="history-time">${new Date(item.analyzed_at).toLocaleString()}</div>
         </div>
         <div class="history-source-text">${item.source_text || ""}</div>
@@ -843,15 +972,22 @@ async function loadHistory() {
       detail.className = "history-detail";
 
       if (item.additives && item.additives.length > 0) {
-        detail.innerHTML = item.additives.map(a => `
-          <div class="history-add-card">
+        item.additives.forEach(a => {
+          const c = document.createElement("div");
+          c.className = "history-add-card";
+          c.innerHTML = `
             <div><b>${a.ins}</b> – ${a.name || ""}</div>
             <div>VN: ${a.name_vn || "—"}</div>
             <div>Functions: ${(a.functions || []).join(", ") || "—"}</div>
             <div>Risk: ${getRiskBadge(a.level)}</div>
             <div>Status: ${a.status_vn || "Được phép tại Việt Nam"}</div>
-          </div>
-        `).join("");
+          `;
+          c.onclick = (ev) => {
+            ev.stopPropagation();
+            openDetailWithData(a, "history", null);
+          };
+          detail.appendChild(c);
+        });
       } else {
         detail.innerHTML = '<div style="font-size:12px;color:#9ca3af;">Không có thông tin phụ gia chi tiết.</div>';
       }
@@ -867,13 +1003,12 @@ async function loadHistory() {
 
   } catch (err) {
     const container = document.getElementById("historyResult");
-    container.innerHTML = `<div style="color:#b91c1c;font-size:13px;">Lỗi: ${String(err)}</div>`;
+    container.innerHTML = `<div style="color:#fecaca;font-size:13px;">Lỗi: ${String(err)}</div>`;
   } finally {
     btn.disabled = false;
-    btn.innerText = "📜 Tải lịch sử";
+    btn.innerText = "Tải lịch sử";
   }
 }
-
 </script>
 
 </body>

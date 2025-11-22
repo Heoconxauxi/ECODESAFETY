@@ -4,49 +4,66 @@ from datetime import datetime
 
 
 # ============================================================
-# ECODES DETAIL
+# MODEL CHUNG CHO MỌI TRƯỜNG HỢP
 # ============================================================
 
-class EcodeDetail(BaseModel):
+class AdditiveBase(BaseModel):
     """
-    Thông tin chi tiết một phụ gia trong kết quả phân tích.
-    Gồm cả true label (level) và kết quả rule (rule_risk).
+    Model phụ gia thống nhất dùng cho mọi API.
+    Trường `info` sẽ được sinh ra bằng API Chat (LLM).
     """
-    found: bool = Field(True, example=True)
+
+    # Thông tin cơ bản
     ins: str = Field(..., example="E100")
     name: Optional[str] = Field(None, example="Curcumin")
     name_vn: Optional[str] = Field(None, example="Tinh nghệ")
-    function: List[str] = Field(default_factory=list, example=["Colorant"])
-    adi: Optional[str] = Field(None, example="0-3 mg/kg bw/day")
-    info: Optional[str] = None
-    status_vn: Optional[int] = Field(None, example=0)
+
+    # functions/function được hợp nhất thành 1
+    functions: List[str] = Field(default_factory=list, example=["Colorant"])
+
+    # ADI và status
+    adi: Optional[str] = Field(None, example="0–3 mg/kg bw/day")
+    status_vn: Optional[int] = Field(None, example=1)
 
     # Nhãn thật
     level: Optional[int] = Field(None, example=2)
 
-    # Kết quả rule engine
-    rule_risk: Optional[int] = Field(None, example=4)
+    # Rule engine output
+    rule_risk: Optional[int] = None
     rule_reason: Optional[str] = None
     rule_name: Optional[str] = None
 
-    # Nếu không tìm thấy
-    message: Optional[str] = Field(
-        None, example="Không tìm thấy phụ gia trong cơ sở dữ liệu"
+    # Metadata
+    found: Optional[bool] = Field(None)
+    message: Optional[str] = None
+
+    # Source từ DB (EFSA, JECFA,...)
+    source: Optional[str] = None
+
+    # ⭐  NEW: field này dự định sẽ được LLM sinh ra
+    info: Optional[str] = Field(
+        None,
+        example="Curcumin là chất tạo màu vàng chiết xuất từ củ nghệ..."
     )
 
 
+# ============================================================
+# ANALYSIS API
+# ============================================================
+
+class EcodeDetail(AdditiveBase):
+    """Alias cho API phân tích."""
+    pass
+
+
 class AnalysisResult(BaseModel):
-    """
-    Kết quả tổng hợp khi phân tích thành phần sản phẩm.
-    """
-    status: str = Field(..., example="SUCCESS")
-    input_type: str = Field(..., example="TEXT_INPUT")
-    source_text: Optional[str] = Field(None, example="Thành phần: E100, E120")
-    ecodes_found: List[EcodeDetail] = Field(default_factory=list)
+    input_type: Optional[str] = None
+    source_text: Optional[str] = None
+    ecodes_found: List[EcodeDetail] = []
 
 
 class AnalyzeTextInput(BaseModel):
-    input_text: str = Field(..., example="Thành phần: E100, E120")
+    input_text: str
 
 
 class AnalyzeImageInput(BaseModel):
@@ -58,20 +75,12 @@ class AnalyzeImageInput(BaseModel):
 # SEARCH API
 # ============================================================
 
-class EcodeSearchItem(BaseModel):
-    ins: str
-    name: Optional[str] = None
-    name_vn: Optional[str] = None
-    function: List[str] = Field(default_factory=list)
-    adi: Optional[str] = None
-    info: Optional[str] = None
-    status_vn: Optional[int] = None
-    level: Optional[int] = None
-    source: Optional[str] = None
+class EcodeSearchItem(AdditiveBase):
+    pass
 
 
 class SearchResult(BaseModel):
-    query: Optional[str] = None
+    query: Optional[str]
     limit: int
     offset: int
     total: int
@@ -79,26 +88,14 @@ class SearchResult(BaseModel):
 
 
 # ============================================================
-# HISTORY API (NEW VERSION)
+# HISTORY API
 # ============================================================
 
-class HistoryAdditiveItem(BaseModel):
-    """
-    Additive trả về trong mục History.
-    Đây là dữ liệu JOIN lại từ Neo4j khi xem lịch sử.
-    """
-    ins: str
-    name: Optional[str]
-    name_vn: Optional[str]
-    functions: List[str] = Field(default_factory=list)
-    level: Optional[int] = None
-    status_vn: Optional[str] = None
+class HistoryAdditiveItem(AdditiveBase):
+    pass
 
 
 class HistoryItem(BaseModel):
-    """
-    Một lần phân tích => chứa danh sách mã ecode + additives tương ứng.
-    """
     ecodes: List[str]
     analyzed_at: datetime
     source_text: Optional[str]
