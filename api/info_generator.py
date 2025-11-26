@@ -1,6 +1,6 @@
 from google import genai
 
-client = genai.Client(api_key="AIzaSyDZo8ZczTXPVDJXv3IDa2JE53hVsD7EJ-8")
+client = genai.Client(api_key="AIzaSyBltTGvqVUMeIGLrSh2xmNmDYc1sP76bRw")
 
 
 async def generate_additive_info(ins: str, name: str, name_vn: str = None) -> str:

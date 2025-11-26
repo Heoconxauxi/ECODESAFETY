@@ -385,6 +385,9 @@ async def search_ecodes(
             total = total_record["total"] if total_record else 0
 
             return SearchResult(
+                query=q,
+                limit=limit,
+                offset=offset,
                 total=total,
                 items=items,
             )
@@ -601,27 +604,29 @@ async def get_my_history(
                     analyzed_at = datetime.fromisoformat(str(at))
 
                 # Lấy lại facts cho các E-code trong history
-                facts = get_facts_from_neo4j(ecodes)
-
                 additive_list: List[HistoryAdditiveItem] = []
-                for a in facts:
-                    additive_list.append(
-                        HistoryAdditiveItem(
-                            ins=a.get("ins"),
-                            name=a.get("name"),
-                            name_vn=a.get("name_vn"),
-                            functions=a.get("functions") or [],
-                            adi=a.get("adi"),
-                            info=None,
-                            status_vn=a.get("status_vn"),
-                            level=a.get("level"),
-                            rule_risk=a.get("rule_risk"),
-                            rule_reason=a.get("rule_reason"),
-                            rule_name=a.get("rule_name"),
-                            message=a.get("message"),
-                            source=a.get("source"),
+
+                for code in ecodes:
+                    a = get_facts_from_neo4j(driver,code)   # ← gọi riêng từng INS
+
+                    if a:
+                        additive_list.append(
+                            HistoryAdditiveItem(
+                                ins=a.get("ins"),
+                                name=a.get("name"),
+                                name_vn=a.get("name_vn"),
+                                functions=a.get("functions") or [],
+                                adi=a.get("adi"),
+                                info=None,
+                                status_vn=a.get("status_vn"),
+                                level=a.get("level"),
+                                rule_risk=a.get("rule_risk"),
+                                rule_reason=a.get("rule_reason"),
+                                rule_name=a.get("rule_name"),
+                                message=a.get("message"),
+                                source=a.get("source"),
+                            )
                         )
-                    )
 
                 items.append(
                     HistoryItem(
