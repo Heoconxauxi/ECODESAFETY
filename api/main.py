@@ -396,6 +396,78 @@ async def search_ecodes(
         if driver:
             driver.close()
 
+# ============================================
+# LIST TẤT CẢ E-CODE (PHÂN TRANG)
+# ============================================
+
+@app.get("/ecodes/all", response_model=SearchResult)
+async def list_all_ecodes(
+    limit: int = 1000,   # bạn có thể tăng lên 500/1000 tuỳ DB
+    offset: int = 0,
+):
+    driver = None
+    try:
+        driver = get_neo4j_driver()
+        with driver.session() as session:
+            query = """
+            MATCH (a:Additive)
+            OPTIONAL MATCH (a)-[:HAS_FUNCTION]->(f:Function)
+            OPTIONAL MATCH (a)-[:HAS_RISK]->(r:RiskLevel)
+            OPTIONAL MATCH (a)-[:HAS_STATUS]->(s:Status)
+            OPTIONAL MATCH (a)-[:HAS_SOURCE]->(src:Source)
+            WITH a, 
+                 collect(DISTINCT f.name) AS functions,
+                 r.level AS risk_level,
+                 s.name AS status_vn,
+                 collect(DISTINCT src.name) AS sources
+            ORDER BY a.ins
+            SKIP $offset
+            LIMIT $limit
+            RETURN a.ins AS ins,
+                   a.name AS name,
+                   a.name_vn AS name_vn,
+                   functions AS functions,
+                   a.adi AS adi,
+                   a.info AS info,
+                   status_vn AS status_vn,
+                   risk_level AS level,
+                   sources[0] AS source
+            """
+
+            records = session.run(query, {"limit": limit, "offset": offset})
+
+            items = []
+            for r in records:
+                items.append(
+                    EcodeSearchItem(
+                        ins=r["ins"],
+                        name=r["name"],
+                        name_vn=r["name_vn"],
+                        function=r["functions"],
+                        adi=str(r["adi"]) if r["adi"] else None,
+                        info=r["info"],
+                        status_vn=r["status_vn"],
+                        level=r["level"],
+                        source=r["source"],
+                    )
+                )
+
+            total_query = """
+            MATCH (a:Additive)
+            RETURN count(a) AS total
+            """
+            total = session.run(total_query).single()["total"]
+
+        return SearchResult(
+            query=None,       # vì đây là list all, không có q
+            offset=offset,
+            limit=limit,
+            total=total,
+            items=items,
+        )
+    finally:
+        if driver:
+            driver.close()
 
 # ============================================================
 # ECODES INFO – CHỈ GỌI GEMINI Ở ĐÂY
