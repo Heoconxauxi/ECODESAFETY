@@ -5,6 +5,8 @@ from neo4j import GraphDatabase, Driver
 from neo4j.exceptions import ServiceUnavailable, AuthError
 from typing import Dict, Any, Optional
 
+from src.rule_engine import evaluate_rules
+
 # Tải biến môi trường (file .env) từ thư mục gốc của dự án
 load_dotenv() 
 
@@ -85,17 +87,29 @@ def get_facts_from_neo4j(driver: Driver, ins_code: str) -> Optional[Dict[str, An
             if res:
                 data = res[0]
                 # Chuyển đổi format để dễ sử dụng
+                # Tính rule engine tại đây
+                decision = evaluate_rules({
+                    "status_vn": data["status_vn"],
+                    "adi": data["adi"],
+                    "info": data["info"]
+                })
+
                 return {
                     "ins": data["ins"],
                     "name": data["name"],
                     "name_vn": data["name_vn"],
                     "adi": data["adi"],
                     "info": data["info"],
-                    "function": data["functions"],  # List of function names
+                    "function": data["functions"],
                     "status_vn": data["status_vn"],
-                    "level": data["level"],  # Risk level: "1", "2", "3"
-                    "sources": data["sources"]  # List of source names
+                    "level": data["level"],
+                    "sources": data["sources"],
+
+                    "rule_risk": decision.get("risk"),
+                    "rule_reason": decision.get("reason"),
+                    "rule_name": decision.get("rule"),
                 }
+
             return None
             
     except ServiceUnavailable as e:
@@ -126,15 +140,15 @@ if __name__ == "__main__":
             
             if facts:
                 import json
-                print("✅ Kết quả truy vấn thành công:")
+                print("Kết quả truy vấn thành công:")
                 print(json.dumps(facts, indent=2, ensure_ascii=False))
             else:
-                print(f"❌ Không tìm thấy dữ liệu cho {ins_code}.")
+                print(f"Không tìm thấy dữ liệu cho {ins_code}.")
 
     except Exception as e:
-        print(f"❌ Lỗi trong quá trình chạy thử: {e}")
+        print(f"Lỗi trong quá trình chạy thử: {e}")
     finally:
         # 3. Luôn đóng kết nối
         if driver:
             driver.close()
-            print("\n✅ Đã đóng kết nối Neo4j.")
+            print("\nĐã đóng kết nối Neo4j.")

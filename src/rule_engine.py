@@ -4,18 +4,11 @@ import yaml
 
 def evaluate_rules(facts, rules_path=None):
     """
-    Áp dụng rule từ risk_rules.yaml cho dataset INS mới.
-    facts gồm các key:
-      - status_vn: 0 hoặc 1
-      - adi: string/float
-      - info: mô tả
+    RuleEngine 3 mức:
+      - 4: Cấm/Độc hại (status_vn = 1)
+      - 2: An toàn có giới hạn (ADI dạng số 0–n)
+      - 1: Rất an toàn (mặc định)
     """
-
-    if rules_path is None:
-        rules_path = Path(__file__).resolve().parent.parent / "rules" / "risk_rules.yaml"
-
-    with open(rules_path, "r", encoding="utf-8") as f:
-        spec = yaml.safe_load(f)
 
     # status_vn
     status_vn = facts.get("status_vn")
@@ -24,7 +17,7 @@ def evaluate_rules(facts, rules_path=None):
     except:
         status_vn = None
 
-    # adi
+    # ADI
     raw_adi = facts.get("adi")
     if raw_adi in (None, "", "nan", "NaN", "updating"):
         adi_val = None
@@ -34,45 +27,31 @@ def evaluate_rules(facts, rules_path=None):
         except:
             adi_val = None
 
-    # info
-    info = facts.get("info", "")
-    if not isinstance(info, str):
-        info = str(info)
+    # -------------------------------------
+    # 1) MỨC 4 — Cấm/Độc hại
+    # -------------------------------------
+    if status_vn == 1:
+        return {
+            "risk": 4,
+            "reason": "Không được phép tại Việt Nam (BT)",
+            "rule": "status_not_allowed_vn",
+        }
 
-    # Áp dụng rule theo priority
-    for rule_name in spec["priority"]:
-        rule = spec["rules"][rule_name]
-        cond = rule.get("if", {})
-        ok = True
+    # -------------------------------------
+    # 2) MỨC 2 — An toàn có giới hạn
+    # -------------------------------------
+    if adi_val is not None:
+        return {
+            "risk": 2,
+            "reason": f"ADI = {adi_val} mg/kg — cần giới hạn (SL)",
+            "rule": "adi_numeric_safe_limit",
+        }
 
-        # status_vn_eq
-        if "status_vn_eq" in cond:
-            if status_vn != cond["status_vn_eq"]:
-                ok = False
-
-        # info_contains_any
-        if "info_contains_any" in cond:
-            patterns = cond["info_contains_any"]
-            info_lower = info.lower()
-            if not any(p.lower() in info_lower for p in patterns):
-                ok = False
-
-        # adi_lt
-        if "adi_lt" in cond:
-            threshold = cond["adi_lt"]
-            if adi_val is None or not (adi_val < threshold):
-                ok = False
-
-        if ok:
-            return {
-                "risk": rule["then"]["risk"],
-                "reason": rule["then"]["reason"],
-                "rule": rule_name,
-            }
-
-    # Không rule nào khớp → mặc định mức 1
+    # -------------------------------------
+    # 3) MỨC 1 — Rất an toàn (mặc định)
+    # -------------------------------------
     return {
         "risk": 1,
-        "reason": "Không vi phạm quy tắc nào → mức 1 (VS)",
+        "reason": "Rất an toàn, không giới hạn (VS)",
         "rule": "default_vs",
     }

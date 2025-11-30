@@ -5,11 +5,12 @@ from datetime import datetime
 import tempfile, os
 import jwt
 import re
+import base64
 
 from src.analyze_ecode import analyze_ecode
 from src.neo4j_connector import get_neo4j_driver, get_facts_from_neo4j
+from src.rule_engine import evaluate_rules
 
-from api.info_generator import generate_additive_info
 from api.auth import router as auth_router
 from api.schemas import (
     AnalysisResult,
@@ -125,6 +126,8 @@ def save_history_for_user(
     user: Optional[UserContext],
     source_text: str,
     analysis_results: List[dict],
+    input_type: str = "text", 
+    source_image_b64: Optional[str] = None,
 ):
     """
     Lưu lịch sử phân tích vào Neo4j:
@@ -150,7 +153,9 @@ def save_history_for_user(
                 CREATE (h:History {
                     at: datetime(),
                     ecodes: $ecodes,
-                    source_text: $source_text
+                    source_text: $source_text,
+                    input_type: $input_type,
+                    source_image_b64: $source_image_b64
                 })
 
                 MERGE (u)-[:ANALYZED]->(h)
@@ -161,6 +166,8 @@ def save_history_for_user(
                     "name": user.name,
                     "ecodes": ecodes,
                     "source_text": source_text,
+                    "input_type": input_type,
+                    "source_image_b64": source_image_b64,
                 },
             )
     except Exception as e:
@@ -171,7 +178,7 @@ def save_history_for_user(
 
 
 # ============================================================
-# MAP ANALYSIS OUTPUT → SCHEMA (KHÔNG GỌI GEMINI)
+# MAP ANALYSIS OUTPUT
 # ============================================================
 
 async def map_analysis_output_to_schema(analysis_output: dict) -> List[EcodeDetail]:
@@ -196,7 +203,7 @@ async def map_analysis_output_to_schema(analysis_output: dict) -> List[EcodeDeta
                 name_vn=name_vn,
                 functions=res.get("functions") or res.get("function") or [],
                 adi=res.get("adi"),
-                info=None,            # ❌ KHÔNG GỌI GEMINI Ở ĐÂY
+                info=None,
                 status_vn=res.get("status_vn"),
                 level=res.get("level"),
                 rule_risk=res.get("rule_risk"),
@@ -230,8 +237,7 @@ async def analyze_product_ingredients_text(
 
         ecodes = await map_analysis_output_to_schema(analysis_output)
 
-        # Lưu history: dùng dữ liệu raw từ ecodes
-        save_history_for_user(user, source_text, [e.dict() for e in ecodes])
+        save_history_for_user(user, source_text, [e.dict() for e in ecodes], input_type="text")
 
         return AnalysisResult(
             status="SUCCESS",
@@ -260,6 +266,8 @@ async def analyze_product_image(
     - Lưu history
     """
     temp_file_path = None
+    source_image_b64 = None
+
     try:
         suffix = (
             f".{image_file.filename.split('.')[-1]}"
@@ -267,17 +275,26 @@ async def analyze_product_image(
             else ".jpg"
         )
 
+        content = await image_file.read()
+        
+        source_image_b64 = base64.b64encode(content).decode("utf-8")
+        
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             temp_file_path = tmp.name
-            content = await image_file.read()
             tmp.write(content)
 
         analysis_output = analyze_ecode(temp_file_path)
         ecodes = await map_analysis_output_to_schema(analysis_output)
 
-        source_text = analysis_output.get("raw_text", "")
+        source_text = analysis_output.get("source_text", "")
 
-        save_history_for_user(user, source_text, [e.dict() for e in ecodes])
+        save_history_for_user(
+            user, 
+            source_text, 
+            [e.dict() for e in ecodes], 
+            input_type="image", 
+            source_image_b64=source_image_b64
+        )
 
         return AnalysisResult(
             status="SUCCESS",
@@ -297,21 +314,19 @@ async def analyze_product_image(
 
 
 # ============================================================
-# SEARCH ECODES (KHÔNG GỌI GEMINI)
+# SEARCH ECODES
 # ============================================================
 
 @app.get("/ecodes/search", response_model=SearchResult)
 async def search_ecodes(
     q: Optional[str] = None,
-    limit: int = 50,
+    limit: int = 20,
     offset: int = 0,
 ):
     """
-    Search phụ gia theo:
-      - INS
-      - name
-      - name_vn
-    KHÔNG gọi Gemini, chỉ trả data từ Neo4j.
+    Search phụ gia theo INS / tên EN / tên VN (có phân trang).
+    - Tính luôn rule_risk bằng evaluate_rules()
+    - Trả dữ liệu batch để hỗ trợ Infinite Scroll
     """
     driver = None
     try:
@@ -328,7 +343,7 @@ async def search_ecodes(
             OPTIONAL MATCH (a)-[:HAS_SOURCE]->(src:Source)
             WITH a,
                  collect(DISTINCT f.name) AS functions,
-                 r.level AS risk_level,
+                 r.level AS level,
                  s.name AS status_vn,
                  collect(DISTINCT src.name) AS sources
             WHERE $q IS NULL
@@ -336,26 +351,31 @@ async def search_ecodes(
                OR a.ins CONTAINS $q
                OR toLower(a.name) CONTAINS toLower($q)
                OR toLower(a.name_vn) CONTAINS toLower($q)
-            WITH a, functions, risk_level AS risk_level, status_vn, sources
-            ORDER BY a.ins
-            SKIP $offset
-            LIMIT $limit
             RETURN a.ins AS ins,
                    a.name AS name,
                    a.name_vn AS name_vn,
-                   functions AS functions,
                    a.adi AS adi,
+                   a.info AS info,
+                   functions AS functions,
                    status_vn AS status_vn,
-                   risk_level AS level,
+                   level AS level,
                    sources[0] AS source
+            ORDER BY ins
+            SKIP $offset
+            LIMIT $limit
             """
 
-            records = session.run(
-                query, {"q": q_norm, "limit": limit, "offset": offset}
-            )
+            records = session.run(query, {"q": q_norm, "limit": limit, "offset": offset})
 
-            items: List[EcodeSearchItem] = []
+            items = []
             for r in records:
+                facts = {
+                    "status_vn": r["status_vn"],
+                    "adi": r["adi"],
+                    "info": r["info"],
+                }
+                decision = evaluate_rules(facts)
+
                 items.append(
                     EcodeSearchItem(
                         ins=r["ins"],
@@ -363,45 +383,46 @@ async def search_ecodes(
                         name_vn=r["name_vn"],
                         functions=r["functions"],
                         adi=str(r["adi"]) if r["adi"] else None,
-                        info=None,               # ❌ KHÔNG GỌI GEMINI Ở ĐÂY
+                        info=None,
                         status_vn=r["status_vn"],
                         level=r["level"],
                         source=r["source"],
+
+                        # ⭐ NEW: RULE ENGINE
+                        rule_risk=decision["risk"],
+                        rule_reason=decision["reason"],
+                        rule_name=decision["rule"],
                     )
                 )
 
-            # Đếm total (không có limit/offset)
-            total_query = """
-            MATCH (a:Additive)
-            WHERE $q IS NULL
-               OR $q = ""
-               OR a.ins CONTAINS $q
-               OR toLower(a.name) CONTAINS toLower($q)
-               OR toLower(a.name_vn) CONTAINS toLower($q)
-            RETURN count(a) AS total
-            """
-
-            total_record = session.run(total_query, {"q": q_norm}).single()
-            total = total_record["total"] if total_record else 0
+            # đếm total
+            total_record = session.run(
+                """
+                MATCH (a:Additive)
+                WHERE $q IS NULL
+                   OR $q = ""
+                   OR a.ins CONTAINS $q
+                   OR toLower(a.name) CONTAINS toLower($q)
+                   OR toLower(a.name_vn) CONTAINS toLower($q)
+                RETURN count(a) AS total
+                """,
+                {"q": q_norm},
+            ).single()
 
             return SearchResult(
                 query=q,
                 limit=limit,
                 offset=offset,
-                total=total,
+                total=total_record["total"] if total_record else 0,
                 items=items,
             )
 
-    except Exception as e:
-        print("Lỗi /ecodes/search:", e)
-        raise HTTPException(status_code=500, detail=str(e))
     finally:
         if driver:
             driver.close()
 
-
 # ============================================================
-# ECODES INFO – CHỈ GỌI GEMINI Ở ĐÂY
+# ECODES INFO
 # ============================================================
 
 class AdditiveInfoResponse(AdditiveBase):
@@ -439,6 +460,7 @@ async def get_additive_info(ins: str):
                        a.name AS name,
                        a.name_vn AS name_vn,
                        functions AS functions,
+                       a.info AS info,
                        a.adi AS adi,
                        status_vn AS status_vn,
                        risk_level AS level,
@@ -450,30 +472,28 @@ async def get_additive_info(ins: str):
             if not record:
                 raise HTTPException(status_code=404, detail=f"E-code {ins} không tồn tại")
 
-            # GỌI GEMINI 1 LẦN
-            ai_info = await generate_additive_info(
-                record["ins"],
-                record["name"],
-                record["name_vn"],
-            )
+            facts = {
+                "adi": record["adi"],
+                "status_vn": record["status_vn"],
+                "info": record["info"],
+            }
+            decision = evaluate_rules(facts)
 
-            return AdditiveInfoResponse(
-                ins=record["ins"],
-                name=record["name"],
-                name_vn=record["name_vn"],
-                functions=record["functions"],
-                adi=str(record["adi"]) if record["adi"] else None,
-                info=ai_info,
-                status_vn=record["status_vn"],
-                level=record["level"],
-                # Các field rule_* để None (nếu cần có thể bổ sung sau)
-                rule_risk=None,
-                rule_reason=None,
-                rule_name=None,
-                found=True,
-                message=None,
-                source=record["source"],
-            )
+            return {
+                "ins": record["ins"],
+                "name": record["name"],
+                "name_vn": record["name_vn"],
+                "functions": record["functions"],
+                "info": record["info"],
+                "adi": record["adi"],
+                "status_vn": record["status_vn"],
+                "level": record["level"],  # true label từ DB
+                "source": record["source"],
+
+                "rule_risk": decision["risk"],
+                "rule_reason": decision["reason"],
+                "rule_name": decision["rule"],
+            }
 
     except HTTPException:
         raise
@@ -509,7 +529,7 @@ async def get_my_history(
             records = session.run(
                 """
                 MATCH (u:User {google_id: $gid})-[:ANALYZED]->(h:History)
-                RETURN h
+                RETURN h, h.source_image_b64 AS source_image_b64, h.input_type AS input_type
                 ORDER BY h.at DESC
                 SKIP $offset
                 LIMIT $limit
@@ -524,6 +544,8 @@ async def get_my_history(
                 ecodes = h.get("ecodes", [])
                 at = h.get("at")
                 source_text = h.get("source_text")
+                input_type = r.get("input_type") or "text" 
+                source_image_b64 = r.get("source_image_b64")
 
                 if isinstance(at, datetime):
                     analyzed_at = at
@@ -561,6 +583,8 @@ async def get_my_history(
                         ecodes=ecodes,
                         analyzed_at=analyzed_at,
                         source_text=source_text,
+                        input_type=input_type,
+                        source_image_b64=source_image_b64,
                         additives=additive_list,
                     )
                 )

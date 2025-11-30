@@ -21,7 +21,7 @@ except:
     ROOT_DIR = Path.cwd().parent
 
 SCHEMA_PATH = ROOT_DIR / "ontology" / "schema.json"
-CSV_PATH = ROOT_DIR / "data" / "processed" / "ecodes_master.csv"
+CSV_PATH = ROOT_DIR / "data" / "processed" / "1ecodes_master.csv"
 
 print(f"Script directory: {SCRIPT_DIR}")
 print(f"Root directory: {ROOT_DIR}")

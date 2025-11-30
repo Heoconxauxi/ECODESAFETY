@@ -424,6 +424,168 @@
     }
     .history-add-card:last-child { border-bottom: none; }
     .history-add-card:hover { background: #020617; }
+
+    /* ====== NEW: Image cropper styles ====== */
+    .image-cropper {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.7);
+    }
+    #imageCanvas {
+      display: block;
+      border-radius: 10px;
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      background: #020617;
+      cursor: crosshair;
+
+      /* KHÔNG ép kích thước canvas bằng CSS */
+      width: auto !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+    .crop-hint {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .crop-actions {
+      margin-top: 6px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .crop-actions button.secondary {
+      padding: 4px 10px;
+      font-size: 11px;
+      border-radius: 999px;
+    }
+
+    /* ====== NEW: Additive Detail Dialog Styles (from additive_detail.html) ====== */
+    .dialog-overlay {
+      display: none; /* Mặc định ẩn */
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000; /* Luôn nổi lên trên */
+    }
+    .dialog-content {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #0f172a;
+      padding: 26px 30px;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 22px 52px rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .dialog-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 8px;
+      transition: color 0.15s;
+    }
+    .dialog-close-btn:hover {
+      color: #f1f5f9;
+    }
+    
+    /* Styles for additive detail content */
+    .detail-h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #f1f5f9;
+    }
+    .detail-code-pill {
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .detail-meta {
+      margin-top: 10px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: #d1d5db;
+    }
+    .detail-section-title {
+      margin-top: 28px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .detail-info-box {
+      margin-top: 12px;
+      background: radial-gradient(circle at top, rgba(59, 130, 246, 0.28), #020617);
+      padding: 16px;
+      border-radius: 14px;
+      line-height: 1.6;
+      border: 1px solid rgba(37, 99, 235, 0.65);
+      font-size: 15px;
+      min-height: 60px;
+    }
+    .detail-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.25);
+      color: #e5e7eb;
+      font-size: 13px;
+      margin-right: 6px;
+      margin-top: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+    .detail-risk-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      margin-left: 6px;
+    }
+    .risk-green { background: rgba(22,163,74,0.25); border:1px solid rgba(22,163,74,0.6); color:#bbf7d0; }
+    .risk-yellow { background: rgba(202,138,4,0.25); border:1px solid rgba(202,138,4,0.6); color:#fef3c7; }
+    .risk-red { background: rgba(185,28,28,0.25); border:1px solid rgba(185,28,28,0.6); color:#fecaca; }
+    .risk-gray { background: rgba(148,163,184,0.25); border:1px solid rgba(148,163,184,0.6); color:#e5e7eb; }
+    .detail-source {
+      margin-top: 8px;
+      padding: 4px 10px;
+      background: rgba(148,163,184,0.15);
+      border-radius: 8px;
+      border: 1px solid rgba(148,163,184,0.45);
+      font-size: 13px;
+      display: inline-block;
+      color: #cbd5e1;
+    }
+    .detail-loading {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
   </style>
 </head>
 
@@ -431,22 +593,27 @@
 
 <div class="sidebar">
   <h2>
-    <span class="logo-badge">E</span>
-    <span>EcodeSafety</span>
+    <span class="logo-badge">CS</span>
+    <span>CodeSafety</span>
   </h2>
 
-  <div class="menu-group-label">Chức năng</div>
-
-  <div class="menu-btn active" data-tab="ingredient" onclick="setActiveTab('ingredient')">
-    <div class="menu-main"><span>Ingredient</span></div>
-    <span class="menu-pill">Analyze</span>
+  <div class="menu-btn active" data-tab="text" onclick="setActiveTab('text')">
+    <div class="menu-main"><span>Phân tích - Nhập</span></div>
+    <span class="menu-pill">Text</span>
   </div>
+
+  <div class="menu-btn" data-tab="image" onclick="setActiveTab('image')">
+    <div class="menu-main"><span>Phân tích - Ảnh</span></div>
+    <span class="menu-pill">OCR</span>
+  </div>
+
   <div class="menu-btn" data-tab="search" onclick="setActiveTab('search')">
-    <div class="menu-main"><span>Search</span></div>
+    <div class="menu-main"><span>Tìm kiếm</span></div>
     <span class="menu-pill">Lookup</span>
   </div>
+
   <div class="menu-btn" data-tab="history" onclick="setActiveTab('history')">
-    <div class="menu-main"><span>History</span></div>
+    <div class="menu-main"><span>Lịch sử</span></div>
     <span class="menu-pill">Recent</span>
   </div>
 </div>
@@ -455,8 +622,8 @@
   <header>
     <div>
       <h1>
-        EcodeSafety Dashboard
-        <span class="badge-beta">KLTN • Neo4j • AI</span>
+        Hệ thống phân tích phụ gia thực phẩm
+        <span class="badge-beta">• Neo4j</span>
       </h1>
       <small>Nhập thành phần / chụp ảnh → hệ thống chuẩn hóa & đối chiếu phụ gia theo INS/E-code.</small>
     </div>
@@ -477,43 +644,72 @@
     </div>
   </header>
 
-  <div id="tab-ingredient" class="tab-page active">
+  <div id="tab-text" class="tab-page active">
     <div class="card">
       <h2>Phân tích TEXT</h2>
       <small>Nhập thành phần sản phẩm, hệ thống sẽ trích E-code, tra Neo4j & áp rule.</small>
+
       <textarea id="inputText" rows="4" placeholder="VD: Thành phần: E100, E621..."></textarea>
+
       <div style="margin-top:8px;">
         <button id="btnAnalyzeText" onclick="analyzeText()">Phân tích TEXT</button>
-        <button class="secondary" onclick="clearContainer('ingredientResult');clearResultAndCache('ingredientResult');clearContainer('resultText');clearContainer('sourceTextBlock')">Xoá kết quả</button>
+        <button class="secondary"
+                onclick="clearContainer('textResult');clearResultAndCache('textResult');
+                clearContainer('resultText');clearContainer('sourceTextBlock')">
+          Xoá kết quả
+        </button>
       </div>
-      <div id="ingredientResult" class="additive-list"></div>
+
+      <div id="textResult" class="additive-list"></div>
       <div id="resultText" class="result"></div>
-      <!-- thêm block hiển thị source_text cho TEXT -->
+
       <div id="sourceTextBlock" class="result" style="margin-top:8px;display:none;"></div>
     </div>
+  </div>
 
+  <div id="tab-image" class="tab-page">
     <div class="card">
       <h2>Phân tích Ảnh</h2>
-      <small>Upload ảnh nhãn sản phẩm. Server sẽ OCR → trích E-code → phân tích.</small>
-      <input type="file" id="imageFile" accept="image/*">
+      <small>Upload ảnh nhãn sản phẩm. Bạn có thể crop vùng “Thành phần” trước OCR.</small>
+
+      <input type="file" id="imageFile" accept="image/*" onchange="handleImageFileChange(event)">
+
+      <div class="image-cropper">
+        <canvas id="imageCanvas"></canvas>
+
+        <div class="crop-hint">
+          1️.Chọn ảnh → 2️.Kéo vùng cần crop (Thành phần).  
+          Nếu không crop, hệ thống sẽ phân tích toàn ảnh.
+        </div>
+
+        <div class="crop-actions">
+          <button type="button" class="secondary" onclick="resetCropSelection()">Xoá vùng crop</button>
+          <span id="cropStatusText">Chưa chọn vùng crop.</span>
+        </div>
+      </div>
+
       <div style="margin-top:8px;">
         <button id="btnAnalyzeImage" onclick="analyzeImage()">Phân tích Ảnh</button>
-        <button class="secondary" onclick="clearContainer('imageResult');clearResultAndCache('imageResult');clearContainer('resultImage');clearContainer('sourceImageBlock')">Xoá kết quả</button>
+        <button class="secondary"
+                onclick="clearContainer('imageResult');clearResultAndCache('imageResult');
+                clearContainer('resultImage');clearContainer('sourceImageBlock')">
+          Xoá kết quả
+        </button>
       </div>
+
+      <div id="sourceImageBlock" class="result" style="margin-top:8px;display:none;"></div>
       <div id="imageResult" class="additive-list"></div>
       <div id="resultImage" class="result"></div>
-      <!-- thêm block hiển thị source_text cho IMAGE -->
-      <div id="sourceImageBlock" class="result" style="margin-top:8px;display:none;"></div>
     </div>
   </div>
 
   <div id="tab-search" class="tab-page">
     <div class="card">
-      <h2>Search E-code</h2>
+      <h2>Tìm kiếm phụ gia</h2>
       <small>Tìm theo mã INS, tên tiếng Anh hoặc tiếng Việt. Nhấn vào kết quả để xem chi tiết.</small>
       <input type="text" id="searchBox" placeholder="Nhập E100, Curcumin, Tinh nghệ...">
       <div style="margin-top:8px;">
-        <button id="btnSearch" onclick="searchAdditives()">Search</button>
+        <button id="btnSearch" onclick="searchAdditives()">Tìm kiếm</button>
         <button class="secondary" onclick="clearContainer('searchResult');clearResultAndCache('searchResult');clearContainer('resultSearch')">Xoá kết quả</button>
       </div>
       <div id="searchResult" class="additive-list"></div>
@@ -524,7 +720,7 @@
   <div id="tab-history" class="tab-page">
     <div class="card">
       <h2>Lịch sử phân tích</h2>
-      <small>Mỗi block tương ứng 1 lần phân tích. Nhấn để xem phụ gia, nhấn phụ gia để mở chi tiết.</small>
+      <small>Mỗi block tương ứng 1 lần phân tích. Nhấn để xem chi tiết.</small>
       <div style="margin-top:8px;">
         <button id="btnHistory" onclick="loadHistory()">Tải lịch sử</button>
         <button class="secondary" onclick="clearContainer('historyResult')">Xoá kết quả</button>
@@ -532,17 +728,67 @@
       <div id="historyResult" style="margin-top:12px;"></div>
     </div>
   </div>
+  
+  <div id="historyDialog" 
+      style="display:none; position:fixed; 
+              left:0;top:0;width:100%;height:100%;
+              background:rgba(0,0,0,0.6); 
+              backdrop-filter: blur(4px);
+              align-items:center;justify-content:center;
+              z-index: 999;">
+
+    <div style="background:#0f172a;padding:20px;border-radius:14px;
+                width:480px;max-height:80vh;overflow-y:auto;
+                border:1px solid #334155;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:18px;">Chi tiết lịch sử</h3>
+          <button onclick="closeHistoryDialog()" 
+                  style="
+                  background:none;
+                  border:none;
+                  color:#e5e7eb;
+                  font-size:18px;
+                  cursor:pointer;
+                  padding:4px 8px;
+                  ">✕</button>
+        </div>  
+
+        <div id="dialogSourceText"
+            style="white-space:pre-wrap;font-size:13px;
+                    background:#1e293b;padding:10px;border-radius:8px;margin-bottom:10px;">
+        </div>
+
+        <div id="dialogAdditiveContainer"></div>
+    </div>
+  </div>
+
+  <div id="additiveDetailDialog" class="dialog-overlay">
+    <div class="dialog-content">
+      <button class="dialog-close-btn" onclick="closeAdditiveDetailDialog()">✕</button>
+      <div id="additiveDetailContent">
+        </div>
+    </div>
+  </div>
 
 </div>
 
 <script>
 const API_BASE = "https://flf3p194-8000.asse.devtunnels.ms";
+const DEFAULT_SOURCE_LINK = "https://drive.google.com/file/d/1U-8MHPgdF5Epht0MPbcb4J8ZtqL9z8Bw/view?usp=sharing"
 let ACCESS_TOKEN = null;
 let userMenuVisible = false;
 
 const CACHE_TAB_KEY = "CACHE_LAST_TAB";
 const CACHE_CONTAINER_KEY = "CACHE_LAST_CONTAINER";
 const CACHE_DATA_KEY = "CACHE_LAST_DATA";
+
+/* ==== Biến toàn cục cho crop ảnh ==== */
+let imageCanvas = null;
+let imageCtx = null;
+let originalImage = null;      // ảnh đã load vào canvas
+let selection = null;          // {x, y, w, h} theo toạ độ canvas
+let isSelecting = false;
+let startX = 0, startY = 0;
 
 function saveCache(tab, containerId, list) {
   try {
@@ -565,20 +811,6 @@ function clearCacheIfContainer(containerId) {
 
 function clearResultAndCache(containerId) {
   clearCacheIfContainer(containerId);
-}
-
-function openDetailWithData(additive, currentTab, containerId) {
-  if (!additive) return;
-  try {
-    localStorage.setItem("ADD_DETAIL", JSON.stringify(additive));
-    if (currentTab) localStorage.setItem(CACHE_TAB_KEY, currentTab);
-    if (containerId) localStorage.setItem(CACHE_CONTAINER_KEY, containerId);
-  } catch (e) {}
-
-  const params = new URLSearchParams();
-  if (additive.ins) params.set("ins", additive.ins);
-  const qs = params.toString();
-  window.location.href = "additive_detail.html" + (qs ? "?" + qs : "");
 }
 
 function setActiveTab(id) {
@@ -627,22 +859,8 @@ window.onload = function () {
     }
   });
 
-  // Restore cache
-  try {
-    const savedTab = localStorage.getItem(CACHE_TAB_KEY) || "ingredient";
-    setActiveTab(savedTab);
-
-    const containerId = localStorage.getItem(CACHE_CONTAINER_KEY);
-    const dataStr = localStorage.getItem(CACHE_DATA_KEY);
-    if (containerId && dataStr) {
-      const list = JSON.parse(dataStr);
-      if (savedTab === "ingredient") {
-        renderAdditivesForIngredient(containerId, list);
-      } else if (savedTab === "search") {
-        renderAdditivesForSearch(containerId, list);
-      }
-    }
-  } catch (e) {}
+  /* ==== Khởi tạo canvas crop ==== */
+  initImageCropper();
 };
 
 function setUserUI(name, email) {
@@ -694,30 +912,144 @@ function clearContainer(id) {
   }
 }
 
-function getRiskBadge(level) {
+function getRiskBadge(level, isDetail = false) {
+  const pillClass = isDetail ? 'detail-risk-pill' : 'badge-pill';
   if (level === 1 || level === "1") {
-    return '<span class="badge-pill green">VS - Very Safe</span>';
+    return `<span class="${pillClass} risk-green">VS - Very Safe</span>`;
   }
   if (level === 2 || level === "2") {
-    return '<span class="badge-pill yellow">SL - Safe w/ Limits</span>';
+    return `<span class="${pillClass} risk-yellow">SL - Safe w/ Limits</span>`;
   }
   if (level === 4 || level === "4") {
-    return '<span class="badge-pill red">BT - Banned / Toxic</span>';
+    return `<span class="${pillClass} risk-red">BT - Banned / Toxic</span>`;
   }
-  return '<span class="badge-pill gray">N/A</span>';
+  return `<span class="${pillClass} risk-gray">N/A</span>`;
 }
 
-function getRuleBadge(rule) {
+function getRuleBadge(rule, isDetail = false) {
+  const pillClass = isDetail ? 'detail-risk-pill' : 'badge-pill';
   if (rule === 1 || rule === "1") {
-    return '<span class="badge-pill green">Rule: Safe</span>';
+    return `<span class="${pillClass} risk-green">VS - Very Safe</span>`;
   }
   if (rule === 2 || rule === "2") {
-    return '<span class="badge-pill yellow">Rule: Warning</span>';
+    return `<span class="${pillClass} risk-yellow">SL - Safe w/ Limits</span>`;
   }
   if (rule === 4 || rule === "4") {
-    return '<span class="badge-pill red">Rule: Avoid</span>';
+    return `<span class="${pillClass} risk-red">BT - Banned / Toxic</span>`;
   }
-  return '<span class="badge-pill gray">Rule: N/A</span>';
+  return `<span class="${pillClass} risk-gray">N/A</span>`;
+}
+
+/* ==== NEW: HÀM MỞ VÀ ĐÓNG DIALOG CHI TIẾT PHỤ GIA ==== */
+function closeAdditiveDetailDialog() {
+  document.getElementById("additiveDetailDialog").style.display = "none";
+}
+
+async function openAdditiveDetailDialog(additive) {
+  if (!additive || !additive.ins) return;
+
+  const dialog = document.getElementById("additiveDetailDialog");
+  const content = document.getElementById("additiveDetailContent");
+  
+  // Hiển thị skeleton/loading ban đầu
+  content.innerHTML = `
+      <h1 class="detail-h1">${additive.name || "Không rõ tên"}
+        <span class="detail-code-pill">${additive.ins}</span>
+      </h1>
+      <div class="detail-meta"><b>Tên tiếng Việt:</b> ${additive.name_vn || "—"}</div>
+      <div class="detail-meta"><b>ADI:</b> ${additive.adi || "—"}</div>
+      <div class="detail-meta"><b>Trạng thái:</b> ${additive.status_vn || "—"}</div>
+      <div class="detail-meta"><b>Mức nguy cơ:</b> ${getRiskBadge(additive.level, true)}</div>
+      <div class="detail-meta"><b>Rule Engine:</b> ${getRuleBadge(additive.rule_risk, true)}</div>
+
+      <div class="detail-section-title">Chức năng</div>
+      <div>
+        ${
+          (additive.functions && additive.functions.length)
+            ? additive.functions.map(f => `<span class="detail-tag">${f}</span>`).join("")
+            : "<span style='color:#94a3b8'>Không có thông tin chức năng.</span>"
+        }
+      </div>
+
+      <div class="detail-section-title">Thông tin</div>
+      <div class="detail-info-box">Đang tải mô tả chi tiết...</div>
+      <div class="detail-loading">Đang tải mô tả AI...</div>
+      
+      <div class="detail-section-title">Nguồn</div>
+      <div class="detail-source">Chưa có dữ liệu nguồn.</div>
+  `;
+  dialog.style.display = "flex";
+
+  // Gọi API để lấy thông tin chi tiết (bao gồm mô tả AI)
+  try {
+    const res = await fetch(API_BASE + "/ecodes/info?ins=" + encodeURIComponent(additive.ins));
+    const data = await res.json();
+
+    if (!res.ok) {
+      // Cập nhật chỉ phần info box nếu lỗi API
+      content.querySelector('.detail-info-box').innerHTML = 
+        `<span style='color:#fecaca'>Lỗi khi tải chi tiết: ${data.detail || "E-code không tồn tại"}</span>`;
+      content.querySelector('.detail-loading').style.display = 'none';
+      return;
+    }
+
+    // Render lại toàn bộ nội dung với dữ liệu đầy đủ
+    const functions = data.functions || [];
+    const info = data.info || "Không có mô tả chi tiết.";
+
+    // BẮT ĐẦU PHẦN CẦN SỬA ĐỔI ĐỂ HIỂN THỊ CẢ HAI LINK VỚI TEXT MỚI
+    const apiSource = data.source || "";
+    const isApiSourceUrl = apiSource.toLowerCase().includes("http");
+    
+    // Link mặc định mới: Thông tư Việt Nam
+    const defaultLinkHtml = `<a href="${DEFAULT_SOURCE_LINK}" target="_blank" style="color:#60a5fa; text-decoration:underline; display:block;">Thông tư Việt Nam</a>`;
+    
+    let apiLinkHtml = "";
+    
+    // Nếu có nguồn từ API và đó là URL hợp lệ, thì hiển thị là WHO | JECFA
+    if (isApiSourceUrl) {
+        apiLinkHtml = `<a href="${apiSource}" target="_blank" style="color:#60a5fa; text-decoration:underline; display:block; margin-bottom: 5px;">WHO | JECFA</a>`;
+    }
+
+    // Kết hợp cả hai link (Link API/WHO | JECFA sẽ đứng trước nếu nó tồn tại)
+    const sourceLinkHtml = apiLinkHtml + defaultLinkHtml;
+
+    document.getElementById("additiveDetailContent").innerHTML = `
+        <h1 class="detail-h1">${data.name || "Không rõ tên"}
+          <span class="detail-code-pill">${data.ins || ""}</span>
+        </h1>
+
+        <div class="detail-meta"><b>Tên tiếng Việt:</b> ${data.name_vn || "—"}</div>
+        <div class="detail-meta"><b>ADI:</b> ${data.adi || "—"}</div>
+        <div class="detail-meta"><b>Trạng thái:</b> ${data.status_vn || "Được phép tại Việt Nam" || "Không được phép tại Việt Nam"}</div>
+        <div class="detail-meta"><b>Mức nguy cơ:</b> ${getRiskBadge(data.level, true)}</div>
+        <div class="detail-meta"><b>Rule Engine:</b> ${getRuleBadge(data.rule_risk, true)}</div>
+
+        <div class="detail-section-title">Chức năng</div>
+        <div>
+          ${
+            functions.length
+              ? functions.map(f => `<span class="detail-tag">${f}</span>`).join("")
+              : "<span style='color:#94a3b8'>Không có thông tin chức năng.</span>"
+          }
+        </div>
+
+        <div class="detail-section-title">Thông tin</div>
+        <div class="detail-info-box">
+          ${info}
+        </div>
+
+        <div class="detail-section-title">Nguồn</div>
+        <div class="detail-source">
+          ${sourceLinkHtml}
+        </div>
+    `;
+
+  } catch (err) {
+    content.querySelector('.detail-info-box').innerHTML = 
+        `<span style='color:#fecaca'>Lỗi mạng: ${String(err)}</span>`;
+    content.querySelector('.detail-loading').style.display = 'none';
+  }
 }
 
 function renderAdditivesForIngredient(containerId, ecodesFound) {
@@ -747,7 +1079,7 @@ function renderAdditivesForIngredient(containerId, ecodesFound) {
         <b>Risk:</b> ${riskBadge}
         <b>Rule:</b> ${ruleBadge}
       </div>
-      <div class="add-line muted">Nhấn để xem chi tiết & mô tả AI…</div>
+      <div class="add-line muted">Nhấn để xem chi tiết</div>
       <div class="add-tags">
         ${
           (functions && functions.length)
@@ -756,7 +1088,12 @@ function renderAdditivesForIngredient(containerId, ecodesFound) {
         }
       </div>
     `;
-    card.onclick = () => openDetailWithData(e, "ingredient", containerId);
+
+    // Cập nhật sự kiện click để mở dialog
+    card.onclick = () => {
+      openAdditiveDetailDialog(e);
+    };
+
     box.appendChild(card);
   });
 }
@@ -783,8 +1120,11 @@ function renderAdditivesForSearch(containerId, items) {
       <div class="add-line"><b>VN:</b> ${e.name_vn || "—"}</div>
       <div class="add-line"><b>ADI:</b> ${e.adi || "—"}</div>
       <div class="add-line"><b>Status:</b> ${statusText}</div>
-      <div class="add-line"><b>Risk:</b> ${riskBadge}</div>
-      <div class="add-line muted">Nhấn để xem chi tiết & mô tả AI…</div>
+      <div class="add-line">
+        <b>Risk:</b> ${riskBadge}
+        <b>Rule:</b> ${getRuleBadge(e.rule_risk)}
+      </div>
+      <div class="add-line muted">Nhấn để xem chi tiết</div>
       <div class="add-tags">
         ${
           (functions && functions.length)
@@ -793,7 +1133,8 @@ function renderAdditivesForSearch(containerId, items) {
         }
       </div>
     `;
-    card.onclick = () => openDetailWithData(e, "search", containerId);
+    // Cập nhật sự kiện click để mở dialog
+    card.onclick = () => openAdditiveDetailDialog(e);
     box.appendChild(card);
   });
 }
@@ -826,8 +1167,8 @@ async function analyzeText() {
     }
 
     const list = data.ecodes_found || [];
-    saveCache("ingredient", "ingredientResult", list);
-    renderAdditivesForIngredient("ingredientResult", list);
+    saveCache("text", "textResult", list);
+    renderAdditivesForIngredient("textResult", list); 
 
     const b = document.getElementById("sourceTextBlock");
     if (data.source_text) {
@@ -849,8 +1190,150 @@ async function analyzeText() {
   }
 }
 
+/* ==== Hỗ trợ load ảnh & crop ==== */
+function initImageCropper() {
+  imageCanvas = document.getElementById("imageCanvas");
+  if (!imageCanvas) return;
+  imageCtx = imageCanvas.getContext("2d");
+
+  imageCanvas.addEventListener("mousedown", onCanvasMouseDown);
+  imageCanvas.addEventListener("mousemove", onCanvasMouseMove);
+  window.addEventListener("mouseup", onCanvasMouseUp);
+  updateCropStatusText();
+}
+
+function handleImageFileChange(event) {
+  const file = event.target.files[0];
+  if (!file) {
+    originalImage = null;
+    clearCanvas();
+    selection = null;
+    updateCropStatusText();
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const img = new Image();
+    img.onload = function () {
+      originalImage = img;
+      // scale ảnh vào canvas cho vừa UI
+      const containerWidth = imageCanvas.parentElement.clientWidth - 20; // chừa padding
+      let w = img.width;
+      let h = img.height;
+
+      // scale theo WIDTH container
+      const ratio = containerWidth / w;
+      w = Math.round(w * ratio);
+      h = Math.round(h * ratio);
+
+      // gán lại canvas đúng tỷ lệ
+      imageCanvas.width = w;
+      imageCanvas.height = h;
+
+      // vẽ ảnh giữ nguyên tỷ lệ
+      imageCtx.clearRect(0, 0, w, h);
+      imageCtx.drawImage(img, 0, 0, w, h);
+
+      originalImage = img;
+      selection = null;
+      updateCropStatusText();
+
+      selection = null;
+      updateCropStatusText();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearCanvas() {
+  if (!imageCanvas || !imageCtx) return;
+  imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+}
+
+function onCanvasMouseDown(e) {
+  if (!originalImage || !imageCanvas) return;
+  const rect = imageCanvas.getBoundingClientRect();
+  startX = e.clientX - rect.left;
+  startY = e.clientY - rect.top;
+  isSelecting = true;
+  selection = { x: startX, y: startY, w: 0, h: 0 };
+}
+
+function onCanvasMouseMove(e) {
+  if (!isSelecting || !originalImage || !imageCanvas) return;
+  const rect = imageCanvas.getBoundingClientRect();
+  const currentX = e.clientX - rect.left;
+  const currentY = e.clientY - rect.top;
+  selection.w = currentX - startX;
+  selection.h = currentY - startY;
+  redrawImageWithSelection();
+}
+
+function onCanvasMouseUp() {
+  if (!isSelecting) return;
+  isSelecting = false;
+  normalizeSelection();
+  redrawImageWithSelection();
+  updateCropStatusText();
+}
+
+function normalizeSelection() {
+  if (!selection) return;
+  let { x, y, w, h } = selection;
+  if (w < 0) {
+    x = x + w;
+    w = Math.abs(w);
+  }
+  if (h < 0) {
+    y = y + h;
+    h = Math.abs(h);
+  }
+  // clamp trong canvas
+  x = Math.max(0, Math.min(x, imageCanvas.width));
+  y = Math.max(0, Math.min(y, imageCanvas.height));
+  if (x + w > imageCanvas.width) w = imageCanvas.width - x;
+  if (y + h > imageCanvas.height) h = imageCanvas.height - y;
+
+  selection = { x, y, w, h };
+}
+
+function redrawImageWithSelection() {
+  if (!originalImage || !imageCanvas || !imageCtx) return;
+  imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+  imageCtx.drawImage(originalImage, 0, 0, imageCanvas.width, imageCanvas.height);
+
+  if (selection && selection.w && selection.h) {
+    imageCtx.save();
+    imageCtx.strokeStyle = "#3b82f6";
+    imageCtx.lineWidth = 2;
+    imageCtx.setLineDash([6, 3]);
+    imageCtx.strokeRect(selection.x, selection.y, selection.w, selection.h);
+    imageCtx.restore();
+  }
+}
+
+function resetCropSelection() {
+  selection = null;
+  redrawImageWithSelection();
+  updateCropStatusText();
+}
+
+function updateCropStatusText() {
+  const el = document.getElementById("cropStatusText");
+  if (!el) return;
+  if (selection && selection.w > 10 && selection.h > 10) {
+    el.textContent = `Đã chọn vùng crop: ${Math.round(selection.w)} x ${Math.round(selection.h)} px (theo canvas).`;
+  } else {
+    el.textContent = "Chưa chọn vùng crop.";
+  }
+}
+
+/* ==== Sử dụng crop (nếu có) khi gửi ảnh lên API ==== */
 async function analyzeImage() {
-  const file = document.getElementById("imageFile").files[0];
+  const fileInput = document.getElementById("imageFile");
+  const file = fileInput.files[0];
   if (!file) return alert("Chưa chọn ảnh!");
 
   const btn = document.getElementById("btnAnalyzeImage");
@@ -858,8 +1341,45 @@ async function analyzeImage() {
   btn.innerText = "Đang phân tích...";
 
   try {
+    let blobToSend = file;
+
+    // Nếu có vùng crop hợp lệ & đã load ảnh lên canvas
+    if (
+      originalImage &&
+      imageCanvas &&
+      imageCtx &&
+      selection &&
+      selection.w > 10 &&
+      selection.h > 10
+    ) {
+      // Chuẩn hoá lại selection (đảm bảo w,h dương)
+      normalizeSelection();
+      const { x, y, w, h } = selection;
+
+      // Tạo canvas tạm để cắt vùng
+      const cropCanvas = document.createElement("canvas");
+      cropCanvas.width = w;
+      cropCanvas.height = h;
+      const cropCtx = cropCanvas.getContext("2d");
+
+      // Cắt từ canvas hiện tại (đã scale) là đủ cho OCR
+      cropCtx.drawImage(
+        imageCanvas,
+        x, y, w, h,
+        0, 0, w, h
+      );
+
+      // Chuyển sang Blob (PNG) để gửi
+      blobToSend = await new Promise((resolve) => {
+        cropCanvas.toBlob((blob) => {
+          resolve(blob || file);
+        }, "image/png");
+      });
+    }
+
     const form = new FormData();
-    form.append("image_file", file);
+    // Giữ nguyên tên file nếu có, hoặc đặt tên mặc định
+    form.append("image_file", blobToSend, file ? file.name : "crop.png");
 
     const headers = {};
     if (ACCESS_TOKEN) headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
@@ -880,7 +1400,7 @@ async function analyzeImage() {
     }
 
     const list = data.ecodes_found || [];
-    saveCache("ingredient", "imageResult", list);
+    saveCache("image", "imageResult", list);
     renderAdditivesForIngredient("imageResult", list);
 
     const b = document.getElementById("sourceImageBlock");
@@ -907,7 +1427,7 @@ async function searchAdditives() {
   const q = document.getElementById("searchBox").value.trim();
   const btn = document.getElementById("btnSearch");
   btn.disabled = true;
-  btn.innerText = "Đang search...";
+  btn.innerText = "Đang tìm kiếm ...";
 
   try {
     const url = API_BASE + "/ecodes/search?q=" + encodeURIComponent(q || "");
@@ -962,44 +1482,16 @@ async function loadHistory() {
       block.className = "history-block";
       block.innerHTML = `
         <div class="history-header-line">
-          <div class="history-ecodes">${item.ecodes.join(", ")}</div>
           <div class="history-time">${new Date(item.analyzed_at).toLocaleString()}</div>
         </div>
         <div class="history-source-text">${item.source_text || ""}</div>
       `;
-
-      const detail = document.createElement("div");
-      detail.className = "history-detail";
-
-      if (item.additives && item.additives.length > 0) {
-        item.additives.forEach(a => {
-          const c = document.createElement("div");
-          c.className = "history-add-card";
-          c.innerHTML = `
-            <div><b>${a.ins}</b> – ${a.name || ""}</div>
-            <div>VN: ${a.name_vn || "—"}</div>
-            <div>Functions: ${(a.functions || []).join(", ") || "—"}</div>
-            <div>Risk: ${getRiskBadge(a.level)}</div>
-            <div>Status: ${a.status_vn || "Được phép tại Việt Nam"}</div>
-          `;
-          c.onclick = (ev) => {
-            ev.stopPropagation();
-            openDetailWithData(a, "history", null);
-          };
-          detail.appendChild(c);
-        });
-      } else {
-        detail.innerHTML = '<div style="font-size:12px;color:#9ca3af;">Không có thông tin phụ gia chi tiết.</div>';
-      }
-
-      block.appendChild(detail);
+      
       block.onclick = () => {
-        const isVisible = detail.style.display === "block";
-        detail.style.display = isVisible ? "none" : "block";
+          openHistoryDialog(item);
       };
-
       container.appendChild(block);
-    });
+    }); 
 
   } catch (err) {
     const container = document.getElementById("historyResult");
@@ -1008,6 +1500,76 @@ async function loadHistory() {
     btn.disabled = false;
     btn.innerText = "Tải lịch sử";
   }
+}
+function openHistoryDialog(item) {
+    document.getElementById("historyDialog").style.display = "flex";
+
+    const sourceTextDiv = document.getElementById("dialogSourceText");
+    const container = document.getElementById("dialogAdditiveContainer");
+
+    sourceTextDiv.innerHTML = "";
+    sourceTextDiv.style.background = "#1e293b"; 
+    sourceTextDiv.style.padding = "10px"; 
+
+    let contentHtml = "";
+
+    if (item.input_type === 'image' && item.source_image_b64) {
+        contentHtml += `<img src="data:image/png;base64,${item.source_image_b64}" 
+                         style="max-width:100%; height:auto; display:block; border-radius:6px; margin-bottom: 10px;">`;
+        
+        sourceTextDiv.style.background = "none";
+        sourceTextDiv.style.padding = "10px";
+        
+        contentHtml += `<pre style="white-space:pre-wrap; margin:0; padding:10px; background:#020617; border-radius:8px; border: 1px solid #334155; color:#e5e7eb;">SOURCE TEXT (OCR):\n${item.source_text || "(Không có text OCR)"}</pre>`;
+        
+    } else {
+        sourceTextDiv.style.background = "#1e293b"; 
+        sourceTextDiv.style.padding = "10px";
+        contentHtml += item.source_text || "(Không có source text)";
+    }
+    
+    sourceTextDiv.innerHTML = contentHtml;
+
+
+    container.innerHTML = "";
+
+    if (item.additives && item.additives.length > 0) {
+        item.additives.forEach(a => {
+            const div = document.createElement("div");
+            div.className = "additive-card";
+            div.style.marginBottom = "10px";
+            div.classList.add("no-detail-link"); 
+            
+            div.innerHTML = `
+                <div class="add-title">${a.ins} – ${a.name || ""}</div>
+                <div class="add-line">VN: ${a.name_vn || "—"}</div>
+                <div class="add-line">ADI: ${a.adi || "—"}</div>
+                <div class="add-line">Risk: ${getRiskBadge(a.level)}</div>
+                <div class="add-line">Rule: ${getRuleBadge(a.rule_risk)}</div>
+            `;
+
+            div.onclick = (e) => {
+                e.stopPropagation();
+                openAdditiveDetailDialog(a);
+            };
+            container.appendChild(div);
+        });
+    } else {
+        container.innerHTML = '<div style="font-size:12px;color:#94a3b8;">Không có additive nào.</div>';
+    }
+    
+    let tempStyle = document.querySelector('[data-temp-style="true"]');
+    if (!tempStyle) {
+        tempStyle = document.createElement('style');
+        tempStyle.setAttribute('data-temp-style', 'true');
+        document.head.appendChild(tempStyle);
+    }
+    tempStyle.innerHTML = '.no-detail-link::after { content: none !important; }';
+}
+
+function closeHistoryDialog() {
+    document.getElementById("historyDialog").style.display = "none";
+    document.querySelector('[data-temp-style="true"]')?.remove();
 }
 </script>
 

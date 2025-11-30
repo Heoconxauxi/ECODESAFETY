@@ -1,72 +1,9 @@
-# ==============================================================================
-#  risk_rules.yaml — dành cho dataset INS mới
-#  Chỉ dùng các field:
-#    status_vn (0/1), adi, info, function
-#
-#  True Label:
-#    1 = Very Safe (VS)
-#    2 = Safe w/ Limits (SL)
-#    4 = Banned/Toxic (BT)
-# ==============================================================================
-
 priority:
-  - explicit_banned_by_status
-  - toxic_keywords
-  - extremely_low_adi
-  - low_adi_requires_limit
   - default_vs
 
 rules:
-
-  # ===========================================================
-  #  MỨC 4 — BT (Banned / Toxic)
-  # ===========================================================
-
-  explicit_banned_by_status:
-    if:
-      status_vn_eq: 1
-    then:
-      risk: 4
-      reason: "status_vn = 1 → phụ gia bị cảnh báo mạnh hoặc hạn chế nghiêm ngặt → Mức 4 (BT)"
-
-  toxic_keywords:
-    if:
-      info_contains_any:
-        - "ung thư"
-        - "carcinogenic"
-        - "độc"
-        - "toxic"
-        - "đột biến"
-        - "genotoxic"
-        - "neurotoxic"
-    then:
-      risk: 4
-      reason: "Thông tin mô tả chứa từ khóa độc tính nghiêm trọng → Mức 4 (BT)"
-
-  extremely_low_adi:
-    if:
-      adi_lt: 0.1
-    then:
-      risk: 4
-      reason: "ADI quá thấp (<0.1 mg/kg/ngày) → nguy cơ độc tính → Mức 4 (BT)"
-
-  # ===========================================================
-  #  MỨC 2 — SL (Safe w/ Limits)
-  # ===========================================================
-
-  low_adi_requires_limit:
-    if:
-      adi_lt: 5
-    then:
-      risk: 2
-      reason: "ADI thấp (<5 mg/kg/ngày) → cần giới hạn → Mức 2 (SL)"
-
-  # ===========================================================
-  #  MỨC 1 — VS (Very Safe)
-  # ===========================================================
-
   default_vs:
     if: {}
     then:
       risk: 1
-      reason: "Không vi phạm quy tắc nào trong YAML → Mức 1 (VS)"
+      reason: "Rất an toàn (VS)"

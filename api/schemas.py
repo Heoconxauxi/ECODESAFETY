@@ -100,6 +100,8 @@ class HistoryItem(BaseModel):
     analyzed_at: datetime
     source_text: Optional[str]
     additives: List[HistoryAdditiveItem] = Field(default_factory=list)
+    input_type: Optional[str] = "text"
+    source_image_b64: Optional[str] = None
 
 
 class UserHistoryResponse(BaseModel):
