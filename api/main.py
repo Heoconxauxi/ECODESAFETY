@@ -388,14 +388,12 @@ async def search_ecodes(
                         level=r["level"],
                         source=r["source"],
 
-                        # ⭐ NEW: RULE ENGINE
                         rule_risk=decision["risk"],
                         rule_reason=decision["reason"],
                         rule_name=decision["rule"],
                     )
                 )
 
-            # đếm total
             total_record = session.run(
                 """
                 MATCH (a:Additive)
@@ -551,14 +549,12 @@ async def get_my_history(
                 if isinstance(at, datetime):
                     analyzed_at = at
                 else:
-                    # fallback nếu at là string
                     analyzed_at = datetime.fromisoformat(str(at))
 
-                # Lấy lại facts cho các E-code trong history
                 additive_list: List[HistoryAdditiveItem] = []
 
                 for code in ecodes:
-                    a = get_facts_from_neo4j(driver,code)   # ← gọi riêng từng INS
+                    a = get_facts_from_neo4j(driver,code)
 
                     if a:
                         additive_list.append(
