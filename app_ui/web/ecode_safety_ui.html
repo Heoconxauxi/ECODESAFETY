@@ -872,6 +872,31 @@ function setUserUI(name, email) {
   document.getElementById("user-email").innerText = email || "";
 }
 
+function formatADI(value) {
+    if (!value) return "—";
+
+    const v = String(value).trim();
+
+    // Dạng số đơn (3, 1.5, 0)
+    if (!isNaN(parseFloat(v)) && isFinite(v)) {
+        return v + " mg/kg bw";
+    }
+
+    // Dạng số khoảng "0-3" hoặc "0–3"
+    if (/^\s*\d+\s*[-–]\s*\d+(\.\d+)?\s*$/.test(v)) {
+        return v + " mg/kg bw";
+    }
+
+    // ADI dạng text → trả nguyên văn
+    return v;
+}
+
+function mapVNStatus(val) {
+    if (val === 0 || val === "0") return "Được phép tại Việt Nam";
+    if (val === 1 || val === "1") return "Không được phép tại Việt Nam";
+    return "—";
+}
+
 async function handleGoogleLogin(res) {
   const response = await fetch(API_BASE + "/auth/google-login", {
     method: "POST",
@@ -958,9 +983,9 @@ async function openAdditiveDetailDialog(additive) {
       </h1>
       <div class="detail-meta"><b>Tên tiếng Việt:</b> ${additive.name_vn || "—"}</div>
       <div class="detail-meta"><b>ADI:</b> ${additive.adi || "—"}</div>
-      <div class="detail-meta"><b>Trạng thái:</b> ${additive.status_vn || "—"}</div>
+      <div class="detail-meta"><b>Trạng thái:</b> ${mapVNStatus(additive.status_vn) || "—"}</div>
       <div class="detail-meta"><b>Mức nguy cơ:</b> ${getRiskBadge(additive.level, true)}</div>
-      <div class="detail-meta"><b>Rule Engine:</b> ${getRuleBadge(additive.rule_risk, true)}</div>
+      <div class="detail-meta"><b>Rule:</b> ${getRuleBadge(additive.rule_risk, true)}</div>
 
       <div class="detail-section-title">Chức năng</div>
       <div>
@@ -1021,9 +1046,10 @@ async function openAdditiveDetailDialog(additive) {
 
         <div class="detail-meta"><b>Tên tiếng Việt:</b> ${data.name_vn || "—"}</div>
         <div class="detail-meta"><b>ADI:</b> ${data.adi || "—"}</div>
-        <div class="detail-meta"><b>Trạng thái:</b> ${data.status_vn || "Được phép tại Việt Nam" || "Không được phép tại Việt Nam"}</div>
+        <div class="detail-meta"><b>Trạng thái:</b> ${mapVNStatus(data.status_vn) || "—"}</div>
         <div class="detail-meta"><b>Mức nguy cơ:</b> ${getRiskBadge(data.level, true)}</div>
         <div class="detail-meta"><b>Rule Engine:</b> ${getRuleBadge(data.rule_risk, true)}</div>
+        <div class="detail-meta"><b>Lý do rule:</b> ${data.rule_reason || "—"}</div>
 
         <div class="detail-section-title">Chức năng</div>
         <div>
@@ -1066,7 +1092,7 @@ function renderAdditivesForIngredient(containerId, ecodesFound) {
     const functions = e.functions || e.function || [];
     const riskBadge = getRiskBadge(e.level);
     const ruleBadge = getRuleBadge(e.rule_risk);
-    const statusText = e.status_vn || "Được phép tại Việt Nam";
+    const statusText = e.status_vn;
 
     const card = document.createElement("div");
     card.className = "additive-card";
@@ -1074,9 +1100,9 @@ function renderAdditivesForIngredient(containerId, ecodesFound) {
       <div class="add-title">${e.ins || "N/A"} – ${e.name || ""}</div>
       <div class="add-line"><b>VN:</b> ${e.name_vn || "—"}</div>
       <div class="add-line"><b>ADI:</b> ${e.adi || "—"}</div>
-      <div class="add-line"><b>Status:</b> ${statusText}</div>
+      <div class="add-line"><b>Trạng thái:</b> ${mapVNStatus(statusText) || "—"}</div>
       <div class="add-line">
-        <b>Risk:</b> ${riskBadge}
+        <b>Mức nguy cơ:</b> ${riskBadge}
         <b>Rule:</b> ${ruleBadge}
       </div>
       <div class="add-line muted">Nhấn để xem chi tiết</div>
@@ -1111,7 +1137,7 @@ function renderAdditivesForSearch(containerId, items) {
   items.forEach(e => {
     const functions = e.functions || e.function || [];
     const riskBadge = getRiskBadge(e.level);
-    const statusText = e.status_vn || "Được phép tại Việt Nam";
+    const statusText = e.status_vn;
 
     const card = document.createElement("div");
     card.className = "additive-card";
@@ -1119,9 +1145,9 @@ function renderAdditivesForSearch(containerId, items) {
       <div class="add-title">${e.ins || "N/A"} – ${e.name || ""}</div>
       <div class="add-line"><b>VN:</b> ${e.name_vn || "—"}</div>
       <div class="add-line"><b>ADI:</b> ${e.adi || "—"}</div>
-      <div class="add-line"><b>Status:</b> ${statusText}</div>
+      <div class="add-line"><b>Trạng thái:</b> ${mapVNStatus(statusText)||"—"}</div>
       <div class="add-line">
-        <b>Risk:</b> ${riskBadge}
+        <b>Mức nguy cơ:</b> ${riskBadge}
         <b>Rule:</b> ${getRuleBadge(e.rule_risk)}
       </div>
       <div class="add-line muted">Nhấn để xem chi tiết</div>
@@ -1447,7 +1473,7 @@ async function searchAdditives() {
     showJson("resultSearch", { error: String(err) });
   } finally {
     btn.disabled = false;
-    btn.innerText = "Search";
+    btn.innerText = "Tìm kiếm";
   }
 }
 
@@ -1544,7 +1570,7 @@ function openHistoryDialog(item) {
                 <div class="add-title">${a.ins} – ${a.name || ""}</div>
                 <div class="add-line">VN: ${a.name_vn || "—"}</div>
                 <div class="add-line">ADI: ${a.adi || "—"}</div>
-                <div class="add-line">Risk: ${getRiskBadge(a.level)}</div>
+                <div class="add-line">Mức nguy cơ: ${getRiskBadge(a.level)}</div>
                 <div class="add-line">Rule: ${getRuleBadge(a.rule_risk)}</div>
             `;
 

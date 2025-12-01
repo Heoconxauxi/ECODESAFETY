@@ -5,9 +5,8 @@ from pathlib import Path
 from neo4j import Driver
 import sys
 
-# --- IMPORT FILE neo4j_connector ---
 try:
-    from neo4j_connector import get_neo4j_driver
+    from src.neo4j_connector import get_neo4j_driver
 except ImportError:
     print("Không thể import neo4j_connector.py")
     print("Đảm bảo file neo4j_connector.py nằm cùng thư mục hoặc trong PYTHONPATH")
@@ -16,12 +15,12 @@ except ImportError:
 # Xác định thư mục
 try:
     SCRIPT_DIR = Path(__file__).resolve().parent
-    ROOT_DIR = SCRIPT_DIR.parent
+    ROOT_DIR = SCRIPT_DIR
 except:
-    ROOT_DIR = Path.cwd().parent
+    ROOT_DIR = Path.cwd()
 
 SCHEMA_PATH = ROOT_DIR / "ontology" / "schema.json"
-CSV_PATH = ROOT_DIR / "data" / "processed" / "1ecodes_master.csv"
+CSV_PATH = ROOT_DIR / "data" / "processed" / "ecodes_master.csv"
 
 print(f"Script directory: {SCRIPT_DIR}")
 print(f"Root directory: {ROOT_DIR}")
@@ -29,7 +28,6 @@ print(f"Schema path: {SCHEMA_PATH}")
 print(f"CSV path: {CSV_PATH}")
 print()
 
-# --- Tải schema ---
 try:
     schema_text = SCHEMA_PATH.read_text(encoding="utf-8")
     schema = json.loads(schema_text)
@@ -78,7 +76,6 @@ def import_data(driver: Driver):
     """
     try:
         df = pd.read_csv(CSV_PATH, encoding="utf-8-sig")
-        # Strip khoảng trắng trong tên cột (fix lỗi 'adi ')
         df.columns = [c.strip() for c in df.columns]
         df = df.fillna("")
         print(f"Đã đọc {len(df)} dòng từ CSV.")
@@ -87,7 +84,7 @@ def import_data(driver: Driver):
         print(f"Lỗi khi đọc CSV: {e}")
         return
 
-    print("🚀 Bắt đầu import dữ liệu...\n")
+    print("Bắt đầu import dữ liệu...\n")
 
     success_count = 0
     error_count = 0
@@ -103,7 +100,6 @@ def import_data(driver: Driver):
             adi = str(row.get("adi", "")).strip()
             info = str(row.get("info", "")).strip()
 
-            # function: có thể phân tách bằng ',' hoặc '.'
             raw_functions = str(row.get("function", ""))
             functions = [
                 f.strip()
@@ -167,16 +163,16 @@ def import_data(driver: Driver):
 
         except Exception as e:
             error_count += 1
-            print(f"   ⚠️ Lỗi khi xử lý INS {ins}: {e}")
+            print(f"Lỗi khi xử lý INS {ins}: {e}")
 
-    print(f"\n✅ Import hoàn tất!")
+    print(f"\nImport hoàn tất!")
     print(f"   - Success: {success_count}")
     print(f"   - Errors : {error_count}")
     print(f"   - Total  : {len(df)}\n")
 
 
 def verify_import(driver: Driver):
-    print("🔍 Đang verify dữ liệu...\n")
+    print("Đang verify dữ liệu...\n")
 
     queries = {
         "Additives": "MATCH (a:Additive) RETURN count(a) as count",
@@ -196,7 +192,7 @@ def verify_import(driver: Driver):
             count = result["count"]
             print(f"   {label:20s}: {count:5d}")
 
-    print("\n✅ Verification complete.\n")
+    print("\nVerification complete.\n")
 
 
 if __name__ == "__main__":

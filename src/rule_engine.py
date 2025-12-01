@@ -1,5 +1,5 @@
 from pathlib import Path
-import yaml
+import yaml, re
 
 
 def evaluate_rules(facts, rules_path=None):
@@ -19,13 +19,22 @@ def evaluate_rules(facts, rules_path=None):
 
     # ADI
     raw_adi = facts.get("adi")
-    if raw_adi in (None, "", "nan", "NaN", "updating"):
-        adi_val = None
-    else:
+    adi_has_limit = False   # chỉ để biết có “giới hạn số” hay không
+    adi_display = None      # chuỗi dùng để hiển thị cho người dùng
+
+    if raw_adi not in (None, "", "nan", "NaN", "updating"):
+        adi_str = str(raw_adi).strip()
+
+        # 1) Dạng số đơn: 3, 1.5, 0...
         try:
-            adi_val = float(raw_adi)
-        except:
-            adi_val = None
+            float(adi_str)
+            adi_has_limit = True
+            adi_display = adi_str
+        except ValueError:
+            # 2) Dạng khoảng: 0-3, 0–3
+            if re.match(r"^\d+(\.\d+)?\s*[-–]\s*\d+(\.\d+)?$", adi_str):
+                adi_has_limit = True
+                adi_display = adi_str
 
     # -------------------------------------
     # 1) MỨC 4 — Cấm/Độc hại
@@ -40,18 +49,29 @@ def evaluate_rules(facts, rules_path=None):
     # -------------------------------------
     # 2) MỨC 2 — An toàn có giới hạn
     # -------------------------------------
-    if adi_val is not None:
+    if adi_display is not None:
         return {
             "risk": 2,
-            "reason": f"ADI = {adi_val} mg/kg — cần giới hạn (SL)",
+            "reason": f"ADI = {adi_display} mg/kg — cần giới hạn (SL)",
             "rule": "adi_numeric_safe_limit",
         }
 
     # -------------------------------------
-    # 3) MỨC 1 — Rất an toàn (mặc định)
+    # 3) THIẾU THÔNG TIN — KHÔNG ĐƯỢC TRẢ VS
+    # -------------------------------------
+    if adi_display is None and status_vn is None:
+        return {
+            "risk": None,
+            "reason": "Thiếu dữ liệu — không đủ thông tin để phân loại",
+            "rule": "missing_data",
+        }
+
+    # -------------------------------------
+    # 4) MỨC 1 — Rất an toàn (mặc định)
     # -------------------------------------
     return {
         "risk": 1,
         "reason": "Rất an toàn, không giới hạn (VS)",
         "rule": "default_vs",
     }
+

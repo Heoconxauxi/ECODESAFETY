@@ -19,5 +19,5 @@
     { "label": "RiskLevel", "key": "level", "type": "UNIQUE" },
     { "label": "Source", "key": "name", "type": "UNIQUE" }
   ],
-  "risk_levels": ["1", "2", "3"]
+  "risk_levels": ["1", "2", "4"]
 }
