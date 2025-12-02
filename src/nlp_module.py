@@ -3,8 +3,7 @@ import re, os, csv, unicodedata
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
 
-USE_CSV_SYNONYMS = False  # có thể bật nếu muốn dùng synonyms CSV
-
+USE_CSV_SYNONYMS = True  # có thể bật nếu muốn dùng synonyms CSV
 
 def norm(s: str) -> str:
     s = (s or "").lower()
@@ -66,30 +65,35 @@ def max_allowed_dist(term: str) -> int:
 
 
 def fuzzy_find_synonyms(text: str, mapping_norm: Dict[str, str]) -> List[Tuple[str, str, int]]:
-    res, words = [], tokenize_norm(text)
+    """
+    EXACT MATCH VERSION — đọc đúng hoàn toàn synonym từ CSV.
+    Không fuzzy, không khoảng cách, chỉ nhận khi khớp 100%.
+    dist = 0 luôn.
+    """
+    res = []
+    text_norm = norm(text)
+
+    # tách từ đã chuẩn hoá
+    words = tokenize_norm(text_norm)
     if not words:
         return res
+
+    text_join = " ".join(words)
+
     for syn_norm, ecode in mapping_norm.items():
         toks = syn_norm.split()
+
+        # synonym có nhiều từ → match chuỗi
         if len(toks) >= 2:
-            n = len(toks)
-            ref = " ".join(toks)
-            md = max_allowed_dist(ref)
-            for i in range(0, len(words) - n + 1):
-                win = " ".join(words[i : i + n])
-                dist = damerau_lev(win, ref, md)
-                if dist <= md:
-                    res.append((syn_norm, ecode, dist))
-                    break
+            if syn_norm in text_join:
+                res.append((syn_norm, ecode, 0))
         else:
-            ref = toks[0]
-            md = max_allowed_dist(ref)
-            for tok in words:
-                dist = damerau_lev(tok, ref, md)
-                if dist <= md:
-                    res.append((syn_norm, ecode, dist))
-                    break
+            # synonym 1 từ → match từng token
+            if syn_norm in words:
+                res.append((syn_norm, ecode, 0))
+
     return res
+
 
 
 DIGITLIKE = r"[0-9A-Za-z|!]{3,4}"
@@ -128,7 +132,7 @@ def count_real_digits(s: str) -> int:
     return sum(ch.isdigit() for ch in s)
 
 
-def in_range(d: str) -> bool:
+def in_range(d: str) -> bool:    #222
     try:
         n = int(d)
         return 100 <= n <= 1521
@@ -197,7 +201,7 @@ def extract_codes(text: str, csv_path: Optional[str] = None) -> List[str]:
 
     if csv_path is None:
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        c1 = os.path.join(script_dir, "E_INS.csv")
+        c1 = os.path.join(script_dir, "ecode_dict_clean.csv")
         csv_path = c1 if os.path.exists(c1) else None
 
     found = set()
@@ -323,9 +327,9 @@ def extract_ecodes_from_text(text: str, csv_path: Optional[str] = None) -> List[
     if csv_path is None:
         script_dir = Path(__file__).resolve().parent
         candidates = [
-            script_dir / "E_INS.csv",
-            Path.cwd() / "data" / "processed" / "E_INS.csv",
-            Path.cwd() / "E_INS.csv",
+            script_dir / "ecode_dict_clean.csv",
+            Path.cwd() / "data" / "processed" / "ecode_dict_clean.csv",
+            Path.cwd() / "ecode_dict_clean.csv",
         ]
         for p in candidates:
             if p.exists():
