@@ -433,18 +433,23 @@
       border: 1px dashed rgba(148, 163, 184, 0.6);
       background: rgba(15, 23, 42, 0.7);
     }
-    #imageCanvas {
-      display: block;
-      border-radius: 10px;
-      border: 1px solid rgba(30, 64, 175, 0.8);
-      background: #020617;
-      cursor: crosshair;
 
-      /* KHÔNG ép kích thước canvas bằng CSS */
-      width: auto !important;
+    #imageCanvas {
+      width: 100% !important;
       height: auto !important;
       max-width: 100%;
+      display: block;
+
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: high-quality;
     }
+
+    #cropOverlayCanvas {
+      width: 100%;
+      height: auto;
+    }
+
     .crop-hint {
       margin-top: 6px;
       font-size: 11px;
@@ -675,18 +680,32 @@
       <input type="file" id="imageFile" accept="image/*" onchange="handleImageFileChange(event)">
 
       <div class="image-cropper">
-        <canvas id="imageCanvas"></canvas>
+          <div style="position: relative; width: 100%;">
 
-        <div class="crop-hint">
-          1️.Chọn ảnh → 2️.Kéo vùng cần crop (Thành phần).  
-          Nếu không crop, hệ thống sẽ phân tích toàn ảnh.
-        </div>
+              <!-- Ảnh gốc -->
+              <canvas id="imageCanvas" style="width: 100%; height: auto; display: block;"></canvas>
 
-        <div class="crop-actions">
-          <button type="button" class="secondary" onclick="resetCropSelection()">Xoá vùng crop</button>
-          <span id="cropStatusText">Chưa chọn vùng crop.</span>
-        </div>
+              <!-- Overlay dạng Instagram -->
+              <canvas id="overlayCanvas"
+                      style="
+                          position:absolute;
+                          left:0; top:0;
+                          width:100%; height:100%;
+                          pointer-events:auto;">
+              </canvas>
+          </div>
+
+          <div class="crop-hint">
+              1️.Chọn ảnh → 2️.Kéo vùng crop (giữ chuột & kéo).  
+              Bạn có thể di chuyển/resize vùng crop.
+          </div>
+
+          <div class="crop-actions">
+              <button type="button" class="secondary" onclick="resetCrop()">Thử crop lại</button>
+              <span id="cropStatusText">Chưa chọn vùng crop.</span>
+          </div>
       </div>
+
 
       <div style="margin-top:8px;">
         <button id="btnAnalyzeImage" onclick="analyzeImage()">Phân tích Ảnh</button>
@@ -781,14 +800,6 @@ let userMenuVisible = false;
 const CACHE_TAB_KEY = "CACHE_LAST_TAB";
 const CACHE_CONTAINER_KEY = "CACHE_LAST_CONTAINER";
 const CACHE_DATA_KEY = "CACHE_LAST_DATA";
-
-/* ==== Biến toàn cục cho crop ảnh ==== */
-let imageCanvas = null;
-let imageCtx = null;
-let originalImage = null;      // ảnh đã load vào canvas
-let selection = null;          // {x, y, w, h} theo toạ độ canvas
-let isSelecting = false;
-let startX = 0, startY = 0;
 
 function saveCache(tab, containerId, list) {
   try {
@@ -1216,146 +1227,6 @@ async function analyzeText() {
   }
 }
 
-/* ==== Hỗ trợ load ảnh & crop ==== */
-function initImageCropper() {
-  imageCanvas = document.getElementById("imageCanvas");
-  if (!imageCanvas) return;
-  imageCtx = imageCanvas.getContext("2d");
-
-  imageCanvas.addEventListener("mousedown", onCanvasMouseDown);
-  imageCanvas.addEventListener("mousemove", onCanvasMouseMove);
-  window.addEventListener("mouseup", onCanvasMouseUp);
-  updateCropStatusText();
-}
-
-function handleImageFileChange(event) {
-  const file = event.target.files[0];
-  if (!file) {
-    originalImage = null;
-    clearCanvas();
-    selection = null;
-    updateCropStatusText();
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    const img = new Image();
-    img.onload = function () {
-      originalImage = img;
-      // scale ảnh vào canvas cho vừa UI
-      const containerWidth = imageCanvas.parentElement.clientWidth - 20; // chừa padding
-      let w = img.width;
-      let h = img.height;
-
-      // scale theo WIDTH container
-      const ratio = containerWidth / w;
-      w = Math.round(w * ratio);
-      h = Math.round(h * ratio);
-
-      // gán lại canvas đúng tỷ lệ
-      imageCanvas.width = w;
-      imageCanvas.height = h;
-
-      // vẽ ảnh giữ nguyên tỷ lệ
-      imageCtx.clearRect(0, 0, w, h);
-      imageCtx.drawImage(img, 0, 0, w, h);
-
-      originalImage = img;
-      selection = null;
-      updateCropStatusText();
-
-      selection = null;
-      updateCropStatusText();
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearCanvas() {
-  if (!imageCanvas || !imageCtx) return;
-  imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-}
-
-function onCanvasMouseDown(e) {
-  if (!originalImage || !imageCanvas) return;
-  const rect = imageCanvas.getBoundingClientRect();
-  startX = e.clientX - rect.left;
-  startY = e.clientY - rect.top;
-  isSelecting = true;
-  selection = { x: startX, y: startY, w: 0, h: 0 };
-}
-
-function onCanvasMouseMove(e) {
-  if (!isSelecting || !originalImage || !imageCanvas) return;
-  const rect = imageCanvas.getBoundingClientRect();
-  const currentX = e.clientX - rect.left;
-  const currentY = e.clientY - rect.top;
-  selection.w = currentX - startX;
-  selection.h = currentY - startY;
-  redrawImageWithSelection();
-}
-
-function onCanvasMouseUp() {
-  if (!isSelecting) return;
-  isSelecting = false;
-  normalizeSelection();
-  redrawImageWithSelection();
-  updateCropStatusText();
-}
-
-function normalizeSelection() {
-  if (!selection) return;
-  let { x, y, w, h } = selection;
-  if (w < 0) {
-    x = x + w;
-    w = Math.abs(w);
-  }
-  if (h < 0) {
-    y = y + h;
-    h = Math.abs(h);
-  }
-  // clamp trong canvas
-  x = Math.max(0, Math.min(x, imageCanvas.width));
-  y = Math.max(0, Math.min(y, imageCanvas.height));
-  if (x + w > imageCanvas.width) w = imageCanvas.width - x;
-  if (y + h > imageCanvas.height) h = imageCanvas.height - y;
-
-  selection = { x, y, w, h };
-}
-
-function redrawImageWithSelection() {
-  if (!originalImage || !imageCanvas || !imageCtx) return;
-  imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-  imageCtx.drawImage(originalImage, 0, 0, imageCanvas.width, imageCanvas.height);
-
-  if (selection && selection.w && selection.h) {
-    imageCtx.save();
-    imageCtx.strokeStyle = "#3b82f6";
-    imageCtx.lineWidth = 2;
-    imageCtx.setLineDash([6, 3]);
-    imageCtx.strokeRect(selection.x, selection.y, selection.w, selection.h);
-    imageCtx.restore();
-  }
-}
-
-function resetCropSelection() {
-  selection = null;
-  redrawImageWithSelection();
-  updateCropStatusText();
-}
-
-function updateCropStatusText() {
-  const el = document.getElementById("cropStatusText");
-  if (!el) return;
-  if (selection && selection.w > 10 && selection.h > 10) {
-    el.textContent = `Đã chọn vùng crop: ${Math.round(selection.w)} x ${Math.round(selection.h)} px (theo canvas).`;
-  } else {
-    el.textContent = "Chưa chọn vùng crop.";
-  }
-}
-
 /* ==== Sử dụng crop (nếu có) khi gửi ảnh lên API ==== */
 async function analyzeImage() {
   const fileInput = document.getElementById("imageFile");
@@ -1367,45 +1238,16 @@ async function analyzeImage() {
   btn.innerText = "Đang phân tích...";
 
   try {
-    let blobToSend = file;
-
-    // Nếu có vùng crop hợp lệ & đã load ảnh lên canvas
-    if (
-      originalImage &&
-      imageCanvas &&
-      imageCtx &&
-      selection &&
-      selection.w > 10 &&
-      selection.h > 10
-    ) {
-      // Chuẩn hoá lại selection (đảm bảo w,h dương)
-      normalizeSelection();
-      const { x, y, w, h } = selection;
-
-      // Tạo canvas tạm để cắt vùng
-      const cropCanvas = document.createElement("canvas");
-      cropCanvas.width = w;
-      cropCanvas.height = h;
-      const cropCtx = cropCanvas.getContext("2d");
-
-      // Cắt từ canvas hiện tại (đã scale) là đủ cho OCR
-      cropCtx.drawImage(
-        imageCanvas,
-        x, y, w, h,
-        0, 0, w, h
-      );
-
-      // Chuyển sang Blob (PNG) để gửi
-      blobToSend = await new Promise((resolve) => {
-        cropCanvas.toBlob((blob) => {
-          resolve(blob || file);
-        }, "image/png");
-      });
-    }
-
+    // LUÔN tạo form trước (để không bị lỗi ReferenceError)
     const form = new FormData();
-    // Giữ nguyên tên file nếu có, hoặc đặt tên mặc định
-    form.append("image_file", blobToSend, file ? file.name : "crop.png");
+
+    // --- Nếu có vùng crop thì lấy ảnh crop ---
+    const croppedBlob = await exportCropBlob();
+    if (croppedBlob) {
+      form.append("image_file", croppedBlob, "crop.png");
+    } else {
+      form.append("image_file", file);
+    }
 
     const headers = {};
     if (ACCESS_TOKEN) headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
@@ -1413,10 +1255,11 @@ async function analyzeImage() {
     const res = await fetch(API_BASE + "/ecode/analyze_image", {
       method: "POST",
       headers,
-      body: form
+      body: form,
     });
 
     const data = await res.json();
+
     if (!res.ok) {
       showJson("resultImage", data);
       const b = document.getElementById("sourceImageBlock");
@@ -1437,7 +1280,6 @@ async function analyzeImage() {
       b.style.display = "none";
       b.innerText = "";
     }
-
   } catch (err) {
     showJson("resultImage", { error: String(err) });
     const b = document.getElementById("sourceImageBlock");
@@ -1597,6 +1439,274 @@ function closeHistoryDialog() {
     document.getElementById("historyDialog").style.display = "none";
     document.querySelector('[data-temp-style="true"]')?.remove();
 }
+
+/* ======================================================
+      CROP STYLE INSTAGRAM / FACEBOOK — PRO VERSION
+   ====================================================== */
+
+let imageCanvas, imageCtx, overlayCanvas, overlayCtx;
+let img = null;
+
+// Vùng crop
+let crop = { x: 100, y: 100, w: 200, h: 150 };
+let dragging = false;
+let resizing = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+let resizeDir = null;
+
+// Scale thực tế → hiển thị (để crop pixel 100% chính xác)
+let scaleX = 1;
+let scaleY = 1;
+
+window.initImageCropper = function () {
+    imageCanvas = document.getElementById("imageCanvas");
+    overlayCanvas = document.getElementById("overlayCanvas");
+
+    imageCtx = imageCanvas.getContext("2d");
+    overlayCtx = overlayCanvas.getContext("2d");
+
+    overlayCanvas.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+
+    drawOverlay();
+};
+
+window.handleImageFileChange = function (event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        img = new Image();
+        img.onload = function () {
+            // 1) Kích thước ảnh gốc
+            imageCanvas.width  = img.width;
+            imageCanvas.height = img.height;
+
+            // 2) Tính scale hiển thị theo chiều ngang
+            const displayWidth = imageCanvas.parentElement.clientWidth;
+            const scale = displayWidth / img.width;
+
+            const displayHeight = img.height * scale;
+
+            // 3) Gán kích thước hiển thị
+            imageCanvas.style.width  = displayWidth + "px";
+            imageCanvas.style.height = displayHeight + "px";
+
+            overlayCanvas.style.width  = displayWidth + "px";
+            overlayCanvas.style.height = displayHeight + "px";
+
+            // 4) CẬP NHẬT scaleX/scaleY
+            scaleX = img.width  / displayWidth;
+            scaleY = img.height / displayHeight;
+
+            // 5) Vẽ ảnh gốc vào canvas gốc
+            imageCtx.drawImage(img, 0, 0);
+
+            // 🚀 6) LẤY KÍCH THƯỚC THỰC CỦA overlayCanvas (ĐÃ SCALE)
+            const rect = overlayCanvas.getBoundingClientRect();
+
+            // 🚀 7) CHO CROP FULL ẢNH, KHÔNG BỊ NẰM Ở GÓC NỮA
+            crop = {
+                x: 0,
+                y: 0,
+                w: rect.width,
+                h: rect.height
+            };
+
+            drawOverlay();
+            updateCropText();
+        };
+
+
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+};
+
+function drawOverlay() {
+    const rect = overlayCanvas.getBoundingClientRect();
+    overlayCanvas.width = rect.width;
+    overlayCanvas.height = rect.height;
+
+    overlayCtx.clearRect(0, 0, rect.width, rect.height);
+
+    // lớp tối
+    overlayCtx.fillStyle = "rgba(0,0,0,0.45)";
+    overlayCtx.fillRect(0, 0, rect.width, rect.height);
+
+    if (!crop) return;
+
+    // clear vùng crop
+    overlayCtx.clearRect(crop.x, crop.y, crop.w, crop.h);
+
+    overlayCtx.strokeStyle = "#3b82f6";
+    overlayCtx.lineWidth = 2;
+    overlayCtx.strokeRect(crop.x, crop.y, crop.w, crop.h);
+
+    drawResizeHandles();
+    updateCropText();
+}
+
+function drawResizeHandles() {
+    const size = 12;
+    const handles = [
+        [crop.x, crop.y],
+        [crop.x + crop.w, crop.y],
+        [crop.x, crop.y + crop.h],
+        [crop.x + crop.w, crop.y + crop.h]
+    ];
+
+    overlayCtx.fillStyle = "#3b82f6";
+    handles.forEach(([x, y]) => {
+        overlayCtx.fillRect(x - size/2, y - size/2, size, size);
+    });
+}
+
+function getCursorHandle(mx, my) {
+    const size = 12;
+
+    if (dist(mx, my, crop.x, crop.y) < size) return "nw";
+    if (dist(mx, my, crop.x + crop.w, crop.y) < size) return "ne";
+    if (dist(mx, my, crop.x, crop.y + crop.h) < size) return "sw";
+    if (dist(mx, my, crop.x + crop.w, crop.y + crop.h) < size) return "se";
+
+    return null;
+}
+
+function dist(x1, y1, x2, y2) {
+    return Math.hypot(x1 - x2, y1 - y2);
+}
+
+function onMouseDown(e) {
+    const rect = overlayCanvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    // Nếu đang resize
+    resizeDir = getCursorHandle(mx, my);
+    if (resizeDir && crop) {
+        resizing = true;
+        return;
+    }
+
+    // Nếu đang kéo crop
+    if (
+        crop &&
+        mx > crop.x &&
+        mx < crop.x + crop.w &&
+        my > crop.y &&
+        my < crop.y + crop.h
+    ) {
+        dragging = true;
+        dragOffsetX = mx - crop.x;
+        dragOffsetY = my - crop.y;
+        return;
+    }
+
+    // TẠO MỚI VÙNG CROP KHI CLICK → KÉO
+    // CHỈ CHẠY KHI crop = null HOẶC click ngoài crop
+    crop = { x: mx, y: my, w: 1, h: 1 };
+    resizing = true;
+    resizeDir = "se";  // Resize từ góc dưới-phải
+
+    drawOverlay();
+}
+
+function onMouseMove(e) {
+    const rect = overlayCanvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    if (resizing) {
+        resizeCrop(mx, my);
+        drawOverlay();
+        return;
+    }
+
+    if (dragging) {
+        crop.x = mx - dragOffsetX;
+        crop.y = my - dragOffsetY;
+        drawOverlay();
+    }
+}
+
+function onMouseUp() {
+    dragging = false;
+    resizing = false;
+    resizeDir = null;
+}
+
+function resizeCrop(mx, my) {
+    switch (resizeDir) {
+        case "nw":
+            crop.w += crop.x - mx;
+            crop.h += crop.y - my;
+            crop.x = mx;
+            crop.y = my;
+            break;
+        case "ne":
+            crop.w = mx - crop.x;
+            crop.h += crop.y - my;
+            crop.y = my;
+            break;
+        case "sw":
+            crop.w += crop.x - mx;
+            crop.x = mx;
+            crop.h = my - crop.y;
+            break;
+        case "se":
+            crop.w = mx - crop.x;
+            crop.h = my - crop.y;
+            break;
+    }
+
+    crop.w = Math.max(30, crop.w);
+    crop.h = Math.max(30, crop.h);
+}
+
+function updateCropText() {
+    document.getElementById("cropStatusText").innerText =
+        `Crop: ${Math.round(crop.w * scaleX)} x ${Math.round(crop.h * scaleY)} px`;
+}
+
+window.resetCrop = function () {
+    const rect = overlayCanvas.getBoundingClientRect();
+
+    crop = {
+        x: 0,
+        y: 0,
+        w: rect.width,
+        h: rect.height
+    };
+
+    drawOverlay();
+    updateCropText();
+};
+
+
+/* ========== EXPORT CROP AS BLOB (DÙNG CHO API OCR) ========== */
+window.exportCropBlob = async function () {
+    if (!img || !crop) return null;
+
+    const realX = Math.round(crop.x * scaleX);
+    const realY = Math.round(crop.y * scaleY);
+    const realW = Math.round(crop.w * scaleX);
+    const realH = Math.round(crop.h * scaleY);
+
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = realW;
+    tempCanvas.height = realH;
+
+    const tctx = tempCanvas.getContext("2d");
+    tctx.drawImage(img, realX, realY, realW, realH, 0, 0, realW, realH);
+
+    return new Promise(resolve =>
+        tempCanvas.toBlob(resolve, "image/png")
+    );
+};
 </script>
 
 </body>
