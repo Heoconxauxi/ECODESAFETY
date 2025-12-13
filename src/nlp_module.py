@@ -5,6 +5,9 @@ from typing import List, Tuple, Dict, Optional
 
 USE_CSV_SYNONYMS = True  # có thể bật nếu muốn dùng synonyms CSV
 
+# === NEW (theo yêu cầu): chỉ đọc 1 file CSV cố định ===
+MASTER_CSV_PATH = r"D:\Hk7\KhoaLuan\ECODESAFETY\data\processed\ecodes_master.csv"
+
 def norm(s: str) -> str:
     s = (s or "").lower()
     s = unicodedata.normalize("NFD", s)
