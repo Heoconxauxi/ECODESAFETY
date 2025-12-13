@@ -5,6 +5,9 @@ from typing import List, Tuple, Dict, Optional
 
 USE_CSV_SYNONYMS = True  # có thể bật nếu muốn dùng synonyms CSV
 
+# === NEW (theo yêu cầu): chỉ đọc 1 file CSV cố định ===
+MASTER_CSV_PATH = r"D:\Hk7\KhoaLuan\ECODESAFETY\data\processed\ecodes_master.csv"
+
 def norm(s: str) -> str:
     s = (s or "").lower()
     s = unicodedata.normalize("NFD", s)
@@ -111,7 +114,7 @@ DIGITMAP = {
     "Z": "2",
     "s": "5",
     "S": "5",
-    "b": "8",
+    "b": "6",
     "B": "8",
 }
 
@@ -195,8 +198,82 @@ def _strip_prefix_and_flatten(code: str) -> str:
     return core
 
 
+# === NEW (theo yêu cầu): đọc cột ins để lọc kết quả cuối ===
+_ALLOWED_INS_CACHE: Optional[set] = None
+
+def _canon_ins(s: str) -> str:
+    # chuẩn hoá để so khớp: lower + bỏ khoảng trắng
+    return re.sub(r"\s+", "", (s or "").strip().lower())
+
+def _load_allowed_ins_set(csv_path: str) -> set:
+    global _ALLOWED_INS_CACHE
+    if _ALLOWED_INS_CACHE is not None:
+        return _ALLOWED_INS_CACHE
+
+    allowed = set()
+    try:
+        with open(csv_path, encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                ins_val = row.get("ins")
+                if ins_val is None:
+                    continue
+                ins_norm = _canon_ins(ins_val)
+                if ins_norm:
+                    allowed.add(ins_norm)
+    except:
+        allowed = set()
+
+    _ALLOWED_INS_CACHE = allowed
+    return allowed
+
+
+# === NEW (theo yêu cầu): đọc cột name + name_vn -> trả về ins ===
+_NAME_INS_CACHE: Optional[Dict[str, str]] = None
+
+def _canon_phrase(s: str) -> str:
+    # chuẩn hoá phrase để match trong text (bỏ dấu + ký tự lạ + chuẩn hoá khoảng trắng)
+    return " ".join(tokenize_norm(s))
+
+def _load_name_ins_map(csv_path: str) -> Dict[str, str]:
+    global _NAME_INS_CACHE
+    if _NAME_INS_CACHE is not None:
+        return _NAME_INS_CACHE
+
+    mp: Dict[str, str] = {}
+    try:
+        with open(csv_path, encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                ins_val = (row.get("ins") or "").strip()
+                if not ins_val:
+                    continue
+
+                # đọc 2 cột name và name_vn
+                n1 = (row.get("name") or "").strip()
+                n2 = (row.get("name_vn") or "").strip()
+
+                for nm in (n1, n2):
+                    k = _canon_phrase(nm)
+                    if not k:
+                        continue
+                    # nếu trùng key, giữ ins đầu tiên (không thay đổi logic khác)
+                    if k not in mp:
+                        mp[k] = ins_val.strip()
+    except:
+        mp = {}
+
+    _NAME_INS_CACHE = mp
+    return mp
+
+
 def extract_codes(text: str, csv_path: Optional[str] = None) -> List[str]:
-    if is_units_only_line(text):
+    # === UPDATE (theo yêu cầu): chỉ loại "100 g" (có space), còn "100g" vẫn cho đi tiếp để lọc bằng CSV(ins) ===
+    if is_units_only_line(text) and not re.fullmatch(
+        r"\s*[0-9]{3,4}[a-z]*(\((?:i|ii|iii|iv|v|vi|vii|viii|ix)\))?\s*",
+        text,
+        re.IGNORECASE,
+    ):
         return []
 
     if csv_path is None:
@@ -226,25 +303,56 @@ def extract_codes(text: str, csv_path: Optional[str] = None) -> List[str]:
                 if dist <= best_dist + 1:
                     found.add("E" + e[1:].lower())
 
+    # === NEW (theo yêu cầu): match theo cột name + name_vn, nếu trùng thì trả về ins tương ứng ===
+    if csv_path and os.path.exists(csv_path):
+        name_map = _load_name_ins_map(csv_path)
+        if name_map:
+            words = tokenize_norm(text)
+            if words:
+                text_join = " ".join(words)
+                for k, ins_val in name_map.items():
+                    toks = k.split()
+                    if len(toks) >= 2:
+                        if k in text_join:
+                            found.add("INS" + ins_val.strip().lower())
+                    else:
+                        if k in words:
+                            found.add("INS" + ins_val.strip().lower())
+
     # 2) E / INS + số
     pat_prefixed = re.compile(
-        rf"\b(?P<prefix>E|INS)\s*-?\s*(?P<d>{DIGITLIKE})(?P<let>[A-Za-z]?)\s*(?:\((?P<rom>{ROMAN_OK})\))?\b",
+        rf"\b(?P<prefix>E|INS)\s*-?\s*(?P<d>{DIGITLIKE})(?P<let>[A-Za-z]?)\s*(?:\((?P<rom>{ROMAN_OK})\))?(?=$|[^A-Za-z0-9])",
         re.IGNORECASE,
     )
     for m in pat_prefixed.finditer(text):
         dlike = m.group("d")
         if count_real_digits(dlike) < 1:
             continue
+
         d = to_digits(dlike)
-        if not d or not in_range(d):
-            continue
-        prefix = m.group("prefix").upper()
         let = (m.group("let") or "").lower()
+
+        # === FIX: xử lý case INS160a(iv) khi dlike = "160a" và let rỗng ===
+        if not d:
+            if (not let) and dlike and dlike[-1].isalpha():
+                d2 = to_digits(dlike[:-1])
+                if d2:
+                    d = d2
+                    let = dlike[-1].lower()
+            if not d:
+                continue
+        # === END FIX ===
+
+        if not in_range(d):
+            continue
+
+        prefix = m.group("prefix").upper()
         rom = (m.group("rom") or "").lower()
         code = f"{prefix}{d}{let}"
         if rom:
             code += f"({rom})"
         found.add(code)
+
 
     # 3a) số + chữ + roman (160a(i))
     pat_letter_roman = re.compile(
@@ -294,6 +402,8 @@ def extract_codes(text: str, csv_path: Optional[str] = None) -> List[str]:
             continue
         found.add(f"INS{d}")
 
+
+
     # 5) số + chữ dính liền (160d, 407a, 551i...)
     pat_digit_letters = re.compile(
         rf"(?<![A-Za-z0-9])(?P<d>{DIGITLIKE})(?P<letters>[A-Za-z]+)\b"
@@ -315,27 +425,23 @@ def extract_codes(text: str, csv_path: Optional[str] = None) -> List[str]:
     # Bỏ E/INS, còn lại dạng '100', '160a(iv)'
     stripped = {_strip_prefix_and_flatten(c) for c in found}
 
+    # === NEW (theo yêu cầu): lọc theo cột ins của CSV (exact match) ===
+    allowed_ins = set()
+    if csv_path and os.path.exists(csv_path):
+        allowed_ins = _load_allowed_ins_set(csv_path)
+
     safe = []
     for c in stripped:
         if re.fullmatch(r"[0-9]{3,4}[a-z]*(\((?:i|ii|iii|iv|v|vi|vii|viii|ix)\))?", c):
+            # chỉ giữ nếu tồn tại trong cột ins
+            if allowed_ins and (_canon_ins(c) not in allowed_ins):
+                continue
             safe.append(c.lower())
 
     return sorted(set(safe))
 
 
 def extract_ecodes_from_text(text: str, csv_path: Optional[str] = None) -> List[str]:
-    if csv_path is None:
-        script_dir = Path(__file__).resolve().parent
-        candidates = [
-            script_dir / "ecode_dict_clean.csv",
-            Path.cwd() / "data" / "processed" / "ecode_dict_clean.csv",
-            Path.cwd() / "ecode_dict_clean.csv",
-        ]
-        for p in candidates:
-            if p.exists():
-                csv_path = str(p)
-                break
-        else:
-            csv_path = None
-
+    # === NEW (theo yêu cầu): bỏ candidates, đọc duy nhất 1 file cố định ===
+    csv_path = MASTER_CSV_PATH
     return extract_codes(text, csv_path=csv_path)
