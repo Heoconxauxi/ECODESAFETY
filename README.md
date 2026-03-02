@@ -37,3 +37,11 @@
     ├── load_data.py                     # Import data vào Neo4j
     ├── README.md                        # Giới thiệu tổng quan dự án
     └── setup_env.bat / setup_env.sh     # Script tạo môi trường ảo & cài thư viện
+
+![1772453066527](image/README/1772453066527.png)
+
+![1772453082337](image/README/1772453082337.png)
+
+![1772453091408](image/README/1772453091408.png)
+
+![1772453098188](image/README/1772453098188.png)
